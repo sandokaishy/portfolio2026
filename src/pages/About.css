@@ -1,0 +1,290 @@
+/* About page — desktop layout matches Figma frame at 1728px wide.
+   Pixel values come straight from the design; gracefully scales down below. */
+
+/* 12-column grid for the whole page:
+     - intro       cols 2–6,  row 1
+     - portrait    cols 8–11, rows 1–2 (sticky on the right)
+     - experience  cols 2–6,  row 2
+     Columns 1, 7, and 12 are visual gutters — col 1/12 frame the page
+     so the content reads more centered; col 7 separates intro/experience
+     from the portrait. */
+.about {
+  position: relative;
+  background-color: var(--color-surface);
+  min-height: 100vh;
+  /* Horizontal page padding exposed as a variable so the absolutely-
+     positioned back button can compute col-2 alignment via calc(). */
+  --about-pad-x: 60px;
+  padding: 160px var(--about-pad-x) 160px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: auto;
+  row-gap: 132px;
+  align-items: start;
+}
+
+/* ---------------------------------------------------------------------------
+   Intro
+   --------------------------------------------------------------------------- */
+
+.about-intro {
+  grid-column: 2 / span 5;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+
+.about-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);             /* 16px */
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);            /* #888 */
+}
+
+.about-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-name {
+  font-family: var(--font-sans);
+  font-size: 80px;
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--color-ink);                  /* #222 */
+}
+
+.about-subtitle {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);            /* #888 */
+}
+
+.about-bio {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: var(--fw-regular);
+  line-height: 1.8;
+  color: var(--color-ink);                  /* #222 */
+}
+
+/* Two sentences read as one continuous block (no extra space between them). */
+.about-bio-block p + p {
+  margin-top: 0;
+}
+
+/* `.about-portrait` styles live in AboutPortrait.css alongside the component. */
+
+/* ---------------------------------------------------------------------------
+   Experience
+   --------------------------------------------------------------------------- */
+
+.about-experience {
+  grid-column: 2 / span 5;
+  grid-row: 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.experience-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.experience-item {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  padding: 32px 0;
+}
+
+/* Border lives on a pseudo-element so we can apply mix-blend-mode:difference
+   to the line alone (not the item's text/layout). On the cream surface the
+   white line resolves to a dark line; where the portrait blob (white) drifts
+   over the border it cancels to invisible — gives the divider a subtle
+   reactive feel without needing to bind to JS. */
+.experience-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  /* Source color tuned to land just barely off the cream surface in
+     difference mode — yields a faint divider instead of the harsh dark
+     line that #fff produces. */
+  background: #e0e0e0;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+.experience-time {
+  width: 120px;
+  flex-shrink: 0;
+  padding-top: 4px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-small);          /* 14px */
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);            /* #888 */
+  white-space: nowrap;
+}
+
+.experience-detail {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.experience-head {
+  display: flex;
+  flex-direction: column;
+}
+
+.experience-role {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: var(--fw-semibold);
+  line-height: 1.8;
+  letter-spacing: 0;
+  color: var(--color-ink);                  /* #222 */
+}
+
+.experience-company {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-small);          /* 14px */
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);            /* #888 */
+}
+
+.experience-content {
+  padding-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-small);          /* 14px */
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  color: var(--color-ink-tertiary);         /* #666 */
+}
+
+/* ---------------------------------------------------------------------------
+   Back button — top-left outlined box, matches Figma frame.
+   --------------------------------------------------------------------------- */
+
+.about-back {
+  position: fixed;
+  top: 58px;
+  /* Align with col 2 of the page grid (where intro/experience start) so
+     the back button sits flush with the content's left edge. With
+     position: fixed, `100%` resolves to the viewport — matching the
+     .about element's width since it spans the full viewport. */
+  left: calc(var(--about-pad-x) + (100vw - var(--about-pad-x) * 2) / 12);
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-ink);
+  background-color: rgba(247, 243, 236, 0.5);  /* surface @ 50% */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--color-ink);
+  border-radius: 2px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.about-back:hover {
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  border-color: var(--color-ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 1600px) {
+  .about {
+    --about-pad-x: 48px;
+    padding: 160px var(--about-pad-x) 120px;
+  }
+}
+
+@media (max-width: 1100px) {
+  /* Collapse to single column. Portrait jumps to top, sticky disabled. */
+  .about {
+    grid-template-columns: 1fr;
+    row-gap: 64px;
+  }
+  .about-intro,
+  .about-portrait,
+  .about-experience {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .about-experience {
+    /* No-op: order falls through naturally (intro → portrait → experience). */
+  }
+  .about-back {
+    /* Single-col layout: align with the content's left edge (padding edge),
+       not the 12-col calc which assumes the grid is still 12. */
+    left: var(--about-pad-x);
+  }
+}
+
+@media (max-width: 768px) {
+  .about {
+    --about-pad-x: 24px;
+    padding: 80px var(--about-pad-x) 80px;
+    row-gap: 64px;
+  }
+  .about-name {
+    font-size: 56px;
+  }
+  .about-subtitle {
+    font-size: 20px;
+  }
+  .about-bio {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .experience-item {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 0;
+  }
+  .experience-time {
+    width: auto;
+  }
+  .experience-role {
+    font-size: 18px;
+  }
+}

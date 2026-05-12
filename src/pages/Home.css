@@ -1,0 +1,238 @@
+.home {
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--color-surface);
+  overflow: hidden;
+  /* Page edge padding scales with viewport width: tight on phones, loose
+     on ultra-wide. Centralized here so all edge-anchored elements
+     (.hero, .project-nav, .hero-body) share the same value. */
+  --page-pad: clamp(32px, 4vw, 80px);
+}
+
+/* ============================================================================
+   3D visual — full viewport, behind everything
+   ============================================================================ */
+.home-visual {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  mix-blend-mode: difference;
+}
+
+/* Floating tags overlay sits above the canvas, below text content. */
+.loader-tags-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.loader-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 1px;
+  border: 1px solid var(--color-ink);
+  background: rgba(247, 243, 236, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-small);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Adaptive style when the tag sits on top of the dark blob. */
+.loader-tag.on-dark {
+  border-color: #ffffff;
+  background: rgba(247, 243, 236, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #ffffff;
+}
+
+/* Tag opacity is driven by JS (rAF) for the swap-out / line-extend / blink-in
+   sequence; nothing else animates the tag here. */
+
+/* ============================================================================
+   Hero (top-left)
+   ============================================================================ */
+.hero {
+  position: relative;
+  z-index: 2;
+  padding: var(--page-pad) 0 0 var(--page-pad);
+  width: 511px;
+  pointer-events: none;
+}
+
+.hero-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-display);             /* 72px */
+  font-weight: var(--fw-medium);            /* 500 */
+  line-height: 1.2;
+  letter-spacing: var(--ls-normal);
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin: 0 0 12px;
+  pointer-events: auto;
+}
+
+.hero-subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);             /* 16px */
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);            /* #888 */
+  margin: 0;
+  padding: 0 4px;
+  pointer-events: auto;
+}
+
+/* ============================================================================
+   Project nav (right rail)
+   ============================================================================ */
+.project-nav {
+  position: fixed;
+  right: var(--page-pad);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.project-nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-tertiary);         /* #666 */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.project-nav-item:hover,
+.project-nav-item.is-active,
+.project-nav-item:focus-visible {
+  color: var(--color-ink);
+}
+
+/* Leading numeric prefix (1–5). Fixed-width column keeps the labels
+   aligned regardless of the digit. Inherits the row's color via currentColor. */
+.project-nav-number {
+  display: inline-block;
+  min-width: 1.25em;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+
+/* Underline lives on the label only so the leading number isn't included
+   in the sweep. Matches the project-page TOC's animated underline. */
+.project-nav-label {
+  display: inline-block;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 4px;
+  transition: background-size 0.4s ease;
+}
+
+.project-nav-item:hover .project-nav-label,
+.project-nav-item.is-active .project-nav-label,
+.project-nav-item:focus-visible .project-nav-label {
+  background-size: 100% 1px;
+}
+
+/* ============================================================================
+   Body copy (bottom-left)
+   ============================================================================ */
+.hero-body {
+  position: absolute;
+  left: var(--page-pad);
+  bottom: var(--page-pad);
+  z-index: 2;
+  width: 507px;
+  font-family: var(--font-sans);
+  font-size: 28px;
+  font-weight: var(--fw-light);             /* 300 */
+  line-height: 1.5;
+  color: var(--color-ink-tertiary);         /* #666 */
+  margin: 0;
+  pointer-events: auto;
+}
+
+.hero-body strong,
+.hero-body-link {
+  font-weight: var(--fw-medium);
+  color: var(--color-ink);
+}
+
+.hero-body-link {
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-ink);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-body-link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ============================================================================
+   Responsive
+   ============================================================================ */
+@media (max-width: 768px) {
+  .hero {
+    padding: 32px 24px 0;
+    width: 100%;
+  }
+  .hero-title {
+    font-size: 3rem;                         /* 48px on small screens */
+  }
+  .hero-body {
+    position: static;
+    width: 100%;
+    padding: 24px;
+    font-size: 1.25rem;                      /* 20px */
+  }
+  .project-nav {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 24px;
+    margin-top: auto;
+  }
+  .project-nav-item {
+    /* Mobile-only override — desktop is 14px. Tweak here independently if
+       the horizontal-wrap layout needs a different reading size. */
+    font-size: 14px;
+  }
+  .project-nav-marker {
+    left: -16px;
+    width: 6px;
+    height: 6px;
+  }
+  /* .loader-tag inherits desktop padding/font-size — no mobile override needed. */
+}

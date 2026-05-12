@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+
+# Playwright MCP — ad-hoc dev screenshots and snapshots
+.playwright-mcp/
+/*.png

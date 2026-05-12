@@ -1,0 +1,90 @@
+/* About page right-side portrait collage.
+   Recreates the Figma sliced-head + floating-blob composition.
+   Body.png ships with the dark slice already baked in; Head.png is the
+   detached cap that floats above. */
+
+/* Lives in cols 8–12 of the page grid and spans the intro + experience rows.
+   Sticky-positioned so the portrait stays in view as the user scrolls down
+   through the experience section. align-self:start prevents the cell from
+   stretching the portrait to the experience section's height. Width follows
+   the column; height tracks the natural 804:881 aspect ratio of the Figma
+   frame so all the inner percentages stay scale-invariant. */
+.about-portrait {
+  grid-column: 8 / span 4;
+  grid-row: 1 / span 2;
+  align-self: start;
+  position: sticky;
+  top: 60px;
+  width: 100%;
+}
+
+/* Stage drives its own height: body sits in flow at the bottom, padding-top
+   reserves room for the head above. Total stage height = padding-top + body
+   natural height, so the container hugs the head+body composition. */
+.portrait-stage {
+  position: relative;
+  width: 100%;
+  padding-top: 34%;
+  overflow: visible;
+}
+
+/* Body: face + torso, top of head already removed in the asset.
+   In flow at 92% width, centered horizontally — drives the stage height. */
+.portrait-body {
+  display: block;
+  width: 92%;
+  height: auto;
+  margin: 0 auto;
+  pointer-events: none;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+}
+
+/* Head cap: hovers in the padding-top area, overlapping the body's neck.
+   Pivot is the bottom-right corner of the image so any rotation tilts
+   the cap forward from that anchor. */
+.portrait-head {
+  position: absolute;
+  width: 50%;
+  height: auto;
+  left: 8.5%;
+  top: 5%;
+  transform-origin: 100% 100%;
+  transform: rotate(var(--head-rotate, 10deg));
+  pointer-events: none;
+  user-select: none;
+  z-index: 3;
+}
+
+/* OrganicLoader canvas — same default visual as the home page (blob with
+   small cells in an orbit/swallow cycle). Sized + offset to sit over the
+   head opening's pocket, shifted right so the blob clears the head's
+   silhouette instead of bleeding off the left edge. */
+.portrait-blobs {
+  position: absolute;
+  left: 5%;
+  top: 4%;
+  width: 50%;
+  height: 50%;
+  pointer-events: none;
+  z-index: 2;
+  /* Subtle scroll-driven drift up-and-left, driven by AboutPortrait's scroll
+     handler writing --blob-shift-x/y on the stage. Defaults to 0 so the
+     blob sits at its rest position before scroll. */
+  transform: translate(var(--blob-shift-x, 0px), var(--blob-shift-y, 0px));
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive — match the About page breakpoints
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  .about-portrait {
+    /* Disable sticky in the stacked layout so the portrait doesn't trail
+       above the experience section as a floating header. */
+    position: static;
+    max-width: 804px;
+    margin: 0 auto;
+  }
+}

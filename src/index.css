@@ -1,0 +1,245 @@
+/* ============================================================================
+   Design System — tokens + typography utilities
+   ============================================================================
+   Two layers:
+   1. CSS custom properties on :root — granular tokens for custom rules.
+   2. Utility classes (.display, .h1 … .button-text) — apply a full type
+      treatment in one shot.
+
+   To migrate existing pages: replace ad-hoc font/color rules with either the
+   utility class on the element or the matching `var(--…)` token.
+   ============================================================================ */
+
+:root {
+  /* --------------------------------------------------------------------------
+     COLORS — warm paper aesthetic
+     -------------------------------------------------------------------------- */
+
+  /* Surfaces */
+  --color-surface:        #f7f3ec;  /* main background (page) */
+  --color-surface-subtle: #eee9e0;  /* recessed surface (stat cards) */
+  --color-surface-muted:  #e8e4dc;  /* placeholder / skeleton fill */
+
+  /* Borders & dividers */
+  --color-border:         #d4d0c8;  /* hairline divider */
+  --color-border-strong:  #1a1a1a;  /* underline emphasis */
+
+  /* Ink (text) — descending contrast. Values aligned with Figma design system. */
+  --color-ink:            #222222;  /* primary headings, emphasis */
+  --color-ink-strong:     #111111;  /* graphic ink (3D blob, max contrast) */
+  --color-ink-secondary:  #4a4a4a;  /* body copy */
+  --color-ink-tertiary:   #666666;  /* subtitles, body on hero */
+  --color-ink-muted:      #888888;  /* meta, captions, eyebrow */
+  --color-ink-disabled:   #aaaaaa;  /* disabled / placeholder text */
+
+  /* Accent */
+  --color-accent:         #f5b731;  /* hover, link emphasis */
+  --color-accent-hover:   #e0a624;  /* pressed / slightly darker */
+
+  /* Project marker colors — sourced from data/projects.js */
+  --color-marker-blue:    #4a90d9;  /* Mobile Router */
+  --color-marker-pink:    #e85d75;  /* Poweramp */
+  --color-marker-green:   #50c878;  /* Tree Point */
+  --color-marker-purple:  #9b59b6;  /* Interaction Lab */
+  --color-marker-orange:  #f24e1e;  /* FigArrow */
+
+  /* --------------------------------------------------------------------------
+     TYPOGRAPHY
+     Base 16px = 1rem. Scale roughly follows a modified 1.25 ratio with
+     adjustments to land on round pixel values at common breakpoints.
+     -------------------------------------------------------------------------- */
+  --font-sans: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Sizes — anchored on body = 16px (1rem). Every other size is a whole-pixel
+     step up or down from the 16px base. Three usage tiers map onto three
+     pixel values for a tight, predictable system:
+       - 16px: body, h4 (bold body)
+       - 14px: body-small, button-text
+       - 12px: caption, h5 (bold caption), label
+     Display + h1–h3 form the heading scale above body. */
+  --fs-display:    4.5rem;     /* 72px — hero hello (Manrope Medium uppercase) */
+  --fs-h1:         2.5rem;     /* 40px — page title */
+  --fs-h2:         1.75rem;    /* 28px — section heading */
+  --fs-h3:         1.25rem;    /* 20px — sub-section heading */
+  --fs-h4:         1rem;       /* 16px — bold body (= body size, weight 600) */
+  --fs-h5:         0.75rem;    /* 12px — bold caption (= caption size, weight 600) */
+  --fs-body:       1rem;       /* 16px — main body copy (BASE) */
+  --fs-body-small: 0.875rem;   /* 14px — small body / list items */
+  --fs-caption:    0.75rem;    /* 12px — helper text */
+  --fs-label:      0.75rem;    /* 12px — uppercase eyebrow / section label */
+  --fs-button:     0.875rem;   /* 14px — CTA / navigation link */
+  /* Marketing / hero typography (used on the home page). Outside the
+     16px-anchored scale because the home is a poster-sized statement. */
+  --fs-hero-body:  2rem;       /* 32px — large lifestyle copy */
+  --fs-nav:        1.125rem;   /* 18px — vertical nav rail */
+  --fs-eyebrow:    1rem;       /* 16px — hero subtitle (uppercase) */
+
+  /* Weights */
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* Line heights */
+  --lh-tight:   1.1;
+  --lh-snug:    1.25;
+  --lh-normal:  1.5;
+  --lh-relaxed: 1.7;
+  --lh-loose:   1.8;
+
+  /* Letter spacing */
+  --ls-tighter: -0.025em;
+  --ls-tight:   -0.02em;
+  --ls-snug:    -0.01em;
+  --ls-normal:  0;
+  --ls-medium:  0.03em;        /* secondary CTA / back-link */
+  --ls-wide:    0.05em;        /* primary CTA / nav link */
+  --ls-wider:   0.08em;        /* uppercase eyebrow / section label */
+
+  /* --------------------------------------------------------------------------
+     Base
+     -------------------------------------------------------------------------- */
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ============================================================================
+   Typography utility classes
+   Apply the full treatment (size + weight + line-height + letter-spacing +
+   color) with a single class. Override individual properties as needed.
+   ============================================================================ */
+
+.display {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: var(--ls-normal);
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.h1 {
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-ink);
+}
+
+.h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+.h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.35;
+  letter-spacing: var(--ls-snug);
+  color: var(--color-ink);
+}
+
+/* H4 = bold body (same size as body, 600 weight). Use for inline emphasis
+   headings or list-item titles where body-size + extra weight is enough. */
+.h4 {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-normal);
+  color: var(--color-ink);
+}
+
+/* H5 = bold caption (same size as caption, 600 weight). Use for tiny
+   uppercase-or-not subheadings, dl term labels, etc. */
+.h5 {
+  font-size: var(--fs-h5);
+  font-weight: var(--fw-semibold);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+}
+
+.body {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-relaxed);
+  color: var(--color-ink-secondary);
+}
+
+.body-small {
+  font-size: var(--fs-body-small);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-relaxed);
+  color: var(--color-ink-secondary);
+}
+
+.caption {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  color: var(--color-ink-muted);
+}
+
+.label {
+  font-size: var(--fs-label);
+  font-weight: var(--fw-bold);
+  line-height: 1.4;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.button-text {
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+/* Prevent horizontal scrollbars from page-entry transforms (e.g. the
+   project page's flip-in) that briefly extend off-screen. `clip` (not
+   `hidden`) is the right tool here — it doesn't turn the element into
+   a scroll container, so window-based scroll handlers (the project
+   page's TOC IntersectionObserver, sticky aside, etc.) keep working. */
+html, body {
+  overflow-x: clip;
+}
+
+/* Home layer. Rendered only on '/' and during the brief flip-in transition
+   when leaving '/' for a project page (~750ms). pp-shell comes AFTER this
+   wrapper in the DOM, so during the rotate-from-bottom-left animation
+   pp-shell naturally paints on top wherever it actually covers — areas
+   outside the rotated rect still show Home through. The `--behind`
+   modifier only disables pointer events; we don't push Home below z-index 0
+   because that would put it behind the body's paint layer (= invisible). */
+.app-home-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.app-home-layer--behind {
+  pointer-events: none;
+}

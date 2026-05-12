@@ -1,0 +1,128 @@
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* No transition on the base so APPEARING (--hidden removed) is instant —
+     prevents a 0.5s fade-in during which the underlying route would be
+     visible. Fade-OUT transition lives in the --hidden rule below. */
+}
+
+.loading-screen--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Headline ----------------------------------------------------------------- */
+/* The slot stacks all 3 headline lines in the same fixed-height box. Each
+   line has its own keyframe animation that fades + translates it through a
+   slot during one third of the cycle. No React state involved — animations
+   run on the compositor and keep moving even if the main thread is briefly
+   blocked (Three.js shader compile, etc.). */
+.loading-headline-slot {
+  position: relative;
+  /* Tall enough to fit the headline + ascenders/descenders comfortably,
+     plus the translate-3d transitions that overshoot above and below
+     during enter/exit. CSS grid stacks all 3 headlines in the same cell,
+     so the slot's intrinsic width = the widest headline (the absolute
+     positioning approach used to collapse to 0 width and clip horizontally). */
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  height: 72px;
+  overflow: hidden;
+}
+
+.loading-headline {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 2rem;                /* 32px */
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--color-ink);
+  margin: 0;
+  white-space: nowrap;
+  /* Force a GPU layer so the cycle stays smooth even if the main thread
+     gets briefly busy from Home / About's Three.js init. */
+  will-change: transform, opacity;
+  /* Cycle duration = STAGE_COUNT × per-stage time. With 3 stages × 1500ms
+     = 4500ms, each line is fully visible for ~1100ms. Slower, calmer than
+     the previous setInterval-driven cadence. */
+  animation-duration: 4500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.loading-headline--0 { animation-name: loading-headline-cycle-0; }
+.loading-headline--1 { animation-name: loading-headline-cycle-1; }
+.loading-headline--2 { animation-name: loading-headline-cycle-2; }
+
+/* Each cycle: a 33.3% slice where the line is on stage. Within the slice it
+   rises in (~5%), holds (~25%), drops out (~3%). Outside the slice it's
+   parked below the slot at opacity 0. */
+@keyframes loading-headline-cycle-0 {
+  0%       { opacity: 0; transform: translate3d(0, 60%, 0); }
+  3%       { opacity: 1; transform: translate3d(0, 0, 0); }
+  30%      { opacity: 1; transform: translate3d(0, 0, 0); }
+  33.33%   { opacity: 0; transform: translate3d(0, -60%, 0); }
+  100%     { opacity: 0; transform: translate3d(0, 60%, 0); }
+}
+@keyframes loading-headline-cycle-1 {
+  0%, 33.33%   { opacity: 0; transform: translate3d(0, 60%, 0); }
+  36.33%       { opacity: 1; transform: translate3d(0, 0, 0); }
+  63.33%       { opacity: 1; transform: translate3d(0, 0, 0); }
+  66.66%       { opacity: 0; transform: translate3d(0, -60%, 0); }
+  100%         { opacity: 0; transform: translate3d(0, 60%, 0); }
+}
+@keyframes loading-headline-cycle-2 {
+  0%, 66.66%   { opacity: 0; transform: translate3d(0, 60%, 0); }
+  69.66%       { opacity: 1; transform: translate3d(0, 0, 0); }
+  96.66%       { opacity: 1; transform: translate3d(0, 0, 0); }
+  100%         { opacity: 0; transform: translate3d(0, -60%, 0); }
+}
+
+/* Percent ----------------------------------------------------------------- */
+.loading-percent {
+  font-family: var(--font-sans);
+  font-size: 100px;
+  font-weight: 200;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+  letter-spacing: 0;
+  will-change: opacity;
+  /* Pulse on its own clock so it visibly breathes between progress updates
+     (the displayed value still comes from React state, but the opacity
+     animation is GPU-only and doesn't care about main-thread blocks). */
+  animation: loading-percent-breathe 1.2s ease-in-out infinite;
+}
+
+@keyframes loading-percent-breathe {
+  0%, 100% { opacity: 1;    }
+  50%      { opacity: 0.78; }
+}
+
+@media (max-width: 768px) {
+  .loading-headline {
+    font-size: 1.5rem;            /* 24px */
+  }
+  .loading-percent {
+    font-size: 1.25rem;           /* 20px */
+  }
+}

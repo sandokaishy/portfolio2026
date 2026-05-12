@@ -1,0 +1,636 @@
+/* Project Page Layout */
+.project-page {
+  background-color: var(--color-surface);
+  min-height: 100vh;
+}
+
+/* Hero — always visible immediately, no animation */
+.project-hero {
+  width: 100%;
+}
+
+/* Everything after the hero fades in */
+.project-hero ~ * {
+  animation: contentIn 0.6s ease 0.3s both;
+}
+
+@keyframes contentIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.project-hero .placeholder {
+  border-radius: 0;
+}
+
+.project-hero-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 1.5rem 4rem;
+  gap: 2rem;
+}
+
+.project-label {
+  font-size: var(--fs-button);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  margin-bottom: 0.25rem;
+}
+
+.project-subtitle {
+  font-size: var(--fs-button);
+  color: var(--color-ink-tertiary);
+  line-height: var(--lh-normal);
+}
+
+.project-date {
+  font-size: var(--fs-h5);
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+/* Sections */
+.project-section {
+  padding: 3rem 4rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: var(--fs-label);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wider);
+  color: var(--color-ink-muted);
+  margin-bottom: 1rem;
+}
+
+.section-heading {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  line-height: 1.3;
+  color: var(--color-ink-tertiary);
+  margin-bottom: 12px;
+}
+
+/* Legacy: still used by older project pages (Poweramp, TreePoint,
+   InteractionLab). Mobile Router relies on .pp-block h3 instead. */
+.section-subheading {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  color: var(--color-ink-secondary);
+  margin-bottom: 1rem;
+}
+
+.section-body {
+  font-size: var(--fs-body-small);
+  line-height: var(--lh-loose);
+  color: var(--color-ink-secondary);
+}
+
+.section-list {
+  font-size: var(--fs-body-small);
+  line-height: var(--lh-loose);
+  color: var(--color-ink-secondary);
+  margin-bottom: 1.5rem;
+  padding-left: 1.25rem;
+}
+
+.section-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* Role & Team */
+.project-role {
+  display: flex;
+  gap: 4rem;
+}
+
+.project-role-left {
+  flex: 1;
+}
+
+.role-title {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  margin-bottom: 0.5rem;
+  color: var(--color-ink);
+}
+
+.role-desc {
+  font-size: var(--fs-body-small);
+  line-height: var(--lh-relaxed);
+  color: var(--color-ink-secondary);
+}
+
+.project-role-right {
+  flex: 1;
+}
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.team-item {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.team-item dt {
+  font-size: var(--fs-h5);
+  font-weight: var(--fw-semibold);
+  color: var(--color-ink-muted);
+  min-width: 100px;
+}
+
+.team-item dd {
+  font-size: var(--fs-body-small);
+  color: var(--color-ink);
+}
+
+/* Challenge cards live in a 2-col grid. The card itself is a .pp-block —
+   challenge-grid only handles layout, not typography. */
+.challenge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Placeholder */
+.placeholder {
+  background-color: var(--color-surface-muted);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.placeholder span {
+  font-size: var(--fs-h5);
+  color: var(--color-ink-disabled);
+  font-family: monospace;
+}
+
+/* Outcome Stats */
+.outcome-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat-card {
+  background-color: var(--color-surface-subtle);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-card h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  color: var(--color-ink);
+}
+
+.stat-card p {
+  font-size: var(--fs-body-small);
+  color: var(--color-ink-tertiary);
+}
+
+/* Navigation */
+.project-nav {
+  padding: 2rem 4rem 4rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-ink);
+  background-color: rgba(247, 243, 236, 0.5);
+  border: 1px solid var(--color-ink);
+  border-radius: 2px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.back-link:hover {
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  border-color: var(--color-ink);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .project-hero-info {
+    flex-direction: column;
+    padding: 1.5rem 2rem;
+    align-items: flex-start;
+  }
+
+  .project-section {
+    padding: 2rem;
+  }
+
+  .project-role {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .challenge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .outcome-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .project-nav {
+    padding: 2rem;
+  }
+}
+
+/* ============================================================================
+   New project page layout (Mobile Router) — sticky left aside + content right.
+   See Figma frames "First Screen" and "Scrolled". The aside's lower block
+   swaps from team list to in-page TOC once the user scrolls past the hero.
+   Old .project-* rules above are kept intact for the other project pages
+   that still use the original single-column layout.
+   ============================================================================ */
+.pp-shell {
+  position: relative;
+  background-color: var(--color-surface);
+  min-height: 100vh;
+  /* 12-column grid mirroring the About page so project pages feel centered
+     and consistent. Column 1 and 12 frame the page as outer gutters; col 5
+     is the visual gutter between the sticky aside (cols 2–4) and the main
+     content (cols 6–11). */
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 0;
+  padding: var(--pp-pad-y) var(--pp-pad-x);
+  --pp-pad-y: 60px;
+  --pp-pad-x: 60px;
+  /* Page-entry: 2D swing-up around the bottom-left corner. Animation
+     uses `both` fill so the rotated from-state applies before run AND
+     the upright to-state holds during the animation. After the flip
+     finishes, the component swaps in `.pp-shell--ready` (see below)
+     which strips the transform entirely — sticky aside and TOC
+     IntersectionObserver need an un-transformed ancestor. */
+  transform-origin: 0% 100%;
+  animation: pp-shell-enter 700ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  will-change: transform;
+}
+
+@keyframes pp-shell-enter {
+  from {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Once the animation has played, drop the transform/animation entirely
+   so .pp-aside's `position: sticky` works (a transformed ancestor breaks
+   the scroll context for sticky in some browsers, and a 3D rendering
+   context can break the TOC observer). The visual swap is invisible:
+   rotate(0deg) and no-transform are identical at rest. */
+.pp-shell--ready {
+  animation: none;
+  transform: none;
+  will-change: auto;
+}
+
+/* Reverse flip when navigating from a project page back to home. Applied
+   by App.jsx's click handler after pre-arming the home backdrop, so the
+   rotating shell visually reveals Home behind it. Must come after
+   .pp-shell--ready (which sets animation: none) to win the same-specificity
+   source-order tie. */
+@keyframes pp-shell-exit {
+  from {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
+}
+
+.pp-shell--exiting {
+  transform-origin: 0% 100%;
+  animation: pp-shell-exit 1100ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  will-change: transform;
+}
+
+/* Back lives inside .pp-aside (which is sticky), absolute-positioned at the
+   aside's top-left so it scrolls along with the rest of the left column
+   instead of being pinned to the page. */
+.pp-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-ink);
+  background-color: rgba(247, 243, 236, 0.5);
+  border: 1px solid var(--color-ink);
+  border-radius: 2px;
+  z-index: 10;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pp-back:hover {
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  border-color: var(--color-ink);
+}
+
+/* Sticky left column. Title block + meta block stack as one group, centered
+   vertically (upper-middle) inside the visible content area. Height accounts
+   for the shell's top + bottom padding so the aside ends at the shell's
+   visible content edge instead of running to the viewport edge. position:
+   relative makes this the positioning context for the absolutely-placed
+   back button living inside. */
+.pp-aside {
+  grid-column: 2 / span 3;
+  position: sticky;
+  top: var(--pp-pad-y);
+  align-self: start;
+  height: calc(100vh - var(--pp-pad-y) * 2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 64px;
+  min-width: 0;
+}
+
+.pp-aside-header {
+  flex: 0 0 auto;
+}
+
+.pp-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.02em;
+  color: var(--color-ink-muted);
+}
+
+.pp-name {
+  font-family: var(--font-sans);
+  font-size: 40px;
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-bottom: 8px;
+}
+
+.pp-tagline {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+  max-width: 28em;
+  margin-bottom: 12px;
+}
+
+.pp-aside-meta {
+  flex: 0 0 auto;
+  /* Stack the team list and the TOC in the same cell so they cross-fade
+     without pushing surrounding content. Grid is the cleanest way to
+     overlap children while preserving the natural intrinsic size of the
+     taller one. */
+  display: grid;
+}
+
+.pp-team,
+.pp-toc {
+  grid-column: 1;
+  grid-row: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* When hidden: invisible, click-through, but still in DOM so it can animate
+   back in. Items inside .pp-toc get an additional staggered transition (see
+   below) so they don't all fade in at once. */
+.pp-team.is-hidden,
+.pp-toc.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pp-team {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pp-team-row {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pp-team-row dt {
+  font-weight: var(--fw-medium);
+  color: var(--color-ink);
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.pp-team-row dd {
+  color: var(--color-ink-muted);
+}
+
+/* TOC: same general placement as team list. Spacing + line-height mirror
+   .pp-team / .pp-team-row so the two lists feel like the same component
+   crossfading content. Active item gets the ink color + underline sweep. */
+.pp-toc {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pp-toc-item {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  /* Per-item fade — staggered via --i set inline on each <li>. When the
+     parent flips out of .is-hidden the items reveal one after another;
+     when hiding, they all fade together (transition-delay reset below)
+     so the parent's opacity transition dominates. */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition-delay: calc(var(--i, 0) * 60ms + 100ms);
+}
+
+.pp-toc.is-hidden .pp-toc-item {
+  opacity: 0;
+  transform: translateY(4px);
+  transition-delay: 0s;
+}
+
+/* Active section underline is a background-image gradient (not
+   text-decoration) so we can animate its width left-to-right. The link
+   reserves padding-bottom for the line and pins the gradient at its left
+   edge so growth/shrink reads as a sweep. */
+.pp-toc-item a {
+  color: inherit;
+  text-decoration: none;
+  padding-bottom: 4px;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.4s ease;
+}
+
+.pp-toc-item.is-active {
+  color: var(--color-ink);
+}
+
+.pp-toc-item.is-active a,
+.pp-toc-item a:hover,
+.pp-toc-item a:focus-visible {
+  background-size: 100% 1px;
+}
+
+.pp-toc-item a:hover,
+.pp-toc-item a:focus-visible {
+  color: var(--color-ink);
+}
+
+/* Right column: hero up top, stacked content sections below. */
+.pp-main {
+  grid-column: 6 / span 6;
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+  min-width: 0;
+}
+
+.pp-hero {
+  width: 100%;
+  /* Defensive cap: never let the hero spill past the visible first
+     viewport area, even on smaller screens where the natural aspect
+     would overflow. */
+  max-height: calc(100vh - var(--pp-pad-y) * 2);
+}
+
+.pp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* Override the legacy .project-section auto-margin/max-width so sections
+     fill the right column. */
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+
+/* Section intro: pairs the section heading with its leading body / image
+   so they stay tight as a single unit. Distinct from .pp-block (which is
+   for content blocks like feature h3+body+image) — keeping them separate
+   means .section-heading isn't styled through generic block selectors and
+   we can tune section-intro spacing independently. */
+.pp-section-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Universal content block for the Mobile Router page (and any project page
+   that adopts this structure). Replaces the old .pp-section-block /
+   .feature-block / .feature-text / .challenge-card stack. Children
+   (heading, paragraphs, image placeholder, etc.) flow vertically with a
+   tight gap; the surrounding .pp-section gap (24px) handles separation
+   between blocks. Headings/paragraphs inside derive their typography from
+   .pp-block descendant selectors so we don't need per-context classes. */
+.pp-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pp-block h3 {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  color: var(--color-ink);
+}
+
+.pp-block p {
+  font-size: var(--fs-body-small);
+  line-height: var(--lh-relaxed);
+  color: var(--color-ink-secondary);
+}
+
+/* Smooth scroll on TOC anchor clicks. */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive — collapse to single column below 1100px. */
+@media (max-width: 1100px) {
+  .pp-shell {
+    grid-template-columns: 1fr;
+    row-gap: 48px;
+    padding: 100px 32px 64px;
+  }
+  .pp-aside {
+    grid-column: 1;
+    position: static;
+    height: auto;
+    padding: 0;
+  }
+  .pp-aside-header {
+    margin: 0 0 24px;
+  }
+  .pp-aside-meta {
+    margin-top: 24px;
+  }
+  .pp-main {
+    grid-column: 1;
+    gap: 64px;
+  }
+  .pp-back {
+    position: static;
+  }
+}
