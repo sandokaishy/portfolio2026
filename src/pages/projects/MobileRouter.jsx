@@ -150,7 +150,7 @@ function MobileRouter() {
 
           <section id="overview-challenge" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">OVERVIEW</h2>
+              <div className="section-heading"><h2>OVERVIEW</h2></div>
               <p className="section-body">
                 We observed a growing market opportunity in outdoor, temporary,
                 and mobile network deployment scenarios. UniFi Mobile Router
@@ -162,7 +162,7 @@ function MobileRouter() {
             </div>
 
             <div className="pp-section-intro">
-              <h2 className="section-heading">CHALLENGE</h2>
+              <div className="section-heading"><h2>CHALLENGE</h2></div>
               <div className="challenge-grid">
                 <div className="pp-block">
                   <h3>Tight Schedule</h3>
@@ -189,9 +189,9 @@ function MobileRouter() {
 
           <section id="zero-touch" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">
+              <div className="section-heading"><h2>
                 ZERO-TOUCH SETUP IN MINUTES
-              </h2>
+              </h2></div>
               <p className="section-body">
                 We streamlined the initial setup experience from QR scan and
                 auto-pairing to cloud-based adopt.
@@ -231,7 +231,7 @@ function MobileRouter() {
           </section>
 
           <section id="scalable" className="pp-section">
-            <h2 className="section-heading">SCALABLE CONFIGURATION</h2>
+            <div className="section-heading"><h2>SCALABLE CONFIGURATION</h2></div>
 
             <div className="pp-block">
               <h3>
@@ -285,9 +285,9 @@ function MobileRouter() {
           </section>
 
           <section id="integration" className="pp-section">
-            <h2 className="section-heading">
+            <div className="section-heading"><h2>
               INTEGRATION WITH UNIFI ECOSYSTEM
-            </h2>
+            </h2></div>
 
             <div className="pp-block">
               <h3>Integrated Into UniFi Ecosystem To Create Synergy</h3>
@@ -331,7 +331,7 @@ function MobileRouter() {
 
           <section id="device-insights" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">DEVICE INSIGHTS VISUALIZATION</h2>
+              <div className="section-heading"><h2>DEVICE INSIGHTS VISUALIZATION</h2></div>
               <p className="section-body">
                 The Mobile Router regularly reports its status to our cloud
                 service, where historical data is aggregated and transformed
@@ -363,7 +363,7 @@ function MobileRouter() {
 
           <section id="outcome" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">OUTCOME</h2>
+              <div className="section-heading"><h2>OUTCOME</h2></div>
               <p className="section-body">
                 Since launch, UniFi Mobile Router has been sold and deployed
                 across multiple countries and regions, including North America,

@@ -131,7 +131,7 @@ function TreePoint() {
 
           <section id="background" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">BACKGROUND</h2>
+              <div className="section-heading"><h2>BACKGROUND</h2></div>
               <p className="section-body">
                 A new reward point for the united reward program. Cathay
                 Financial Group is the top 5 Financial enterprise in Taiwan.
@@ -155,7 +155,7 @@ function TreePoint() {
           </section>
 
           <section id="objective" className="pp-section">
-            <h2 className="section-heading">OBJECTIVE</h2>
+            <div className="section-heading"><h2>OBJECTIVE</h2></div>
 
             <div className="pp-block">
               <h3>Introduce TreePoint As The New Unit To Our Users</h3>
@@ -186,7 +186,7 @@ function TreePoint() {
 
           <section id="before-ideating" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">BEFORE IDEATING…</h2>
+              <div className="section-heading"><h2>BEFORE IDEATING…</h2></div>
               <p className="section-body">
                 Let's look at the current redemption flow. Users see how many
                 RedPoints they have on the index of MyRewards, switching to
@@ -198,7 +198,7 @@ function TreePoint() {
 
           <section id="ideation-1" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">IDEATION 1: POINT WALLET</h2>
+              <div className="section-heading"><h2>IDEATION 1: POINT WALLET</h2></div>
               <p className="section-body">
                 Put points together and convert to a total value. What if we
                 create a wallet that contains all these points? The wallet
@@ -266,7 +266,7 @@ function TreePoint() {
 
           <section id="validate-1" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">VALIDATE IDEATION 1</h2>
+              <div className="section-heading"><h2>VALIDATE IDEATION 1</h2></div>
               <p className="section-body">
                 Test the new idea with high fidelity prototypes. This new idea
                 will affect 2 million users' experience. We made high fidelity
@@ -336,7 +336,7 @@ function TreePoint() {
 
           <section id="ideation-2" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">IDEATION 2: KEEP IT SIMPLE</h2>
+              <div className="section-heading"><h2>IDEATION 2: KEEP IT SIMPLE</h2></div>
               <p className="section-body">
                 Use RedPoint automatically when TreePoint is not sufficient.
                 What if we removed the wallet and preserved RedPoint and
@@ -394,7 +394,7 @@ function TreePoint() {
 
           <section id="validate-2" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">VALIDATE AGAIN</h2>
+              <div className="section-heading"><h2>VALIDATE AGAIN</h2></div>
               <p className="section-body">
                 Better understanding of TreePoint and its redemption flow.
               </p>
@@ -459,7 +459,7 @@ function TreePoint() {
 
           <section id="release" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">OFFICIAL RELEASE</h2>
+              <div className="section-heading"><h2>OFFICIAL RELEASE</h2></div>
               <p className="section-body">
                 Revised based on findings. We revised the information in the
                 confirmation drawer and added tips about the consumption rule
@@ -471,7 +471,7 @@ function TreePoint() {
 
           <section id="outcome" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">OUTCOME</h2>
+              <div className="section-heading"><h2>OUTCOME</h2></div>
               <p className="section-body">
                 After TreePoint was revealed, over 70% of MyRewards users
                 owned TreePoint (the activation event gave users 10
@@ -493,7 +493,7 @@ function TreePoint() {
 
           <section id="takeaway" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">TAKEAWAY</h2>
+              <div className="section-heading"><h2>TAKEAWAY</h2></div>
               <p className="section-body">
                 Sometimes, keeping the original is a better idea. After two
                 user tests, I learned the power of users' habits. Don't ignore

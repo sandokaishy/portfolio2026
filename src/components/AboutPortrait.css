@@ -82,9 +82,11 @@
 @media (max-width: 1100px) {
   .about-portrait {
     /* Disable sticky in the stacked layout so the portrait doesn't trail
-       above the experience section as a floating header. */
+       above the experience section as a floating header. Cap width at
+       50vw so the portrait reads as a compact lead-in to the content,
+       not a full-bleed banner; centered horizontally. */
     position: static;
-    max-width: 804px;
+    max-width: 40vw;
     margin: 0 auto;
   }
 }

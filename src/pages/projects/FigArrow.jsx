@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -9,6 +9,129 @@ function Placeholder({ name, aspect = '16/9', color }) {
     <div className="placeholder" style={{ aspectRatio: aspect, backgroundColor: color }}>
       <span>{name}</span>
     </div>
+  )
+}
+
+const PROCESS_STEPS = [
+  'Exploration',
+  'Feasibility Check',
+  'MVP',
+  'Design Ver.1',
+  'Iteration',
+  'Confident Ver.',
+]
+
+// Indices < LOOP_UNTIL render as iteration loops (curved back-and-forth);
+// the rest are straight forward arrows. Reflects the body text:
+// "jumping back and forth between ideation and feasibility checks…
+// once the core logic was proven viable, [the linear progression began]."
+const LOOP_UNTIL = 2
+
+function ProcessDiagram() {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (typeof IntersectionObserver === 'undefined') {
+      setVisible(true)
+      return
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          obs.disconnect()
+        }
+      },
+      { threshold: 0.25 },
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      className={`process-diagram${visible ? ' is-visible' : ''}`}
+      role="img"
+      aria-label="Process flow: Exploration ↔ Feasibility Check ↔ MVP → Design Ver.1 → Iteration → Confident Ver."
+    >
+      {PROCESS_STEPS.map((label, i) => (
+        <Fragment key={label}>
+          {i > 0 && (
+            <div className="process-connector" style={{ '--i': i - 1 }}>
+              {i <= LOOP_UNTIL ? <LoopArrow /> : <StraightArrow />}
+            </div>
+          )}
+          <div className="process-step" style={{ '--i': i }}>
+            <span>{label}</span>
+          </div>
+        </Fragment>
+      ))}
+    </div>
+  )
+}
+
+function LoopArrow() {
+  // viewBox is normalized; preserveAspectRatio=none stretches the curve to
+  // fit any flex width. vector-effect keeps stroke weight stable.
+  return (
+    <svg
+      className="process-svg process-svg--loop"
+      viewBox="0 0 80 40"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      {/* upper forward arc */}
+      <path
+        className="process-arc process-arc--forward"
+        d="M 2 22 C 18 2, 62 2, 78 22"
+        vectorEffect="non-scaling-stroke"
+        fill="none"
+      />
+      {/* lower return arc */}
+      <path
+        className="process-arc process-arc--back"
+        d="M 78 22 C 62 42, 18 42, 2 22"
+        vectorEffect="non-scaling-stroke"
+        fill="none"
+      />
+      {/* perpetual "iteration" runner traveling around the loop */}
+      <path
+        className="process-arc-runner"
+        d="M 2 22 C 18 2, 62 2, 78 22 C 62 42, 18 42, 2 22"
+        vectorEffect="non-scaling-stroke"
+        fill="none"
+      />
+    </svg>
+  )
+}
+
+function StraightArrow() {
+  return (
+    <svg
+      className="process-svg process-svg--line"
+      viewBox="0 0 80 20"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <line
+        className="process-line"
+        x1="2"
+        y1="10"
+        x2="74"
+        y2="10"
+        vectorEffect="non-scaling-stroke"
+      />
+      <polyline
+        className="process-line-head"
+        points="68,6 76,10 68,14"
+        vectorEffect="non-scaling-stroke"
+        fill="none"
+      />
+    </svg>
   )
 }
 
@@ -93,16 +216,16 @@ function FigArrow() {
 
         <main className="pp-main">
           <div className="pp-hero">
-            <Placeholder
-              name="hero-figarrow.png"
-              aspect="5/4"
-              color={project.color}
+            <img
+              className="pp-hero-image"
+              src="/figarrow/hero-figarrow.jpg"
+              alt="FigArrow hero"
             />
           </div>
 
           <section id="background" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">BACKGROUND</h2>
+              <div className="section-heading"><h2>BACKGROUND</h2></div>
               <p className="section-body">
                 To maintain a clear view of user flows, I've always relied on
                 the <strong>Give me FigJam Connector</strong> plugin to add
@@ -122,7 +245,7 @@ function FigArrow() {
 
           <section id="tools" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">THE TOOLS I USE</h2>
+              <div className="section-heading"><h2>THE TOOLS I USE</h2></div>
               <ul className="section-list">
                 <li>
                   <strong>Claude Code (Opus 4.6)</strong> — An MCP Client,
@@ -141,7 +264,7 @@ function FigArrow() {
 
           <section id="process" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">THE PROCESS</h2>
+              <div className="section-heading"><h2>THE PROCESS</h2></div>
               <p className="section-body">
                 Instead of having a solid functional spec, the process moved
                 at a high tempo, jumping back and forth between ideation and
@@ -151,13 +274,13 @@ function FigArrow() {
                 of iteration, adding features until the full version was
                 ready.
               </p>
-              <Placeholder name="process-diagram.png" aspect="16/6" />
+              <ProcessDiagram />
             </div>
           </section>
 
           <section id="feasibility" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">EVALUATING FEASIBILITY</h2>
+              <div className="section-heading"><h2>EVALUATING FEASIBILITY</h2></div>
               <p className="section-body">
                 Initially, I didn't have a concrete spec, just a simple
                 concept: a plugin that lets me insert FigJam connectors
@@ -210,9 +333,9 @@ function FigArrow() {
 
           <section id="pushing" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">
+              <div className="section-heading"><h2>
                 PUSHING THE BOUNDARIES OF CONSTRAINTS
-              </h2>
+              </h2></div>
               <p className="section-body">
                 Knowing I couldn't directly call a "create" command, I tried
                 describing my vision from different angles: Can the plugin
@@ -228,9 +351,9 @@ function FigArrow() {
 
           <section id="right-question" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">
+              <div className="section-heading"><h2>
                 RETURNING TO THE SOURCE: ASKING THE RIGHT QUESTION
-              </h2>
+              </h2></div>
               <p className="section-body">
                 I took a step back. What I really wanted was a FigJam
                 connector. When we copy something from FigJam and paste it
@@ -280,7 +403,7 @@ function FigArrow() {
 
           <section id="v1" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">THE "DESIGN-LESS" V1</h2>
+              <div className="section-heading"><h2>THE "DESIGN-LESS" V1</h2></div>
               <p className="section-body">
                 Once the logic was validated, I fed the HTML structure
                 captured by my "FigArrow Capture Template" to Claude. This
@@ -295,9 +418,9 @@ function FigArrow() {
           </section>
 
           <section id="ui-refinement" className="pp-section">
-            <h2 className="section-heading">
+            <div className="section-heading"><h2>
               UI REFINEMENT & DIRECT IMPLEMENTATION
-            </h2>
+            </h2></div>
 
             <div className="pp-block">
               <h3>Quick Iteration with Figma Console MCP</h3>
@@ -343,7 +466,7 @@ function FigArrow() {
 
           <section id="expanding" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">EXPANDING THE FEATURE SET</h2>
+              <div className="section-heading"><h2>EXPANDING THE FEATURE SET</h2></div>
               <p className="section-body">
                 When drawing flows, we often use shapes to represent logic or
                 conditions. Since I had already proven the "capture" method
@@ -365,7 +488,7 @@ function FigArrow() {
           </section>
 
           <section id="takeaways" className="pp-section">
-            <h2 className="section-heading">TAKEAWAYS</h2>
+            <div className="section-heading"><h2>TAKEAWAYS</h2></div>
 
             <div className="pp-block">
               <h3>

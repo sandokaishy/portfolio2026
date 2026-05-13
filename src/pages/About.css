@@ -250,9 +250,11 @@
     grid-column: 1;
     grid-row: auto;
   }
-  .about-experience {
-    /* No-op: order falls through naturally (intro → portrait → experience). */
-  }
+  /* Force portrait above intro & experience in the stacked layout —
+     visual leads, text follows. */
+  .about-portrait { order: 0; }
+  .about-intro    { order: 1; }
+  .about-experience { order: 2; }
   .about-back {
     /* Single-col layout: align with the content's left edge (padding edge),
        not the 12-col calc which assumes the grid is still 12. */

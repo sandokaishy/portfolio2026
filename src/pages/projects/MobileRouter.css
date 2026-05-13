@@ -71,13 +71,33 @@
   margin-bottom: 1rem;
 }
 
+/* .section-heading is a CONTAINER, not a single heading element. It wraps
+   the main h2 plus an optional subtitle (any inline element like <p> or
+   <h3>) so they read as one titled block. Stacked tightly via flex gap;
+   margin-bottom owns the spacing between this block and whatever follows. */
 .section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.section-heading h2 {
   font-size: var(--fs-h3);
   font-weight: var(--fw-medium);
   letter-spacing: var(--ls-wide);
   line-height: 1.3;
   color: var(--color-ink-tertiary);
-  margin-bottom: 12px;
+}
+
+/* Subtitle inside the heading block — body-sized, muted, regular weight.
+   Use a <p> or <h3> child to opt in. */
+.section-heading > p,
+.section-heading > h3 {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  color: var(--color-ink-muted);
 }
 
 /* Legacy: still used by older project pages (Poweramp, TreePoint,
@@ -163,6 +183,167 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+}
+
+/* ==================== PROCESS DIAGRAM ====================
+   FigArrow page §process. Six step pills flow horizontally with
+   connectors between them: the first two gaps are iteration loops
+   (curved arcs with a runner that perpetually circles them), the
+   rest are straight forward arrows. The entire diagram animates in
+   when scrolled into view — pills fade up, lines/arcs draw in. */
+.process-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  width: 100%;
+  padding: 36px 0;
+  background-color: var(--color-surface);
+  border-radius: 8px;
+}
+
+.process-step {
+  flex: 0 0 auto;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background-color: var(--color-surface-muted);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: var(--fw-bold, 700);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 90ms),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 90ms);
+}
+
+.process-diagram.is-visible .process-step {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.process-connector {
+  flex: 1 1 0;
+  min-width: 14px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loop connectors need more horizontal room so the iteration arcs read as
+   arches rather than thin ovals. */
+.process-connector:has(.process-svg--loop) {
+  flex-grow: 1.8;
+  min-width: 28px;
+}
+
+.process-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Straight forward arrow ------------------------------------------------ */
+.process-line,
+.process-line-head {
+  stroke: var(--color-ink-tertiary);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* path length is normalized via pathLength would be ideal; using a large
+     dasharray is simpler and works the same once it's offset all the way
+     in. The non-scaling-stroke on the <line> means stretching the viewBox
+     doesn't change the rendered weight. */
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 600ms cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--i, 0) * 90ms + 240ms);
+}
+
+.process-diagram.is-visible .process-line,
+.process-diagram.is-visible .process-line-head {
+  stroke-dashoffset: 0;
+}
+
+/* Iteration loop arrows ------------------------------------------------- */
+.process-arc {
+  stroke: var(--color-ink-tertiary);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  transition: stroke-dashoffset 700ms cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--i, 0) * 90ms + 240ms);
+}
+
+.process-arc--back {
+  /* return arc draws right after the forward arc */
+  transition-delay: calc(var(--i, 0) * 90ms + 520ms);
+}
+
+.process-diagram.is-visible .process-arc {
+  stroke-dashoffset: 0;
+}
+
+/* Once the loop is drawn, a "runner" travels continuously around the path
+   to communicate that this phase is iterative (back-and-forth). It's a
+   short dash on an otherwise-invisible stroke; we slide the dash along
+   via stroke-dashoffset. */
+.process-arc-runner {
+  stroke: var(--color-marker-orange, #f24e1e);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 10 200;
+  stroke-dashoffset: 0;
+  opacity: 0;
+  transition: opacity 400ms ease calc(var(--i, 0) * 90ms + 1200ms);
+}
+
+.process-diagram.is-visible .process-arc-runner {
+  opacity: 1;
+  animation: process-loop-run 2.8s linear infinite;
+  animation-delay: calc(var(--i, 0) * 90ms + 1200ms);
+}
+
+@keyframes process-loop-run {
+  to {
+    stroke-dashoffset: -208;
+  }
+}
+
+/* Pause animations for reduced-motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  .process-step,
+  .process-line,
+  .process-line-head,
+  .process-arc {
+    transition-duration: 0ms;
+  }
+  .process-diagram.is-visible .process-arc-runner {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+/* Tighter spacing on narrow screens. */
+@media (max-width: 760px) {
+  .process-diagram {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 8px;
+  }
+  .process-connector {
+    flex: 0 0 32px;
+    width: 32px;
+  }
 }
 
 /* Placeholder */
@@ -387,8 +568,12 @@
   height: calc(100vh - var(--pp-pad-y) * 2);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 64px;
+  justify-content: flex-start;
+  /* Top padding = back-button height (32) + 48 gap to the header. .pp-back
+     is absolutely positioned at top: 0 of the aside (i.e. above the
+     padding area), so this padding pushes only the in-flow content down. */
+  padding-top: 80px;
+  gap: 48px;
   min-width: 0;
 }
 
@@ -420,7 +605,7 @@
   font-size: 16px;
   font-weight: var(--fw-regular);
   line-height: 1.5;
-  color: var(--color-ink-muted);
+  color: var(--color-ink-tertiary);
   max-width: 28em;
   margin-bottom: 12px;
 }
@@ -555,6 +740,17 @@
   max-height: calc(100vh - var(--pp-pad-y) * 2);
 }
 
+/* Real hero image (used in place of the colored Placeholder once a project
+   has actual art). Fills the .pp-hero box; the parent's max-height cap
+   keeps it from blowing past the first viewport. */
+.pp-hero-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - var(--pp-pad-y) * 2);
+  object-fit: cover;
+}
+
 .pp-section {
   display: flex;
   flex-direction: column;
@@ -612,19 +808,29 @@ html {
   .pp-shell {
     grid-template-columns: 1fr;
     row-gap: 48px;
-    padding: 100px 32px 64px;
+    padding: 40px 32px 64px;
   }
   .pp-aside {
     grid-column: 1;
     position: static;
     height: auto;
     padding: 0;
+    gap: 24px;
   }
   .pp-aside-header {
     margin: 0 0 24px;
   }
   .pp-aside-meta {
-    margin-top: 24px;
+    margin: 0;
+    /* Disable the desktop grid-stacking so the hidden list doesn't reserve
+       its own (potentially taller) row, leaving phantom whitespace below
+       the visible one. On mobile we drop the cross-fade in favor of a
+       hard display swap. */
+    display: block;
+  }
+  .pp-team.is-hidden,
+  .pp-toc.is-hidden {
+    display: none;
   }
   .pp-main {
     grid-column: 1;

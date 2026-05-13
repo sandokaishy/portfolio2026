@@ -136,7 +136,7 @@ function Poweramp() {
 
           <section id="overview" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">WHY WE BUILT UNIFI PLAY</h2>
+              <div className="section-heading"><h2>WHY WE BUILT UNIFI PLAY</h2></div>
               <p className="section-body">
                 We discovered that UniFi users were encountering compatibility
                 issues between third-party amplifiers and the UniFi network
@@ -149,7 +149,7 @@ function Poweramp() {
             </div>
 
             <div className="pp-section-intro">
-              <h2 className="section-heading">WHAT SHOULD WE BUILD?</h2>
+              <div className="section-heading"><h2>WHAT SHOULD WE BUILD?</h2></div>
               <p className="section-body">
                 The UniFi ecosystem already includes multiple web and mobile
                 apps that center around the Console to deliver comprehensive
@@ -169,9 +169,9 @@ function Poweramp() {
           </section>
 
           <section id="setup" className="pp-section">
-            <h2 className="section-heading">
+            <div className="section-heading"><h2>
               KEEP SETUP SIMPLE, REDUCE FRICTIONS
-            </h2>
+            </h2></div>
 
             <div className="pp-block">
               <h3>Plug In The Device And You're Ready To Go</h3>
@@ -213,9 +213,9 @@ function Poweramp() {
 
           <section id="lcd" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">
+              <div className="section-heading"><h2>
                 REAL-TIME STATUS ON THE POWERAMP LCD
-              </h2>
+              </h2></div>
               <p className="section-body">
                 The PowerAmp's LCD screen reflects the settings you make in
                 the UniFi Play app. As you control your Play devices through
@@ -228,9 +228,9 @@ function Poweramp() {
 
           <section id="streaming" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">
+              <div className="section-heading"><h2>
                 AUDIO STREAMING THROUGH DEVICE AND ZONE
-              </h2>
+              </h2></div>
               <p className="section-body">
                 Users can stream music to not only individual devices but also
                 through a zone. A zone is a virtual group of devices that can
@@ -244,7 +244,7 @@ function Poweramp() {
 
           <section id="broadcast" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">BROADCAST WIRED SOURCE</h2>
+              <div className="section-heading"><h2>BROADCAST WIRED SOURCE</h2></div>
               <p className="section-body">
                 Users can play music through zone streaming. What about playing
                 music from a wired source? Imagine listening to a vinyl record
@@ -258,9 +258,9 @@ function Poweramp() {
 
           <section id="switch-networks" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">
+              <div className="section-heading"><h2>
                 SWITCH NETWORKS WITHOUT STARTING OVER
-              </h2>
+              </h2></div>
               <p className="section-body">
                 Simplifying network setup when relocating your device. Play
                 devices may experience connection failure when the Wi-Fi SSID
@@ -277,7 +277,7 @@ function Poweramp() {
 
           <section id="announcing" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">PUBLIC ANNOUNCING</h2>
+              <div className="section-heading"><h2>PUBLIC ANNOUNCING</h2></div>
               <p className="section-body">
                 An experimental feature for extending UniFi Play beyond audio
                 playback. In addition to media playback, we developed a
@@ -299,7 +299,7 @@ function Poweramp() {
 
           <section id="outcome" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">OUTCOME AND OBSERVATION</h2>
+              <div className="section-heading"><h2>OUTCOME AND OBSERVATION</h2></div>
               <p className="section-body">
                 As our first product in the audio domain, there are still
                 several features that can be improved. However, overall sales
@@ -327,7 +327,7 @@ function Poweramp() {
 
           <section id="takeaway" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">TAKEAWAY</h2>
+              <div className="section-heading"><h2>TAKEAWAY</h2></div>
               <p className="section-body">
                 Throughout this project, I not only gained valuable knowledge
                 in the audio domain but also faced challenges caused by

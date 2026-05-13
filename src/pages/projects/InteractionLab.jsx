@@ -102,7 +102,7 @@ function InteractionLab() {
 
           <section id="why-prototypes" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">WHY PROTOTYPES MATTER</h2>
+              <div className="section-heading"><h2>WHY PROTOTYPES MATTER</h2></div>
               <p className="section-body">
                 From static to real interaction. Static mockups can only go so
                 far. To validate ideas with real users and communicate complex
@@ -120,7 +120,7 @@ function InteractionLab() {
 
           <section id="cafe-feeds" className="pp-section">
             <div className="pp-section-intro">
-              <h2 className="section-heading">CAFÉ FEEDS</h2>
+              <div className="section-heading"><h2>CAFÉ FEEDS</h2></div>
               <p className="section-body">
                 Exploring the drag and swipe gesture.
               </p>
@@ -166,7 +166,7 @@ function InteractionLab() {
           </section>
 
           <section id="skeleton" className="pp-section">
-            <h2 className="section-heading">SKELETON LOADING</h2>
+            <div className="section-heading"><h2>SKELETON LOADING</h2></div>
 
             <div className="pp-block">
               <h3>Reusable, Resizable Component Of Loading Effect</h3>
@@ -183,7 +183,7 @@ function InteractionLab() {
           </section>
 
           <section id="nav-countdown" className="pp-section">
-            <h2 className="section-heading">NAVIGATION AND COUNTDOWN CLOCK</h2>
+            <div className="section-heading"><h2>NAVIGATION AND COUNTDOWN CLOCK</h2></div>
 
             <div className="pp-block">
               <h3>Prototype For Vertical E-Commerce</h3>
@@ -200,7 +200,7 @@ function InteractionLab() {
           </section>
 
           <section id="sticky-header" className="pp-section">
-            <h2 className="section-heading">STICKY HEADER</h2>
+            <div className="section-heading"><h2>STICKY HEADER</h2></div>
 
             <div className="pp-block">
               <h3>Stick To The Top When Scrolling Through Sections</h3>
@@ -214,7 +214,7 @@ function InteractionLab() {
           </section>
 
           <section id="birthday-lottery" className="pp-section">
-            <h2 className="section-heading">BIRTHDAY LOTTERY</h2>
+            <div className="section-heading"><h2>BIRTHDAY LOTTERY</h2></div>
 
             <div className="pp-block">
               <h3>4 Lucky Winners For The Birthday Party</h3>

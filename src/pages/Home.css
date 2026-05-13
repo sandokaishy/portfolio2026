@@ -119,7 +119,7 @@
   align-items: baseline;
   gap: 8px;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: var(--fw-medium);
   line-height: 1.2;
   letter-spacing: 0.08em;
@@ -202,7 +202,17 @@
    Responsive
    ============================================================================ */
 @media (max-width: 768px) {
+  /* Switch the home into a flex column on mobile so we can re-order the
+     children (source DOM is hero → project-nav → hero-body for desktop
+     positioning, but on phones we want hero → hero-body → project-nav).
+     The intent: read the hero copy first, then drop into project links
+     either at the viewport bottom or just below the fold. */
+  .home {
+    display: flex;
+    flex-direction: column;
+  }
   .hero {
+    order: 1;
     padding: 32px 24px 0;
     width: 100%;
   }
@@ -210,18 +220,22 @@
     font-size: 3rem;                         /* 48px on small screens */
   }
   .hero-body {
+    order: 2;
     position: static;
     width: 100%;
     padding: 24px;
     font-size: 1.25rem;                      /* 20px */
   }
   .project-nav {
+    order: 3;
     position: static;
     transform: none;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 16px;
     padding: 24px;
+    /* Push to the bottom of the (min 100vh) home so project links anchor
+       at the viewport bottom — natural "read first, then choose" flow. */
     margin-top: auto;
   }
   .project-nav-item {
