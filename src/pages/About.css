@@ -54,7 +54,7 @@
 
 .about-name {
   font-family: var(--font-sans);
-  font-size: 80px;
+  font-size: 72px;
   font-weight: var(--fw-medium);
   line-height: 1.2;
   letter-spacing: 0;
@@ -175,7 +175,7 @@
   font-size: var(--fs-body-small);          /* 14px */
   font-weight: var(--fw-medium);
   line-height: 1.5;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   color: var(--color-ink-muted);            /* #888 */
 }
 
@@ -288,5 +288,12 @@
   }
   .experience-role {
     font-size: 18px;
+  }
+  /* Mobile: float the back button at the bottom-left of the viewport so it
+     stays thumb-reachable without occupying the page top. */
+  .about-back {
+    top: auto;
+    left: 32px;
+    bottom: calc(32px + env(safe-area-inset-bottom));
   }
 }

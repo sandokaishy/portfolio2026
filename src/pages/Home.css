@@ -34,7 +34,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 8px;
+  padding: 2px 8px;
   border-radius: 1px;
   border: 1px solid var(--color-ink);
   background: rgba(247, 243, 236, 0.5);
@@ -148,6 +148,7 @@
    in the sweep. Matches the project-page TOC's animated underline. */
 .project-nav-label {
   display: inline-block;
+  letter-spacing: 0.06em;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -211,13 +212,20 @@
     display: flex;
     flex-direction: column;
   }
+  /* Mobile readability: the home blob sits behind the content. Each text
+     surface gets a translucent paper tint + backdrop-blur so the headline
+     and project nav stay legible against the dark, animated visual without
+     blocking it entirely. */
   .hero {
     order: 1;
     padding: 32px 24px 0;
     width: 100%;
+    background-color: rgba(247, 243, 236, 0.1);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
   .hero-title {
-    font-size: 3rem;                         /* 48px on small screens */
+    font-size: 56px;
   }
   .hero-body {
     order: 2;
@@ -225,22 +233,37 @@
     width: 100%;
     padding: 24px;
     font-size: 1.25rem;                      /* 20px */
+    background-color: rgba(247, 243, 236, 0.1);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
   .project-nav {
-    order: 3;
-    position: static;
+    /* Pin to the bottom-left of the viewport, vertically stacked like
+       the desktop right-rail. Keeps the number ↔ label pairing tight
+       (per-item gap from .project-nav-item) instead of letting them get
+       separated by row-wrap. */
+    position: fixed;
+    left: 0;
+    bottom: 40px;
+    top: auto;
+    right: auto;
     transform: none;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
     gap: 16px;
-    padding: 24px;
-    /* Push to the bottom of the (min 100vh) home so project links anchor
-       at the viewport bottom — natural "read first, then choose" flow. */
-    margin-top: auto;
+    /* Pad horizontally so the blur card has breathing room around the
+       items; vertical padding plus the bottom: 40px anchor sets the
+       inset from the viewport bottom. */
+    padding: 16px 24px;
+    margin: 0;
+    z-index: 2;
+    background-color: rgba(247, 243, 236, 0.1);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
   .project-nav-item {
-    /* Mobile-only override — desktop is 14px. Tweak here independently if
-       the horizontal-wrap layout needs a different reading size. */
+    /* Mobile-only override — desktop is 16px. Tweak here independently if
+       the floating column layout needs a different reading size. */
     font-size: 14px;
   }
   .project-nav-marker {
@@ -248,5 +271,9 @@
     width: 6px;
     height: 6px;
   }
-  /* .loader-tag inherits desktop padding/font-size — no mobile override needed. */
+  /* Hide the floating tag layer on mobile — tags react to project-nav
+     hover, which doesn't exist on touch. */
+  .loader-tags-layer {
+    display: none;
+  }
 }

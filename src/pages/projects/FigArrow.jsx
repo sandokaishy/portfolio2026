@@ -21,12 +21,6 @@ const PROCESS_STEPS = [
   'Confident Ver.',
 ]
 
-// Indices < LOOP_UNTIL render as iteration loops (curved back-and-forth);
-// the rest are straight forward arrows. Reflects the body text:
-// "jumping back and forth between ideation and feasibility checks…
-// once the core logic was proven viable, [the linear progression began]."
-const LOOP_UNTIL = 2
-
 function ProcessDiagram() {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
@@ -51,87 +45,175 @@ function ProcessDiagram() {
     return () => obs.disconnect()
   }, [])
 
+  // Vertical flow: pill, then connector, then pill, repeat. The first
+  // connector (between Exploration and Feasibility) is the "iteration"
+  // one — two straight arrows side by side (down + up). All others are
+  // a single down arrow.
   return (
     <div
       ref={ref}
       className={`process-diagram${visible ? ' is-visible' : ''}`}
       role="img"
-      aria-label="Process flow: Exploration ↔ Feasibility Check ↔ MVP → Design Ver.1 → Iteration → Confident Ver."
+      aria-label="Process flow: Exploration ↔ Feasibility Check → MVP → Design Ver.1 → Iteration → Confident Ver."
     >
       {PROCESS_STEPS.map((label, i) => (
         <Fragment key={label}>
-          {i > 0 && (
-            <div className="process-connector" style={{ '--i': i - 1 }}>
-              {i <= LOOP_UNTIL ? <LoopArrow /> : <StraightArrow />}
-            </div>
-          )}
-          <div className="process-step" style={{ '--i': i }}>
+          <div className="process-step" style={{ '--i': i * 2 }}>
             <span>{label}</span>
           </div>
+          {i < PROCESS_STEPS.length - 1 && (
+            <div
+              className={
+                'process-connector' +
+                (i === 0 ? ' process-connector--iteration' : '')
+              }
+              // --i drives the staggered draw-in; --bob-i drives the
+              // ongoing chevron animation's phase offset so all five
+              // connectors (iteration + four below-feasibility) take
+              // turns moving through their respective arrows.
+              style={{ '--i': i * 2 + 1, '--bob-i': i }}
+            >
+              {i === 0 ? (
+                <>
+                  <ProcessArrow direction="down" />
+                  <ProcessArrow direction="up" />
+                </>
+              ) : (
+                <ProcessArrow direction="down" />
+              )}
+            </div>
+          )}
         </Fragment>
       ))}
     </div>
   )
 }
 
-function LoopArrow() {
-  // viewBox is normalized; preserveAspectRatio=none stretches the curve to
-  // fit any flex width. vector-effect keeps stroke weight stable.
+function ProcessArrow({ direction }) {
+  // 12×28 viewBox: stem from y=2→22 with a chevron at y=20..26 (down) or
+  // stem from y=6→26 with a chevron at y=2..8 (up). 1px stem and 1.2px
+  // chevron stroke keep the line crisp at small sizes.
   return (
     <svg
-      className="process-svg process-svg--loop"
-      viewBox="0 0 80 40"
-      preserveAspectRatio="none"
+      className={`process-arrow process-arrow--${direction}`}
+      viewBox="0 0 12 28"
       aria-hidden="true"
     >
-      {/* upper forward arc */}
-      <path
-        className="process-arc process-arc--forward"
-        d="M 2 22 C 18 2, 62 2, 78 22"
-        vectorEffect="non-scaling-stroke"
-        fill="none"
-      />
-      {/* lower return arc */}
-      <path
-        className="process-arc process-arc--back"
-        d="M 78 22 C 62 42, 18 42, 2 22"
-        vectorEffect="non-scaling-stroke"
-        fill="none"
-      />
-      {/* perpetual "iteration" runner traveling around the loop */}
-      <path
-        className="process-arc-runner"
-        d="M 2 22 C 18 2, 62 2, 78 22 C 62 42, 18 42, 2 22"
-        vectorEffect="non-scaling-stroke"
-        fill="none"
-      />
+      {direction === 'down' ? (
+        <>
+          {/* Line ends exactly where the chevron vertex sits so they read
+              as one continuous mark. */}
+          <line x1="6" y1="2" x2="6" y2="26" />
+          <path d="M 2 22 L 6 26 L 10 22" fill="none" />
+        </>
+      ) : (
+        <>
+          <line x1="6" y1="2" x2="6" y2="26" />
+          <path d="M 2 6 L 6 2 L 10 6" fill="none" />
+        </>
+      )}
     </svg>
   )
 }
 
-function StraightArrow() {
+// Tag annotations for the V1 plugin UI, ported from the Figma frame
+// "Design Less V1". Container is sized 5:4 (viewBox 1200×960) with the
+// plugin image scaled to 40% width centered + top:12%. Each tag's
+// top-left is given in % of the canvas; the V1_LINES below are straight
+// line segments in viewBox coords from a landmark on the plugin image
+// to the tag's near edge.
+// Edge-anchored alignment columns:
+//   - LEFT tags:  CSS `right: 72%` → tag right-edge sits at 28% from the
+//     container's left, which is x=336 in the 1200-wide viewBox.
+//   - RIGHT tags: CSS `left: 72%`  → tag left-edge sits at 72% from the
+//     container's left, which is x=864 in the viewBox.
+// 28% / 72% leaves a 4%-wide breathing gap on either side of the 36%
+// image (which spans 32%..68%) — clearer separation between annotation
+// and subject — while still letting the widest pill (~145 CSS px) fit
+// at the narrowest desktop container (~526 CSS px).
+// top% values shifted down 7% from the original layout to track the
+// image's new vertical center (top: 19%). Tags track UI elements on
+// the plugin image, so they move together when the image moves.
+const V1_TAGS = [
+  { id: 'label-color',       label: 'Label Color',       side: 'left',  top: '26.00%' },
+  { id: 'connector-label',   label: 'Connector Label',   side: 'right', top: '21.00%' },
+  { id: 'label-background',  label: 'Label Background',  side: 'right', top: '37.00%' },
+  { id: 'stroke',            label: 'Stroke',            side: 'right', top: '48.00%' },
+  { id: 'connector-color',   label: 'Connector Color',   side: 'left',  top: '48.00%' },
+  { id: 'connector-type',    label: 'Connector Type',    side: 'left',  top: '60.00%' },
+  { id: 'start-point',       label: 'Start Point',       side: 'left',  top: '77.00%' },
+  { id: 'end-point',         label: 'End Point',         side: 'right', top: '63.00%' },
+  { id: 'connector-preview', label: 'Connector Preview', side: 'right', top: '81.00%' },
+]
+
+// Straight line segments. Each line ends at the corresponding tag's
+// alignment column AND at the tag's vertical center. Left-side tags
+// terminate at x=350 (10 units past the x=360 right-edge column, into
+// the pill's interior). Right-side tags terminate at x=850 (10 units
+// past the x=840 left-edge column). The opaque tag background hides the
+// small overlap so the line visually meets the tag's border at its
+// mid-point. Image-side coordinates target the corresponding UI element
+// inside the 36%-wide image (viewBox x=384..816, y=115..708).
+// Image-side Y values shifted down by 67 viewBox units (≈7% of 960) to
+// track the image's new vertical center (top: 19% → image landmarks
+// move with it). Tag-side Y values follow each tag's updated top%:
+// tag center y = top% × 9.6 + 14.
+// Each line: `from` is the landmark on the plugin image (drawn with a
+// small filled circle so the connection visibly anchors to the UI
+// element); `to` is the corresponding tag's alignment column with a
+// 10-unit overshoot into the tag's interior (masked by the tag's
+// opaque background so the line reads as terminating at the tag edge).
+// Left column x=336 (28% × 1200). Right column x=874 (72% × 1200 + 10).
+const V1_LINES = [
+  { from: [405, 313], to: [326, 264] },   // Label Color
+  { from: [600, 259], to: [874, 216] },   // Connector Label
+  { from: [751, 348], to: [874, 369] },   // Label Background
+  { from: [708, 461], to: [874, 475] },   // Stroke
+  { from: [405, 437], to: [326, 475] },   // Connector Color
+  { from: [427, 520], to: [326, 590] },   // Connector Type
+  { from: [449, 597], to: [326, 753] },   // Start Point
+  { from: [686, 597], to: [874, 619] },   // End Point
+  { from: [600, 674], to: [874, 792] },   // Connector Preview
+]
+
+function DesignLessAnnotated() {
   return (
-    <svg
-      className="process-svg process-svg--line"
-      viewBox="0 0 80 20"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <line
-        className="process-line"
-        x1="2"
-        y1="10"
-        x2="74"
-        y2="10"
-        vectorEffect="non-scaling-stroke"
+    <div className="annotated-diagram">
+      <img
+        className="annotated-diagram-img"
+        src="/figarrow/figarrow-v1.jpg"
+        alt="FigArrow V1 plugin UI"
       />
-      <polyline
-        className="process-line-head"
-        points="68,6 76,10 68,14"
-        vectorEffect="non-scaling-stroke"
-        fill="none"
-      />
-    </svg>
+      <svg
+        className="annotated-diagram-lines"
+        viewBox="0 0 1200 960"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        {V1_LINES.map((l, i) => (
+          <Fragment key={i}>
+            <path d={`M ${l.from[0]} ${l.from[1]} L ${l.to[0]} ${l.to[1]}`} />
+            <circle cx={l.from[0]} cy={l.from[1]} r="4" />
+          </Fragment>
+        ))}
+      </svg>
+      {V1_TAGS.map((t) => {
+        // Left-side tags anchor via `right: 72%` so their right edges share
+        // the same column (x=336 in viewBox); right-side tags anchor via
+        // `left: 72%` so their left edges share the column (x=864).
+        const horizontal =
+          t.side === 'left' ? { right: '72%' } : { left: '72%' }
+        return (
+          <span
+            key={t.id}
+            className="annotated-tag"
+            style={{ ...horizontal, top: t.top }}
+          >
+            {t.label}
+          </span>
+        )
+      })}
+    </div>
   )
 }
 
@@ -175,6 +257,24 @@ function FigArrow() {
     }
     return () => observers.forEach((o) => o.disconnect())
   }, [animDone])
+
+  // Keep the active TOC item centered inside the horizontally-scrollable
+  // .pp-toc bar (relevant on mobile where the TOC is fixed bottom and may
+  // overflow). Scrolls only the bar, never the page.
+  useEffect(() => {
+    const toc = document.querySelector('.pp-toc')
+    const active = toc?.querySelector('.pp-toc-item.is-active')
+    if (!toc || !active) return
+    const tocRect = toc.getBoundingClientRect()
+    const itemRect = active.getBoundingClientRect()
+    const offset =
+      (itemRect.left + itemRect.width / 2) -
+      (tocRect.left + tocRect.width / 2)
+    if (Math.abs(offset) > 1) {
+      toc.scrollBy({ left: offset, behavior: 'smooth' })
+    }
+  }, [activeId])
+
 
   return (
     <>
@@ -299,24 +399,31 @@ function FigArrow() {
             </div>
 
             <div className="challenge-grid">
-              <div className="pp-block">
-                <h3>Option 1: Standard Figma APIs</h3>
-                <p>
-                  Create a connector using standard Figma APIs (not a native
-                  FigJam connector). Highly customizable, but it lacks the
-                  "snapping" behavior — if a user moves a frame, the plugin
-                  must be triggered again to update the connector's position.
-                </p>
+              <div className="challenge-option">
+                <span className="challenge-option-num" aria-hidden="true">1</span>
+                <div className="challenge-option-body">
+                  <h4>Standard Figma APIs</h4>
+                  <p>
+                    Create a connector using standard Figma APIs (not a
+                    native FigJam connector). Highly customizable, but it
+                    lacks the "snapping" behavior — if a user moves a
+                    frame, the plugin must be triggered again to update
+                    the connector's position.
+                  </p>
+                </div>
               </div>
-              <div className="pp-block">
-                <h3>Option 2: The "Template" Approach</h3>
-                <p>
-                  Have the user copy a FigJam connector into the file first,
-                  then use the plugin to grab that connector and link it to
-                  selected frames. Full access to native FigJam connector
-                  behavior, but users have to perform a "setup" in every new
-                  file.
-                </p>
+              <div className="challenge-option">
+                <span className="challenge-option-num" aria-hidden="true">2</span>
+                <div className="challenge-option-body">
+                  <h4>The "Template" Approach</h4>
+                  <p>
+                    Have the user copy a FigJam connector into the file
+                    first, then use the plugin to grab that connector and
+                    link it to selected frames. Full access to native
+                    FigJam connector behavior, but users have to perform a
+                    "setup" in every new file.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -360,16 +467,25 @@ function FigArrow() {
                 into Figma, that data must exist in the clipboard in a
                 specific format that Figma recognizes. So, I asked:
               </p>
-              <ul className="section-list">
-                <li>
-                  What exactly is being copied when I copy a FigJam connector?
-                </li>
-                <li>
-                  If Figma can recognize a connector from the clipboard, can
-                  we pre-store that data structure within the plugin and
-                  write it to the clipboard for the user?
-                </li>
-              </ul>
+              <div className="conversation-list">
+                <div className="conversation">
+                  <span className="conversation-quote" aria-hidden="true">“</span>
+                  <span className="conversation-text">
+                    What exactly is being copied when I copy a FigJam
+                    connector?
+                  </span>
+                  <span className="conversation-quote" aria-hidden="true">”</span>
+                </div>
+                <div className="conversation">
+                  <span className="conversation-quote" aria-hidden="true">“</span>
+                  <span className="conversation-text">
+                    If Figma can recognize a connector from the clipboard,
+                    can we pre-store that data structure within the plugin
+                    and write it to the clipboard for the user?
+                  </span>
+                  <span className="conversation-quote" aria-hidden="true">”</span>
+                </div>
+              </div>
               <p className="section-body">
                 Claude then built a few internal "mini-tools" to help me
                 inspect the connector's data format and verify if we could
@@ -383,7 +499,11 @@ function FigArrow() {
                 Claude wrote a simple inspector page to reveal the underlying
                 HTML/data structure of a FigJam connector when copied.
               </p>
-              <Placeholder name="capture-clipboard.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/figarrow/template-capture.jpg"
+                alt="Template Capture — inspector showing the FigJam connector's clipboard data structure"
+              />
             </div>
 
             <div className="pp-block">
@@ -397,7 +517,11 @@ function FigArrow() {
                 FigJam connector, store it in the plugin, and deploy it on
                 demand.
               </p>
-              <Placeholder name="capture-write-validation.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/figarrow/clipboard-write.jpg"
+                alt="Clipboard Write — re-written connector matches the original FigJam structure"
+              />
             </div>
           </section>
 
@@ -413,7 +537,7 @@ function FigArrow() {
                 selecting two frames to have the connector automatically
                 link them upon pasting.
               </p>
-              <Placeholder name="figarrow-v1.png" aspect="16/10" />
+              <DesignLessAnnotated />
             </div>
           </section>
 
@@ -434,7 +558,11 @@ function FigArrow() {
                 even fine-tune icons with precision without ever needing to
                 share a file link.
               </p>
-              <Placeholder name="figarrow-iteration-1.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/figarrow/figarrow-iteration-1.jpg"
+                alt="Iterating on the FigArrow plugin UI via Figma Console MCP"
+              />
             </div>
 
             <div className="pp-block">
@@ -448,19 +576,52 @@ function FigArrow() {
                 suggested a compromise: dynamically resizing the plugin
                 window to accommodate the open dropdowns/pickers.
               </p>
-              <Placeholder name="figarrow-iteration-2.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/figarrow/figarrow-iteration-2.jpg"
+                alt="Dynamic plugin-window resize accommodating custom dropdown/picker overlays"
+              />
             </div>
 
             <div className="pp-block">
               <h3>Reducing "UI Jitter" and Screen Real Estate</h3>
               <p>
-                After testing the first version, the constant window resizing
-                felt "jittery" and took up too much space in the Figma
-                workspace. I decided to pivot the UI pattern, opting for a
-                more compact layout for style and color selection to keep
-                the experience seamless.
+                After testing the first version, the constant window
+                resizing felt "jittery" and took up too much space in the
+                Figma workspace.
               </p>
-              <Placeholder name="figarrow-final-ui.png" aspect="16/10" />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Extended dropdown state in the final FigArrow plugin UI"
+              >
+                <source src="/figarrow/extended.webm" type="video/webm" />
+                <source src="/figarrow/extended.mp4" type="video/mp4" />
+              </video>
+            </div>
+
+            <div className="pp-block">
+              <p>
+                I decided to pivot the UI pattern, opting for a more
+                compact layout for style and color selection to keep the
+                experience seamless.
+              </p>
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Overlaid picker state in the final FigArrow plugin UI"
+              >
+                <source src="/figarrow/overlaid.webm" type="video/webm" />
+                <source src="/figarrow/overlaid.mp4" type="video/mp4" />
+              </video>
             </div>
           </section>
 
@@ -483,7 +644,31 @@ function FigArrow() {
                 <strong>Cursor</strong> feature to let users describe
                 interactions more clearly.
               </p>
-              <Placeholder name="figarrow-full-version.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/figarrow/figarrow-final.jpg"
+                alt="FigArrow plugin showing the full feature set"
+              />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="FigArrow plugin demo: inserting connectors, shapes, and cursors"
+              >
+                <source src="/figarrow/figarrow-demo.webm" type="video/webm" />
+                <source src="/figarrow/figarrow-demo.mp4" type="video/mp4" />
+              </video>
+              <a
+                className="pp-cta"
+                href="https://www.figma.com/community/plugin/1613174355365041755"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Try it on Figma →
+              </a>
             </div>
           </section>
 

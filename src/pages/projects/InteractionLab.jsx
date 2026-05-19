@@ -54,13 +54,31 @@ function InteractionLab() {
     return () => observers.forEach((o) => o.disconnect())
   }, [animDone])
 
+  // Keep the active TOC item centered inside the horizontally-scrollable
+  // .pp-toc bar (relevant on mobile where the TOC is fixed bottom and may
+  // overflow). Scrolls only the bar, never the page.
+  useEffect(() => {
+    const toc = document.querySelector('.pp-toc')
+    const active = toc?.querySelector('.pp-toc-item.is-active')
+    if (!toc || !active) return
+    const tocRect = toc.getBoundingClientRect()
+    const itemRect = active.getBoundingClientRect()
+    const offset =
+      (itemRect.left + itemRect.width / 2) -
+      (tocRect.left + tocRect.width / 2)
+    if (Math.abs(offset) > 1) {
+      toc.scrollBy({ left: offset, behavior: 'smooth' })
+    }
+  }, [activeId])
+
+
   return (
     <>
       <Helmet>
         <title>Interaction Lab | Sheng Pan</title>
         <meta
           name="description"
-          content="Some experimental prototypes for micro interaction."
+          content="Some experimental prototypes with ProtoPie."
         />
       </Helmet>
 
@@ -71,7 +89,7 @@ function InteractionLab() {
           <header className="pp-aside-header">
             <h1 className="pp-name">Interaction Lab</h1>
             <p className="pp-tagline">
-              Some experimental prototypes for micro interaction.
+              Some experimental prototypes with ProtoPie.
             </p>
             <p className="pp-eyebrow">Just For Fun, 2020</p>
           </header>
@@ -93,10 +111,10 @@ function InteractionLab() {
 
         <main className="pp-main">
           <div className="pp-hero">
-            <Placeholder
-              name="hero-interaction-lab.png"
-              aspect="5/4"
-              color={project.color}
+            <img
+              className="pp-hero-image"
+              src="/interaction_lab/hero-interaction-lab.jpg"
+              alt="Interaction Lab hero"
             />
           </div>
 
@@ -140,7 +158,11 @@ function InteractionLab() {
                 Users can click the button to save or pass the suggestion. The
                 button will trigger the swipe of the card.
               </p>
-              <Placeholder name="cafe-drag-swipe.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/interaction_lab/cafe-drag-swipe.gif"
+                alt="Drag/swipe interaction prototype for the café feed cards"
+              />
             </div>
 
             <div className="pp-block">
@@ -151,7 +173,11 @@ function InteractionLab() {
                 size and switches to another scene that contains the café
                 information.
               </p>
-              <Placeholder name="cafe-reveal-details.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/interaction_lab/cafe-reveal-details.gif"
+                alt="Card scale-up animation revealing café details"
+              />
             </div>
 
             <div className="pp-block">
@@ -161,7 +187,11 @@ function InteractionLab() {
                 can tweak the interaction behaviors in the prototype to make
                 them feel more natural.
               </p>
-              <Placeholder name="cafe-final-prototype.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/interaction_lab/cafe-final-prototype.gif"
+                alt="Final café feed prototype combining the drag, swipe, and reveal interactions"
+              />
             </div>
           </section>
 
@@ -178,7 +208,18 @@ function InteractionLab() {
                 — so I created a resizable loading prototype component in
                 ProtoPie.
               </p>
-              <Placeholder name="skeleton-loading.png" aspect="16/10" />
+              <div className="pp-block-row">
+                <img
+                  className="pp-block-image"
+                  src="/interaction_lab/skeleton-loading.gif"
+                  alt="Reusable skeleton-loading component animating in ProtoPie"
+                />
+                <img
+                  className="pp-block-image"
+                  src="/interaction_lab/skeleton-loading_2.gif"
+                  alt="Skeleton-loading component reused at a different size"
+                />
+              </div>
             </div>
           </section>
 
@@ -195,7 +236,11 @@ function InteractionLab() {
                 when scrolling up. The countdown clock displays products that
                 motivates users to buy within limited time.
               </p>
-              <Placeholder name="nav-countdown-clock.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/interaction_lab/nav-countdown-clock.gif"
+                alt="Vertical e-commerce prototype with hide-on-scroll nav and countdown timer"
+              />
             </div>
           </section>
 
@@ -209,7 +254,18 @@ function InteractionLab() {
                 of items. When users scroll into a different list, the title
                 of the list is fixed to the top of the screen.
               </p>
-              <Placeholder name="sticky-header.png" aspect="16/10" />
+              <div className="pp-block-row">
+                <img
+                  className="pp-block-image"
+                  src="/interaction_lab/sticky-header.gif"
+                  alt="Sticky section header that pins to the top while scrolling through grouped lists"
+                />
+                <img
+                  className="pp-block-image"
+                  src="/interaction_lab/sticky-header_2.gif"
+                  alt="Second sticky-header variant illustrating the pinned-title behavior"
+                />
+              </div>
             </div>
           </section>
 
@@ -223,7 +279,11 @@ function InteractionLab() {
                 First, attendees see the whole list. After clicking "Start
                 selection", 4 winners are picked (of course it's faked).
               </p>
-              <Placeholder name="birthday-lottery.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/interaction_lab/birthday-lottery.gif"
+                alt="Birthday lottery prototype animating through the list and revealing four winners"
+              />
             </div>
           </section>
         </main>

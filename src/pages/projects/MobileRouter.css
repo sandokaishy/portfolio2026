@@ -83,7 +83,7 @@
 }
 
 .section-heading h2 {
-  font-size: var(--fs-h3);
+  font-size: var(--fs-h2);
   font-weight: var(--fw-medium);
   letter-spacing: var(--ls-wide);
   line-height: 1.3;
@@ -177,41 +177,104 @@
   color: var(--color-ink);
 }
 
-/* Challenge cards live in a 2-col grid. The card itself is a .pp-block —
-   challenge-grid only handles layout, not typography. */
+/* Challenge cards stack vertically as conversation-pill–styled rows.
+   The container only handles flow + gap; the card visuals come from
+   .pp-block (Mobile Router) or .challenge-option (FigArrow's numbered
+   variant). */
 .challenge-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Any pp-block inside a challenge-grid gets the same chat-bubble surface
+   treatment as the conversation pill — same recessed tint, same three-
+   corner radius, square bottom-left. */
+.challenge-grid > .pp-block {
+  padding: 16px 20px;
+  background-color: var(--color-surface-subtle);
+  border-radius: 16px 16px 16px 0;
+}
+
+/* Numbered option card (FigArrow §feasibility): circular badge on the
+   left, h3+body stacked on the right. Same pill surface as above. */
+.challenge-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 20px;
+  background-color: var(--color-surface-subtle);
+  border-radius: 16px 16px 16px 0;
+}
+
+.challenge-option-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  /* Nudge down so the 16px badge's centre lines up with the h4 heading's
+     optical centre (h4 line-height ≈24px → text mid at +12; badge mid at
+     +8). 4px lifts the badge to match. */
+  margin-top: 4px;
+}
+
+.challenge-option-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.challenge-option-body h4 {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  color: var(--color-ink);
+}
+
+.challenge-option-body p {
+  font-size: var(--fs-body-small);
+  line-height: var(--lh-relaxed);
+  color: var(--color-ink-secondary);
 }
 
 /* ==================== PROCESS DIAGRAM ====================
-   FigArrow page §process. Six step pills flow horizontally with
-   connectors between them: the first two gaps are iteration loops
-   (curved arcs with a runner that perpetually circles them), the
-   rest are straight forward arrows. The entire diagram animates in
-   when scrolled into view — pills fade up, lines/arcs draw in. */
+   FigArrow page §process. Six step pills flow VERTICALLY, top to bottom,
+   with thin SVG arrow connectors between them. The first connector
+   (between Exploration and Feasibility Check) renders two straight
+   arrows side-by-side (one down, one up) to convey iteration; every
+   other connector is a single down arrow. The whole diagram fades/draws
+   in on scroll, staggered by --i on each child. */
 .process-diagram {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   gap: 0;
   width: 100%;
-  padding: 36px 0;
+  padding: 24px 0;
   background-color: var(--color-surface);
   border-radius: 8px;
 }
 
 .process-step {
   flex: 0 0 auto;
-  padding: 6px 8px;
+  padding: 12px 16px;
   border-radius: 6px;
   background-color: var(--color-surface-muted);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 10px;
+  font-size: 14px;
   font-weight: var(--fw-bold, 700);
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   line-height: 1.2;
   white-space: nowrap;
   opacity: 0;
@@ -227,122 +290,99 @@
 }
 
 .process-connector {
-  flex: 1 1 0;
-  min-width: 14px;
-  height: 48px;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 12px;
+  height: 28px;
+  padding: 0;
 }
 
-/* Loop connectors need more horizontal room so the iteration arcs read as
-   arches rather than thin ovals. */
-.process-connector:has(.process-svg--loop) {
-  flex-grow: 1.8;
-  min-width: 28px;
+/* The arrow SVG clips its own contents at the viewBox boundary, so the
+   chevron travelling outside its 12×28 area disappears naturally — no
+   connector-level overflow tweak needed. */
+
+/* ---------- Arrow primitive (SVG) ----------
+   Down and up variants share the 12×28 viewBox so they line up vertically
+   inside a connector. Stem is 1px, chevron 1.2px. Draw-in scales from the
+   tail (top for down, bottom for up) so each arrow appears to extend
+   toward its head. */
+.process-arrow {
+  width: 12px;
+  height: 28px;
+  color: var(--color-ink-tertiary);
+  /* Explicit overflow:hidden so the chevron's translate animation gets
+     clipped at the SVG boundary even on browsers that default to visible. */
+  overflow: hidden;
+  opacity: 0;
+  transform: scaleY(0);
+  transition:
+    opacity 320ms ease calc(var(--i, 0) * 90ms + 120ms),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 90ms + 120ms);
 }
 
-.process-svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+.process-arrow--down { transform-origin: top center; }
+.process-arrow--up   { transform-origin: bottom center; }
+
+.process-arrow line {
+  stroke: currentColor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
 }
 
-/* Straight forward arrow ------------------------------------------------ */
-.process-line,
-.process-line-head {
-  stroke: var(--color-ink-tertiary);
+.process-arrow path {
+  stroke: currentColor;
   stroke-width: 1.2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  /* path length is normalized via pathLength would be ideal; using a large
-     dasharray is simpler and works the same once it's offset all the way
-     in. The non-scaling-stroke on the <line> means stretching the viewBox
-     doesn't change the rendered weight. */
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  transition: stroke-dashoffset 600ms cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--i, 0) * 90ms + 240ms);
 }
 
-.process-diagram.is-visible .process-line,
-.process-diagram.is-visible .process-line-head {
-  stroke-dashoffset: 0;
-}
-
-/* Iteration loop arrows ------------------------------------------------- */
-.process-arc {
-  stroke: var(--color-ink-tertiary);
-  stroke-width: 1.2;
-  stroke-linecap: round;
-  fill: none;
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  transition: stroke-dashoffset 700ms cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--i, 0) * 90ms + 240ms);
-}
-
-.process-arc--back {
-  /* return arc draws right after the forward arc */
-  transition-delay: calc(var(--i, 0) * 90ms + 520ms);
-}
-
-.process-diagram.is-visible .process-arc {
-  stroke-dashoffset: 0;
-}
-
-/* Once the loop is drawn, a "runner" travels continuously around the path
-   to communicate that this phase is iterative (back-and-forth). It's a
-   short dash on an otherwise-invisible stroke; we slide the dash along
-   via stroke-dashoffset. */
-.process-arc-runner {
-  stroke: var(--color-marker-orange, #f24e1e);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  fill: none;
-  stroke-dasharray: 10 200;
-  stroke-dashoffset: 0;
-  opacity: 0;
-  transition: opacity 400ms ease calc(var(--i, 0) * 90ms + 1200ms);
-}
-
-.process-diagram.is-visible .process-arc-runner {
+.process-diagram.is-visible .process-arrow {
   opacity: 1;
-  animation: process-loop-run 2.8s linear infinite;
-  animation-delay: calc(var(--i, 0) * 90ms + 1200ms);
+  transform: scaleY(1);
 }
 
-@keyframes process-loop-run {
-  to {
-    stroke-dashoffset: -208;
-  }
+/* Ongoing chevron travel along every static line — including the
+   iteration cluster's bidirectional pair. The down chevron slides
+   from above the SVG (inside the source pill) down to below it
+   (inside the target pill); the up chevron does the mirror trip.
+   The SVG overflow clips both endpoints so the wrap is invisible.
+   Staggered by --bob-i so the five connectors take turns. Linear
+   timing keeps each chevron's pace constant along its line. */
+.process-diagram.is-visible .process-arrow--down path {
+  animation: chevron-slide-down 2.4s linear infinite;
+  animation-delay: calc(var(--bob-i, 0) * -0.6s);
 }
 
-/* Pause animations for reduced-motion preference. */
+.process-diagram.is-visible .process-arrow--up path {
+  animation: chevron-slide-up 2.4s linear infinite;
+  animation-delay: calc(var(--bob-i, 0) * -0.6s);
+}
+
+@keyframes chevron-slide-down {
+  /* Chevron natural extent is y=22..26 inside the 28-high SVG.
+     -28: chevron fully above SVG (y=-6..-2), invisible.
+     +8:  chevron fully below SVG (y=30..34), invisible.
+     The visible journey through the line happens between these endpoints,
+     occupying ~89% of each cycle. */
+  0%   { transform: translateY(-28px); }
+  100% { transform: translateY(8px); }
+}
+
+@keyframes chevron-slide-up {
+  /* Mirror of chevron-slide-down: chevron natural extent y=2..6 (vertex
+     at the top). Starts below the SVG (inside Feasibility, source for
+     the up direction) and ends above the SVG (inside Exploration). */
+  0%   { transform: translateY(28px); }
+  100% { transform: translateY(-8px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .process-step,
-  .process-line,
-  .process-line-head,
-  .process-arc {
+  .process-arrow {
     transition-duration: 0ms;
-  }
-  .process-diagram.is-visible .process-arc-runner {
     animation: none;
-    opacity: 0.6;
-  }
-}
-
-/* Tighter spacing on narrow screens. */
-@media (max-width: 760px) {
-  .process-diagram {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    padding: 20px 8px;
-  }
-  .process-connector {
-    flex: 0 0 32px;
-    width: 32px;
   }
 }
 
@@ -373,7 +413,7 @@
 .stat-card {
   background-color: var(--color-surface-subtle);
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -388,6 +428,75 @@
 .stat-card p {
   font-size: var(--fs-body-small);
   color: var(--color-ink-tertiary);
+}
+
+/* ==================== CONVERSATION ====================
+   Frosted pill quoting a single line of speech / a posed question.
+   Used on FigArrow §right-question for the two prompts the author
+   asked himself. Mirrors the Figma "Conversation" frame: 1px ink
+   border, low-opacity surface fill with a subtle backdrop blur, big
+   bold curly quotes flanking medium-weight body text. */
+.conversation-list {
+  display: flex;
+  flex-direction: column;
+  /* Children stretch to the list's full width so every pill spans the
+     content column — establishes a consistent visual block regardless
+     of the question's length. */
+  align-items: stretch;
+  gap: 12px;
+  /* Extra breathing room from the body paragraphs above and below — the
+     pill block is a distinct rhythmic break in the section flow. Adds to
+     the parent's pp-section-intro gap (8px) for ~24px of total separation. */
+  margin: 16px 0;
+}
+
+.conversation {
+  /* `flex` (block-level) so the pill takes the parent's full cross-axis
+     width via the list's align-items: stretch. align-items here decides
+     the per-child quote positions (top for opening, bottom for closing);
+     the text stays vertically centered via its own align-self below.
+     justify-content: space-between pins the quotes to the pill's left
+     and right edges with the prose floating between — reads as a proper
+     pull-quote block at full width. max-width caps the pill so the
+     prose doesn't stretch into an awkward single line on wide layouts. */
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+  max-width: 560px;
+  /* Borderless: distinguish the pill via a recessed surface tint instead.
+     --color-surface-subtle (#eee9e0) is the same token .stat-card uses,
+     so the two card patterns share a single elevated look across pages.
+     Three corners rounded + a square bottom-left gives a chat-bubble
+     silhouette, anchoring the speech at the speaker's side. */
+  border-radius: 16px 16px 16px 0;
+  background-color: var(--color-surface-subtle);
+  color: var(--color-ink);
+}
+
+.conversation-quote {
+  flex-shrink: 0;
+  font-size: 24px;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+/* Opening quote hugs the top of the pill, closing quote hugs the bottom.
+   For single-line text this looks visually centered (small difference);
+   for wrapped text the quotes frame the block top-and-bottom. */
+.conversation-quote:first-child { align-self: flex-start; }
+.conversation-quote:last-child  { align-self: flex-end; }
+
+.conversation-text {
+  /* Keep the prose vertically centered between the two pinned quotes so
+     short pills stay balanced. */
+  align-self: center;
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 /* Navigation */
@@ -436,9 +545,9 @@
     gap: 2rem;
   }
 
-  .challenge-grid {
-    grid-template-columns: 1fr;
-  }
+  /* .challenge-grid is already a flex column at desktop — no override
+     needed below 768px. Keeping the block as a marker in case the
+     layout diverges in the future. */
 
   .outcome-stats {
     grid-template-columns: 1fr;
@@ -469,7 +578,7 @@
   column-gap: 0;
   padding: var(--pp-pad-y) var(--pp-pad-x);
   --pp-pad-y: 60px;
-  --pp-pad-x: 60px;
+  --pp-pad-x: 24px;
   /* Page-entry: 2D swing-up around the bottom-left corner. Animation
      uses `both` fill so the rotated from-state applies before run AND
      the upright to-state holds during the animation. After the flip
@@ -584,8 +693,8 @@
 .pp-eyebrow {
   font-family: var(--font-sans);
   font-size: 14px;
-  font-weight: var(--fw-regular);
-  letter-spacing: 0.02em;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0;
   color: var(--color-ink-muted);
 }
 
@@ -597,7 +706,7 @@
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--color-ink);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .pp-tagline {
@@ -787,7 +896,7 @@
 }
 
 .pp-block h3 {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-h3);
   font-weight: var(--fw-semibold);
   color: var(--color-ink);
 }
@@ -798,6 +907,183 @@
   color: var(--color-ink-secondary);
 }
 
+/* Real image inside a content block (alternative to the colored Placeholder).
+   Fills the block's width; aspect-ratio comes from the file itself. */
+.pp-block-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Two-up image row: pair related stills/GIFs side by side within a block.
+   Collapses to a single column on mobile (handled in the media query). */
+.pp-block-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Same shape as .pp-block-image but for inline videos (UI demos / motion
+   clips). Loops + muted + autoplay are enforced in JSX so the videos
+   read as live captures inside the page. Border-radius matches .pp-block-image
+   so the in-block media keeps a consistent corner treatment. No background
+   fill or border — bare frame avoids the user-agent default chrome that
+   some browsers draw around <video> elements. */
+.pp-block-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: none;
+  outline: none;
+  /* Belt + suspenders: clear every default user-agent paint that some
+     browsers apply around <video> — appearance for Safari, box-shadow
+     in case a focus ring leaks through. */
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  background: transparent;
+  border-radius: 8px;
+}
+
+.pp-block-video:focus,
+.pp-block-video:focus-visible {
+  outline: none;
+}
+
+/* Inline call-to-action link sitting at the foot of a content block —
+   e.g. "Try it on Figma →" under the FigArrow demo. Button-shape with
+   1px ink border, semitransparent surface tint and a subtle hover
+   inversion mirroring the .pp-back / .back-link treatment. */
+.pp-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  /* Extra breathing room above so the CTA sits as a distinct call-out
+     beneath the demo media instead of sticking to it. */
+  margin-top: 12px;
+  border: 1px solid var(--color-ink);
+  border-radius: 2px;
+  background-color: rgba(247, 243, 236, 0.5);
+  font-family: var(--font-sans);
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pp-cta:hover,
+.pp-cta:focus-visible {
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  border-color: var(--color-ink);
+}
+
+/* ==================== ANNOTATED DIAGRAM ====================
+   FigArrow §v1: a screenshot of the plugin UI with connector lines and
+   labelled tags pointing at individual interface elements. Mirrors the
+   Figma "Design Less V1" frame (1200×800). Layout is fixed-aspect so
+   the % positions on tags and the SVG line coordinates scale together
+   when the container shrinks. Tags shrink with the container; on mobile
+   they'll be small but stay positioned. */
+.annotated-diagram {
+  position: relative;
+  width: 100%;
+  /* 5:4 aspect gives a larger canvas than the original Figma 3:2 frame —
+     more vertical room for the tags to spread above/below the plugin
+     mockup. The viewBox on the SVG below stretches to match. */
+  aspect-ratio: 5 / 4;
+  /* Faint design-canvas grid: very low-opacity ink lines on white at
+     5% × 6.25% intervals (= ~60×60 viewBox-unit cells given the 1200×960
+     viewBox). Two linear gradients compose into a square grid; the cells
+     scale with the container so the density reads consistently across
+     responsive widths. */
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(to right, rgba(34, 34, 34, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34, 34, 34, 0.06) 1px, transparent 1px);
+  background-size: 2.5% 3.125%;
+  border-radius: 8px;
+  /* Tags stay inside the container — overflow: hidden keeps any
+     rendering edge cases from leaking past the white card boundary.
+     Tag positions below are tuned so the widest pills still fit at the
+     narrowest column width the desktop layout produces (~500 CSS px). */
+  overflow: hidden;
+}
+
+.annotated-diagram-img {
+  position: absolute;
+  /* Vertical center: image height ≈ 62% of the container (36% width
+     × 437:600 aspect / 5:4 container = 61.8%); top = (100% - 61.8%) / 2
+     ≈ 19% gives symmetric padding above and below. */
+  top: 19%;
+  left: 50%;
+  /* 36% keeps the plugin large but leaves enough horizontal room for
+     the alignment columns (30% / 70%) — at the narrowest desktop column
+     (~526 CSS px) the widest tag (~145 px) still fits cleanly. */
+  width: 36%;
+  height: auto;
+  transform: translateX(-50%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.annotated-diagram-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* White paint + difference blend = auto-inverting ink: black against
+     the white canvas, white against any darker UI pixel below. The
+     annotation always reads against whatever it crosses without needing
+     per-element contrast tuning. */
+  color: #ffffff;
+  mix-blend-mode: difference;
+}
+
+.annotated-diagram-lines path {
+  stroke: currentColor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.annotated-diagram-lines circle {
+  fill: currentColor;
+}
+
+.annotated-tag {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border: 1px solid var(--color-ink);
+  border-radius: 1px;
+  /* Opaque fill so connector lines that extend a few px into the pill's
+     interior (for tolerance across container sizes) are masked — the
+     line appears to terminate exactly at the tag's border instead of
+     bleeding underneath the tag. */
+  background-color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
 /* Smooth scroll on TOC anchor clicks. */
 html {
   scroll-behavior: smooth;
@@ -806,37 +1092,120 @@ html {
 /* Responsive — collapse to single column below 1100px. */
 @media (max-width: 1100px) {
   .pp-shell {
-    grid-template-columns: 1fr;
-    row-gap: 48px;
-    padding: 40px 32px 64px;
+    /* Switch to a flex column so the children can be re-ordered via
+       `order`. We also flatten .pp-aside / .pp-main via display:contents
+       below so individual descendants (hero, header, meta, sections) all
+       become direct flex items and can interleave. */
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    row-gap: 0;
+    /* Bottom padding leaves room for the fixed TOC nav bar plus a buffer
+       so the last section content isn't tucked under the bar. */
+    padding: 40px 32px 96px;
   }
-  .pp-aside {
-    grid-column: 1;
-    position: static;
-    height: auto;
-    padding: 0;
-    gap: 24px;
+  /* Flatten aside + main into pp-shell so we can put .pp-hero above
+     .pp-aside-header on mobile while keeping the desktop DOM untouched. */
+  .pp-aside,
+  .pp-main {
+    display: contents;
   }
-  .pp-aside-header {
-    margin: 0 0 24px;
+  /* Mobile reading order: hero image first, then the title/tagline,
+     then the team/meta, then the body sections. */
+  /* Hero goes full-bleed on mobile: negative margins cancel pp-shell's
+     40px top / 32px horizontal padding, and the explicit width adds the
+     same 64px back so the box actually spans the full viewport (negative
+     margins alone only shift the box, they don't widen it). */
+  .pp-hero {
+    order: 1;
+    width: calc(100% + 64px);
+    margin: -40px -32px 48px;
+    max-height: none;
   }
-  .pp-aside-meta {
-    margin: 0;
-    /* Disable the desktop grid-stacking so the hidden list doesn't reserve
-       its own (potentially taller) row, leaving phantom whitespace below
-       the visible one. On mobile we drop the cross-fade in favor of a
-       hard display swap. */
-    display: block;
+  .pp-hero-image {
+    max-height: none;
   }
-  .pp-team.is-hidden,
+  .pp-aside-header{ order: 2; margin: 0; }
+  .pp-aside-meta  { order: 3; margin: 0; display: block; }
+  .pp-section     { order: 4; margin-top: 64px; }
+  /* Team is always visible on mobile — the desktop team↔TOC cross-fade
+     pattern is replaced by "team in flow at top, TOC fixed at bottom". */
+  .pp-team.is-hidden {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* TOC becomes a floating bottom navigation pill — inset 20px from
+     the bottom and side edges so it reads as a card hovering over the
+     content, not a flush bottom bar. */
+  .pp-toc,
   .pp-toc.is-hidden {
+    position: fixed;
+    /* Sit on the same baseline as .pp-back (40x40 at left:32). 16px gap
+       (left = 32 + 40 + 16 = 88) keeps them visually paired without
+       touching; right:32 mirrors back's left inset for symmetry. */
+    left: 88px;
+    right: 32px;
+    bottom: calc(32px + env(safe-area-inset-bottom));
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 0 16px;
+    background-color: rgba(247, 243, 236, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid var(--color-ink);
+    border-radius: 2px;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 10;
+    /* Hide the scrollbar (still scrollable via touch / drag). */
+    scrollbar-width: none;
+  }
+  .pp-toc::-webkit-scrollbar {
     display: none;
   }
-  .pp-main {
-    grid-column: 1;
-    gap: 64px;
+  .pp-toc-item {
+    flex-shrink: 0;
+  }
+  /* Mobile keeps every TOC item visible from the first screen — the
+     desktop fade-while-hidden treatment would empty out the bottom
+     pill until the user scrolls. */
+  .pp-toc.is-hidden .pp-toc-item {
+    opacity: 1;
+    transform: none;
+  }
+  /* Mobile uses color shift alone for active/hover — the desktop
+     underline-sweep would clash with the framed pill aesthetic. */
+  .pp-toc-item.is-active a,
+  .pp-toc-item a:hover,
+  .pp-toc-item a:focus-visible {
+    background-size: 0% 1px;
   }
   .pp-back {
-    position: static;
+    position: fixed;
+    top: auto;
+    left: 32px;
+    bottom: calc(32px + env(safe-area-inset-bottom));
+    width: 40px;
+    height: 40px;
+    z-index: 11;
+    background-color: rgba(247, 243, 236, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  /* Annotated diagram tags shrink to caption size on mobile so the longer
+     labels (e.g. "Connector Preview") don't crowd the plugin image at
+     narrow widths. */
+  .annotated-tag {
+    font-size: 12px;
+  }
+  /* Two-up image rows collapse to a single column on mobile. */
+  .pp-block-row {
+    grid-template-columns: 1fr;
   }
 }

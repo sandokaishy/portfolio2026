@@ -13,6 +13,26 @@ const PROJECT_SHAPES = [1, 2, 5, 4, 3]
 function Home() {
   const loaderRef = useRef(null)
   const [activeIdx, setActiveIdx] = useState(-1)
+  // Mobile (≤768px) hides both the floating tag DOM AND the connector
+  // lines drawn by OrganicLoader. The initial value sets the loader's
+  // `disableTagLines` prop at mount; the matchMedia subscription below
+  // keeps it in sync live (window resize, dev-tools toggle, rotation)
+  // by calling the loader's imperative API rather than re-mounting it.
+  const [tagLinesDisabled, setTagLinesDisabled] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+  )
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mq = window.matchMedia('(max-width: 768px)')
+    const onChange = (e) => setTagLinesDisabled(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  // Push the current mobile state into the loader after it has mounted,
+  // and re-push every time the breakpoint flips.
+  useEffect(() => {
+    loaderRef.current?.setTagLinesEnabled?.(!tagLinesDisabled)
+  }, [tagLinesDisabled])
   // Mount the heavy OrganicLoader AFTER the loading screen has had time
   // to establish its CSS animations on the compositor. Without this gap,
   // Three.js's first render — which compiles shaders synchronously — runs
@@ -51,7 +71,11 @@ function Home() {
       <main className="home">
         {loaderMounted && (
           <>
-            <OrganicLoader ref={loaderRef} className="home-visual" />
+            <OrganicLoader
+              ref={loaderRef}
+              className="home-visual"
+              disableTagLines={tagLinesDisabled}
+            />
             <OrganicLoaderTags loaderRef={loaderRef} tags={tags} />
           </>
         )}

@@ -948,6 +948,19 @@ const OrganicLoader = forwardRef(function OrganicLoader(
       // scale + anchor matrices (we don't know stretch state at this depth).
       freezePending = true
     }
+    function setTagLinesEnabled(enabled) {
+      // Toggles the three tag→blob connector lines as a group. Init-time
+      // visibility comes from the `disableTagLines` prop; this method lets
+      // callers flip it later (e.g. on a viewport resize across the mobile
+      // breakpoint) without re-creating the WebGL context.
+      const visible = !!enabled
+      for (let i = 0; i < tagLines.length; i++) tagLines[i].visible = visible
+      if (!visible) {
+        tagLineScales[0] = 0
+        tagLineScales[1] = 0
+        tagLineScales[2] = 0
+      }
+    }
     apiRef.current = {
       setShape: setTargetShape,
       getTagScreenPos,
@@ -955,6 +968,7 @@ const OrganicLoader = forwardRef(function OrganicLoader(
       getTagModeOpacity,
       getTagLuma,
       setTagLineScale,
+      setTagLinesEnabled,
       requestFreezeTagTargets,
       samplePixelLuma,
     }
@@ -1605,6 +1619,7 @@ const OrganicLoader = forwardRef(function OrganicLoader(
     getTagModeOpacity: (i) => apiRef.current?.getTagModeOpacity(i) ?? 1,
     getTagLuma: (i) => apiRef.current?.getTagLuma(i) ?? 1,
     setTagLineScale: (i, s) => apiRef.current?.setTagLineScale(i, s),
+    setTagLinesEnabled: (enabled) => apiRef.current?.setTagLinesEnabled(enabled),
     requestFreezeTagTargets: () => apiRef.current?.requestFreezeTagTargets(),
     samplePixelLuma: (x, y) => apiRef.current?.samplePixelLuma(x, y) ?? 1,
   }), [])

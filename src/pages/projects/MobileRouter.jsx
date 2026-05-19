@@ -82,6 +82,24 @@ function MobileRouter() {
     return () => observers.forEach((o) => o.disconnect())
   }, [animDone])
 
+  // Keep the active TOC item centered inside the horizontally-scrollable
+  // .pp-toc bar (relevant on mobile where the TOC is fixed bottom and may
+  // overflow). Scrolls only the bar, never the page.
+  useEffect(() => {
+    const toc = document.querySelector('.pp-toc')
+    const active = toc?.querySelector('.pp-toc-item.is-active')
+    if (!toc || !active) return
+    const tocRect = toc.getBoundingClientRect()
+    const itemRect = active.getBoundingClientRect()
+    const offset =
+      (itemRect.left + itemRect.width / 2) -
+      (tocRect.left + tocRect.width / 2)
+    if (Math.abs(offset) > 1) {
+      toc.scrollBy({ left: offset, behavior: 'smooth' })
+    }
+  }, [activeId])
+
+
   return (
     <>
       <Helmet>

@@ -57,22 +57,22 @@
        - 14px: body-small, button-text
        - 12px: caption, h5 (bold caption), label
      Display + h1–h3 form the heading scale above body. */
-  --fs-display:    4.5rem;     /* 72px — hero hello (Manrope Medium uppercase) */
-  --fs-h1:         2.5rem;     /* 40px — page title */
-  --fs-h2:         1.75rem;    /* 28px — section heading */
-  --fs-h3:         1.25rem;    /* 20px — sub-section heading */
+  --fs-display:    4.5rem;     /* 72px — hero hello (unchanged — anchored to the Home/About h1 spec) */
+  --fs-h1:         3rem;       /* 48px — page title (was 40) */
+  --fs-h2:         1.25rem;    /* 20px — section heading (was 18) */
+  --fs-h3:         1.125rem;   /* 18px — sub-section heading (was 16) */
   --fs-h4:         1rem;       /* 16px — bold body (= body size, weight 600) */
-  --fs-h5:         0.75rem;    /* 12px — bold caption (= caption size, weight 600) */
+  --fs-h5:         0.75rem;    /* 12px — bold caption (floor, = caption size, weight 600) */
   --fs-body:       1rem;       /* 16px — main body copy (BASE) */
-  --fs-body-small: 0.875rem;   /* 14px — small body / list items */
-  --fs-caption:    0.75rem;    /* 12px — helper text */
-  --fs-label:      0.75rem;    /* 12px — uppercase eyebrow / section label */
-  --fs-button:     0.875rem;   /* 14px — CTA / navigation link */
+  --fs-body-small: 1rem;       /* 16px — promoted to match body so list items / small copy now read at base size */
+  --fs-caption:    0.75rem;    /* 12px — helper text (floor) */
+  --fs-label:      0.75rem;    /* 12px — uppercase eyebrow / section label (floor) */
+  --fs-button:     1rem;       /* 16px — CTA / navigation link (was 14) */
   /* Marketing / hero typography (used on the home page). Outside the
      16px-anchored scale because the home is a poster-sized statement. */
-  --fs-hero-body:  2rem;       /* 32px — large lifestyle copy */
-  --fs-nav:        1.125rem;   /* 18px — vertical nav rail */
-  --fs-eyebrow:    1rem;       /* 16px — hero subtitle (uppercase) */
+  --fs-hero-body:  2.25rem;    /* 36px — large lifestyle copy (was 32) */
+  --fs-nav:        1.25rem;    /* 20px — vertical nav rail (was 18) */
+  --fs-eyebrow:    1.125rem;   /* 18px — hero subtitle (uppercase) (was 16) */
 
   /* Weights */
   --fw-light:    300;
