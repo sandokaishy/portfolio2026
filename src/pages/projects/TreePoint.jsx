@@ -140,10 +140,10 @@ function TreePoint() {
 
         <main className="pp-main">
           <div className="pp-hero">
-            <Placeholder
-              name="hero-treepoint.png"
-              aspect="5/4"
-              color={project.color}
+            <img
+              className="pp-hero-image"
+              src="/treepoint/hero-treepoint.jpg"
+              alt="Tree Point hero"
             />
           </div>
 
@@ -210,7 +210,11 @@ function TreePoint() {
                 RedPoints they have on the index of MyRewards, switching to
                 the redemption tab to see all vouchers they can redeem.
               </p>
-              <Placeholder name="current-redemption-flow.png" aspect="16/9" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/current-redemption-flow.png"
+                alt="Current redemption flow in MyRewards: RedPoint balance to voucher redemption tab"
+              />
             </div>
           </section>
 
@@ -224,6 +228,11 @@ function TreePoint() {
                 wallet value as TreePoint. Users will be able to redeem
                 vouchers with the total value of the wallet.
               </p>
+              <img
+                className="pp-block-image"
+                src="/treepoint/wallet_ideation.png"
+                alt="Point Wallet concept: bank reward points consolidated into a single TreePoint balance"
+              />
             </div>
 
             <div className="pp-block">
@@ -233,7 +242,11 @@ function TreePoint() {
                 financial group, so it's essential for users to activate the
                 service themselves due to the law.
               </p>
-              <Placeholder name="ideation1-start-wallet.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation1-start-wallet.png"
+                alt="Wallet activation screen: user opts in before using the Point Wallet service"
+              />
             </div>
 
             <div className="pp-block">
@@ -244,7 +257,11 @@ function TreePoint() {
                 Users have to authorize the wallet service to acquire RedPoint
                 by signing in to their MyReward account.
               </p>
-              <Placeholder name="ideation1-authorize-import.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation1-authorize-import.png"
+                alt="Authorization flow: user signs in to MyRewards to import RedPoint into the wallet"
+              />
             </div>
 
             <div className="pp-block">
@@ -255,7 +272,11 @@ function TreePoint() {
                 the bottom of the page is history, which shows the changes in
                 the wallet value.
               </p>
-              <Placeholder name="ideation1-wallet-page.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation1-wallet-page.png"
+                alt="Wallet page: TreePoint balance, point cards, and transaction history"
+              />
             </div>
 
             <div className="pp-block">
@@ -266,7 +287,11 @@ function TreePoint() {
                 need for exchange. The wallet calculates all kinds of points
                 into one value (TreePoint), used to redeem vouchers.
               </p>
-              <Placeholder name="ideation1-redemption-flow.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation1-redemption-flow.png"
+                alt="Updated redemption flow expressed in TreePoint instead of mixed point types"
+              />
             </div>
 
             <div className="pp-block">
@@ -278,7 +303,11 @@ function TreePoint() {
                 shows the detail of usage — how many RedPoint and TreePoint
                 were used.
               </p>
-              <Placeholder name="ideation1-redemption-details.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation1-redemption-details.png"
+                alt="Redemption details showing total wallet value, post-redemption balance, and per-point consumption"
+              />
             </div>
           </section>
 
@@ -295,6 +324,18 @@ function TreePoint() {
                 with a lot of RedPoint, users with less RedPoint, and users
                 without RedPoint.
               </p>
+              <div className="pp-block-row">
+                <img
+                  className="pp-block-image"
+                  src="/treepoint/validateIdeation1_01.jpg"
+                  alt="Usability testing session for the Point Wallet prototype"
+                />
+                <img
+                  className="pp-block-image"
+                  src="/treepoint/validateIdeation1_02.jpg"
+                  alt="Participant interacting with the Point Wallet prototype during testing"
+                />
+              </div>
             </div>
 
             <div className="pp-block">
@@ -305,7 +346,18 @@ function TreePoint() {
                 wallet concept. See the complete prototypes for usability
                 testing below.
               </p>
-              <Placeholder name="validate1-prototypes.png" aspect="16/10" />
+              <div className="pp-block-row">
+                <img
+                  className="pp-block-image"
+                  src="/treepoint/validate1-prototypes_1.gif"
+                  alt="First high-fidelity prototype used in the wallet usability test"
+                />
+                <img
+                  className="pp-block-image"
+                  src="/treepoint/validate1-prototypes_2.gif"
+                  alt="Second high-fidelity prototype used in the wallet usability test"
+                />
+              </div>
             </div>
 
             <div className="pp-block">
