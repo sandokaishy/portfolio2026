@@ -227,6 +227,20 @@
   margin-top: 4px;
 }
 
+/* Warning variant — yellow accent fill for "finding"/issue style badges
+   (e.g. TreePoint's validate-1 findings). Dark text keeps contrast. */
+.challenge-option-num--warning {
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+}
+
+/* Success variant — green fill for positive findings (e.g. TreePoint's
+   validate-2 wins). Uses the project's green marker color. */
+.challenge-option-num--success {
+  background-color: var(--color-marker-green);
+  color: var(--color-ink);
+}
+
 .challenge-option-body {
   flex: 1;
   min-width: 0;
@@ -644,10 +658,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1;
   color: var(--color-ink);
   background-color: rgba(247, 243, 236, 0.5);
@@ -670,7 +684,7 @@
    relative makes this the positioning context for the absolutely-placed
    back button living inside. */
 .pp-aside {
-  grid-column: 2 / span 3;
+  grid-column: 1 / span 3;
   position: sticky;
   top: var(--pp-pad-y);
   align-self: start;
@@ -834,7 +848,7 @@
 
 /* Right column: hero up top, stacked content sections below. */
 .pp-main {
-  grid-column: 6 / span 6;
+  grid-column: 5 / span 7;
   display: flex;
   flex-direction: column;
   gap: 96px;
@@ -863,12 +877,34 @@
 .pp-section {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  /* No gap — spacing between section-intro / heading / block items is
+     handled by each child's margin-bottom (see rules below). This lets
+     us keep section-intro tight to the first content while leaving a
+     larger breathing space between consecutive .pp-block items. */
+  gap: 0;
   /* Override the legacy .project-section auto-margin/max-width so sections
      fill the right column. */
   padding: 0;
   max-width: none;
   margin: 0;
+}
+
+/* Spacing between major section-level units. Intro / standalone section
+   heading sit close (16px) to the first block they introduce. Blocks
+   themselves keep a more generous 48px between each other. Trailing
+   child's margin is cleared so the section doesn't grow past its
+   content. */
+.pp-section > .section-heading,
+.pp-section > .pp-section-intro {
+  margin-bottom: 16px;
+}
+.pp-section > .pp-block,
+.pp-section > .challenge-grid,
+.pp-section > .outcome-stats {
+  margin-bottom: 48px;
+}
+.pp-section > *:last-child {
+  margin-bottom: 0;
 }
 
 /* Section intro: pairs the section heading with its leading body / image
@@ -917,12 +953,243 @@
   border-radius: 8px;
 }
 
+/* Give media items extra breathing room from neighbouring text inside a
+   block. Paragraphs/headings keep the tight 8px flex gap; the text↔media
+   boundaries open up to 28px (on top of the inherited gap, so the
+   effective space becomes ~36px). Applied whether the media sits
+   directly under .pp-block or under .pp-section-intro (the latter is
+   where the diagram + video pairs in Poweramp live). */
+.pp-block > .pp-block-image,
+.pp-block > .pp-block-video,
+.pp-block > .pp-block-row,
+.pp-block > .pp-step-sequence,
+.pp-block > .annotated-diagram,
+.pp-section-intro > .pp-block-image,
+.pp-section-intro > .pp-block-video,
+.pp-section-intro > .pp-block-row,
+.pp-section-intro > .pp-step-sequence,
+.pp-section-intro > .annotated-diagram {
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+.pp-block > .pp-block-image:first-child,
+.pp-block > .pp-block-video:first-child,
+.pp-block > .pp-block-row:first-child,
+.pp-block > .pp-step-sequence:first-child,
+.pp-block > .annotated-diagram:first-child,
+.pp-section-intro > .pp-block-image:first-child,
+.pp-section-intro > .pp-block-video:first-child,
+.pp-section-intro > .pp-block-row:first-child,
+.pp-section-intro > .pp-step-sequence:first-child,
+.pp-section-intro > .annotated-diagram:first-child {
+  margin-top: 0;
+}
+.pp-block > .pp-block-image:last-child,
+.pp-block > .pp-block-video:last-child,
+.pp-block > .pp-block-row:last-child,
+.pp-block > .pp-step-sequence:last-child,
+.pp-block > .annotated-diagram:last-child,
+.pp-section-intro > .pp-block-image:last-child,
+.pp-section-intro > .pp-block-video:last-child,
+.pp-section-intro > .pp-block-row:last-child,
+.pp-section-intro > .pp-step-sequence:last-child,
+.pp-section-intro > .annotated-diagram:last-child {
+  margin-bottom: 0;
+}
+
 /* Two-up image row: pair related stills/GIFs side by side within a block.
    Collapses to a single column on mobile (handled in the media query). */
 .pp-block-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+}
+
+/* ==================== STREAMING DIAGRAM ====================
+   UniFi Play (Poweramp) §streaming. Recreates the isometric Figma frame
+   "Streaming" as a self-contained SVG: an amplifier line-drawing with
+   two dashed connections feeding two zoned speakers. Two pieces are
+   animated:
+     - .streaming-line dashes march from amp → speaker (stroke-dashoffset)
+     - .streaming-ripple expands outward in 3 staggered waves per speaker
+   The static halos from the original Figma file are dropped — the ripple
+   set replaces them so the speakers visibly "play". */
+.streaming-diagram {
+  width: 100%;
+  overflow: hidden;
+}
+
+.streaming-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Device line-art was authored as filled even-odd paths in Figma so the
+   strokes are actually fills. Paint them in ink. */
+.streaming-device {
+  fill: var(--color-ink);
+}
+
+/* Speaker grill — the small dial inside each speaker. Soft grey, static. */
+.streaming-dial {
+  fill: var(--color-border);
+  fill-opacity: 0.6;
+}
+
+/* Expanding ripples around each speaker. Three offset waves give the
+   sense of continuous sound output. `r` and `opacity` are both animated
+   via CSS — both properties are supported on SVG circles in evergreen
+   browsers since 2023.
+
+   Low max opacity (0.25) is intentional: the iso device line-art is
+   drawn with fill-rule="evenodd" leaving the device's interior
+   transparent, so any ripple at the back will also be visible inside
+   the device. Keeping the fill faint lets the line-art read clearly. */
+.streaming-ripple {
+  fill: var(--color-border);
+  animation: streaming-ripple 2.4s ease-out infinite;
+}
+.streaming-ripple--0 { animation-delay: 0s; }
+.streaming-ripple--1 { animation-delay: 0.8s; }
+.streaming-ripple--2 { animation-delay: 1.6s; }
+
+@keyframes streaming-ripple {
+  0%   { r: 70;  opacity: 0.25; }
+  100% { r: 220; opacity: 0; }
+}
+
+/* Streaming connection lines. stroke-dashoffset animated to a negative
+   value so the dash pattern visually marches from path-start (the amp)
+   toward path-end (the speaker). One full period equals the dasharray
+   total (10 + 10 = 20), so the cycle is seamless. */
+.streaming-line {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 2;
+  stroke-dasharray: 10 10;
+  animation: streaming-flow 0.9s linear infinite;
+}
+
+@keyframes streaming-flow {
+  to { stroke-dashoffset: -20; }
+}
+
+/* Leader line from the "Streaming" label down to the amp — also marches,
+   so it reads as the label "feeding" the amp the streaming signal. */
+.streaming-label-leader {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 2;
+  stroke-dasharray: 10 10;
+  animation: streaming-flow 0.9s linear infinite;
+}
+
+/* Wired-source cable: thick solid stroke from amp to the record player
+   in WiredBroadcastDiagram. `--thin` modifier reuses the same look at
+   4px for the short turntable connector run. */
+.broadcast-cable {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.broadcast-cable--thin {
+  stroke-width: 4;
+}
+
+/* Solid leader from the "Physical Cable" label up to the wired-cable run.
+   Solid stroke (not dashed) keeps it visually distinct from the streaming
+   dashes elsewhere in the diagram. */
+.broadcast-leader {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Vinyl grooves on the turntable platter. Solid dark strokes drawn as
+   open arcs (not closed ellipses) — the gap rotates around the platter
+   center, reading as the disc spinning. Strokes use vector-effect:
+   non-scaling-stroke so the outer iso scale(1, 0.583) doesn't squish
+   them into uneven widths. */
+.broadcast-platter path {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+
+/* UniFi Console line-art in the "what-should-we-build" diagram. Drawn
+   as solid strokes (not filled evenodd paths) since the source consists
+   of separate outline segments rather than a single filled shape. */
+.what-build-console {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* Subcaption under the standalone amp. Smaller than the framed labels
+   so it reads as a tagline rather than a section title. */
+.what-build-caption {
+  fill: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 28px;
+  font-weight: var(--fw-medium);
+}
+
+.broadcast-platter-rotate {
+  transform-origin: 0 0;
+  animation: broadcast-platter-rotate 5s linear infinite;
+}
+
+@keyframes broadcast-platter-rotate {
+  to { transform: rotate(360deg); }
+}
+
+.streaming-label-box {
+  fill: var(--color-surface);
+  stroke: var(--color-ink);
+  stroke-width: 1;
+}
+
+.streaming-label-text {
+  fill: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: var(--fw-medium);
+}
+
+/* Sequence row: a flow of step media (videos / images) with arrows between.
+   Each child media takes equal space; arrows are auto-injected between
+   adjacent media via the +-selector below. Collapses to a column on mobile
+   with the arrow rotated to point down. */
+.pp-step-sequence {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.pp-step-media {
+  flex: 1 1 0;
+  min-width: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background-color: var(--color-surface-muted);
+}
+
+.pp-step-arrow {
+  flex-shrink: 0;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-ink-muted);
 }
 
 /* Same shape as .pp-block-image but for inline videos (UI demos / motion
@@ -950,6 +1217,13 @@
 .pp-block-video:focus,
 .pp-block-video:focus-visible {
   outline: none;
+}
+
+/* Optional drop shadow — used on phone screen recordings that sit on
+   the cream surface without a diagram backdrop, so they feel lifted
+   off the page. */
+.pp-block-video--lift {
+  box-shadow: 0 16px 36px rgba(34, 34, 34, 0.14);
 }
 
 /* Inline call-to-action link sitting at the foot of a content block —
@@ -1126,7 +1400,10 @@ html {
     max-height: none;
   }
   .pp-aside-header{ order: 2; margin: 0; }
-  .pp-aside-meta  { order: 3; margin: 0; display: block; }
+  /* Top margin gives the team list (rendered inside .pp-aside-meta on
+     mobile) breathing room from the title block above. Matches the
+     48px desktop .pp-aside gap so the two layouts feel consistent. */
+  .pp-aside-meta  { order: 3; margin: 48px 0 0; display: block; }
   .pp-section     { order: 4; margin-top: 64px; }
   /* Team is always visible on mobile — the desktop team↔TOC cross-fade
      pattern is replaced by "team in flow at top, TOC fixed at bottom". */
@@ -1141,13 +1418,13 @@ html {
   .pp-toc,
   .pp-toc.is-hidden {
     position: fixed;
-    /* Sit on the same baseline as .pp-back (40x40 at left:32). 16px gap
-       (left = 32 + 40 + 16 = 88) keeps them visually paired without
+    /* Sit on the same baseline as .pp-back (48x48 at left:32). 16px gap
+       (left = 32 + 48 + 16 = 96) keeps them visually paired without
        touching; right:32 mirrors back's left inset for symmetry. */
-    left: 88px;
+    left: 96px;
     right: 32px;
     bottom: calc(32px + env(safe-area-inset-bottom));
-    height: 40px;
+    height: 48px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -1179,20 +1456,23 @@ html {
     opacity: 1;
     transform: none;
   }
-  /* Mobile uses color shift alone for active/hover — the desktop
+  /* Mobile uses color shift + weight bump for active/hover — the desktop
      underline-sweep would clash with the framed pill aesthetic. */
   .pp-toc-item.is-active a,
   .pp-toc-item a:hover,
   .pp-toc-item a:focus-visible {
     background-size: 0% 1px;
   }
+  .pp-toc-item.is-active {
+    font-weight: var(--fw-bold);
+  }
   .pp-back {
     position: fixed;
     top: auto;
     left: 32px;
     bottom: calc(32px + env(safe-area-inset-bottom));
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     z-index: 11;
     background-color: rgba(247, 243, 236, 0.5);
     backdrop-filter: blur(4px);
@@ -1204,8 +1484,22 @@ html {
   .annotated-tag {
     font-size: 12px;
   }
-  /* Two-up image rows collapse to a single column on mobile. */
-  .pp-block-row {
+  /* Two-up image rows collapse to a single column on mobile. Add the
+     `--stay` modifier when a pair must remain side-by-side on small
+     screens (e.g. compact app screenshot beside a tiny diagram). */
+  .pp-block-row:not(.pp-block-row--stay) {
     grid-template-columns: 1fr;
+  }
+  .pp-block-row--stay {
+    gap: 8px;
+  }
+  /* Step sequences stay horizontal on mobile too — the flow reads as a
+     filmstrip. Tighten the gap and shrink the arrow so 4 portrait
+     videos still fit comfortably at narrow widths. */
+  .pp-step-sequence {
+    gap: 6px;
+  }
+  .pp-step-arrow {
+    font-size: 14px;
   }
 }

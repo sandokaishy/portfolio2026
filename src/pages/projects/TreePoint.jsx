@@ -26,7 +26,6 @@ const SECTIONS = [
   { id: 'ideation-2', label: 'Ideation 2: Simple' },
   { id: 'release', label: 'Official Release' },
   { id: 'outcome', label: 'Outcome' },
-  { id: 'takeaway', label: 'Takeaway' },
 ]
 
 function TreePoint() {
@@ -341,10 +340,10 @@ function TreePoint() {
             <div className="pp-block">
               <h3>High Fidelity Prototypes</h3>
               <p>
-                We made prototypes with ProtoPie. We designed three tasks for
-                our subjects to observe how they think and interact with the
+                We made prototype with ProtoPie. We designed three tasks for
+                our subjects to observe how they think and do with the
                 wallet concept. See the complete prototypes for usability
-                testing below.
+                testing below:
               </p>
               <div className="pp-block-row">
                 <img
@@ -361,35 +360,51 @@ function TreePoint() {
             </div>
 
             <div className="pp-block">
-              <h3>Don't know what TreePoint is</h3>
-              <p>
-                Users don't know what TreePoint is or what the difference is
-                between RedPoint and TreePoint.
-              </p>
-            </div>
+              <h3>Findings</h3>
+              <div className="challenge-grid">
+              <div className="challenge-option">
+                <span className="challenge-option-num challenge-option-num--warning" aria-hidden="true">!</span>
+                <div className="challenge-option-body">
+                  <h4>Don't know what TreePoint is</h4>
+                  <p>
+                    Users don't know what TreePoint is or what the
+                    difference is between RedPoint and TreePoint.
+                  </p>
+                </div>
+              </div>
 
-            <div className="pp-block">
-              <h3>Users are confused about the wallet concept</h3>
-              <p>
-                Users are not only confused about the unit of the total
-                balance but also the consumption mechanism (which point will
-                be consumed first). Most users care about the order of
-                consumption — they want to decide which point to use when
-                exchanging coupons. However, TreePoint is always the first
-                consumed due to the system mechanism.
-              </p>
-            </div>
+              <div className="challenge-option">
+                <span className="challenge-option-num challenge-option-num--warning" aria-hidden="true">!</span>
+                <div className="challenge-option-body">
+                  <h4>Users are confused about the wallet concept</h4>
+                  <p>
+                    Users are not only confused about the unit of the total
+                    balance but also the consumption mechanism (which point
+                    will be consumed first). Most users care about the
+                    order of consumption — they want to decide which point
+                    to use when exchanging coupons. However, TreePoint is
+                    always the first consumed due to the system mechanism.
+                  </p>
+                </div>
+              </div>
 
-            <div className="pp-block">
-              <h3>
-                The authorization to import legacy points is inevitably lengthy
-              </h3>
-              <p>
-                If users want to use RedPoint and TreePoint together, they
-                have to authorize the wallet to access their RedPoint by
-                signing in to their account due to legality. It makes users
-                confused and annoyed because they didn't need to do it before.
-              </p>
+              <div className="challenge-option">
+                <span className="challenge-option-num challenge-option-num--warning" aria-hidden="true">!</span>
+                <div className="challenge-option-body">
+                  <h4>
+                    The authorization to import legacy points is inevitably
+                    lengthy
+                  </h4>
+                  <p>
+                    If users want to use RedPoint and TreePoint together,
+                    they have to authorize the wallet to access their
+                    RedPoint by signing in to their account due to
+                    legality. It makes users confused and annoyed because
+                    they didn't need to do it before.
+                  </p>
+                </div>
+              </div>
+              </div>
             </div>
 
             <div className="pp-block">
@@ -431,7 +446,11 @@ function TreePoint() {
                 clicking the card and switch to other points with a single
                 fling.
               </p>
-              <Placeholder name="ideation2-onboarding.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation2-onboarding.gif"
+                alt="Onboarding flow introducing TreePoint as the new redemption unit"
+              />
             </div>
 
             <div className="pp-block">
@@ -440,7 +459,11 @@ function TreePoint() {
                 We added a confirmation step to the current redemption
                 experience.
               </p>
-              <Placeholder name="ideation2-new-redemption.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation2-new-redemption.png"
+                alt="Updated redemption flow with a confirmation step before voucher exchange"
+              />
             </div>
 
             <div className="pp-block">
@@ -458,7 +481,11 @@ function TreePoint() {
                 Clicking details reveals the consumption of RedPoint and
                 TreePoint for this redemption.
               </p>
-              <Placeholder name="ideation2-confirm-cost.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/ideation2-confirm-cost.gif"
+                alt="Confirmation drawer detailing how RedPoint and TreePoint will be consumed in a redemption"
+              />
             </div>
           </section>
 
@@ -466,54 +493,85 @@ function TreePoint() {
             <div className="pp-section-intro">
               <div className="section-heading"><h2>VALIDATE AGAIN</h2></div>
               <p className="section-body">
-                Better understanding of TreePoint and its redemption flow.
+                What if we cracked the wallet and preserve RedPoint and
+                TreePoint as independent cards on the MyReward homepage.
+                Users don’t have to add points into wallet before using.
+                They can still redeem voucher with RedPoint if they don’t
+                have sufficient TreePoint.
               </p>
             </div>
 
             <div className="pp-block">
               <h3>High Fidelity Prototype</h3>
               <p>
-                This time, we made a really high fidelity prototype to do
-                usability testing. We made onboarding pages introducing
+                This time, we make a really high fidelity prototype to do
+                usability testing. We make onboarding pages introduce
                 TreePoint and tips to indicate TreePoint as the new unit to
-                redeem.
+                exchange.
               </p>
-              <Placeholder name="validate2-prototype.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/validate2-prototype-01.gif"
+                alt="Second-round prototype: onboarding pages introducing TreePoint"
+              />
+              <img
+                className="pp-block-image"
+                src="/treepoint/validate2-prototype-02.gif"
+                alt="Second-round prototype: redemption flow with confirmation tips"
+              />
             </div>
 
             <div className="pp-block">
-              <h3>
-                Our onboarding helps users better understand how TreePoint works
-              </h3>
-              <p>
-                Users know TreePoint is a new point and that all units have
-                been changed to TreePoint in MyReward after going through
-                onboarding. They also understand that TreePoint is different
-                from RedPoint.
-              </p>
-            </div>
+              <h3>Findings</h3>
+              <div className="challenge-grid">
+              <div className="challenge-option">
+                <span className="challenge-option-num challenge-option-num--success" aria-hidden="true">✓</span>
+                <div className="challenge-option-body">
+                  <h4>
+                    Our onboarding helps users better understand how
+                    TreePoint works
+                  </h4>
+                  <p>
+                    Users know TreePoint is a new point and that all units
+                    have been changed to TreePoint in MyReward after going
+                    through onboarding. They also understand that
+                    TreePoint is different from RedPoint.
+                  </p>
+                </div>
+              </div>
 
-            <div className="pp-block">
-              <h3>Users redeem vouchers seamlessly</h3>
-              <p>
-                Though we put the confirmation drawer in the redemption flow,
-                it didn't become a barrier for them to complete the task. They
-                all got vouchers successfully and understood that it costs
-                RedPoint when TreePoint is not enough.
-              </p>
-            </div>
+              <div className="challenge-option">
+                <span className="challenge-option-num challenge-option-num--success" aria-hidden="true">✓</span>
+                <div className="challenge-option-body">
+                  <h4>Users redeem vouchers seamlessly</h4>
+                  <p>
+                    Though we put the confirmation drawer in the redemption
+                    flow, it didn't become a barrier for them to complete
+                    the task. They all got vouchers successfully and
+                    understood that it costs RedPoint when TreePoint is
+                    not enough.
+                  </p>
+                </div>
+              </div>
 
-            <div className="pp-block">
-              <h3>
-                Redemption Details in confirmation drawer is a bit confusing
-              </h3>
-              <p>
-                The confirmation drawer successfully catches users' attention
-                and indicates the point consumption. However, the redemption
-                details are a bit confusing. It shows the TreePoint and
-                RedPoint balances, but users are unsure whether the values
-                shown are before or after redemption.
-              </p>
+              <div className="challenge-option">
+                <span className="challenge-option-num challenge-option-num--warning" aria-hidden="true">!</span>
+                <div className="challenge-option-body">
+                  <h4>
+                    Redemption Details in confirmation drawer is a bit
+                    confusing
+                  </h4>
+                  <p>
+                    The confirmation drawer successfully catches users'
+                    attention and indicates the point consumption.
+                    However, the redemption details are a bit confusing.
+                    It shows the TreePoint and RedPoint balances, but
+                    users are unsure whether the values shown are before
+                    or after redemption.
+                  </p>
+                </div>
+              </div>
+              </div>
             </div>
 
             <div className="pp-block">
@@ -523,7 +581,11 @@ function TreePoint() {
                 We could display how many points cost for this redemption and
                 have more detailed information on the result page.
               </p>
-              <Placeholder name="validate2-deeper-problem.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/validate2-deeper-problem.png"
+                alt="Annotated balance area showing redundant TreePoint and RedPoint values in the confirmation drawer"
+              />
             </div>
           </section>
 
@@ -535,7 +597,16 @@ function TreePoint() {
                 confirmation drawer and added tips about the consumption rule
                 on the redemption page.
               </p>
-              <Placeholder name="official-release.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/treepoint/official-release-01.gif"
+                alt="Released confirmation drawer with revised point-consumption information"
+              />
+              <img
+                className="pp-block-image"
+                src="/treepoint/official-release-02.gif"
+                alt="Released redemption page with consumption-rule tips"
+              />
             </div>
           </section>
 

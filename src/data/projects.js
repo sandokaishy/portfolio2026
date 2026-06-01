@@ -18,7 +18,7 @@ export const projects = [
     tags: ['Figma Plugin', 'AI Augmented', 'Productivity'],
   },
   {
-    name: 'TREE POINT',
+    name: 'TREEPOINT',
     path: '/projects/tree-point',
     color: '#50C878',
     tags: ['Fintech', 'Loyalty Program', 'Cathay'],

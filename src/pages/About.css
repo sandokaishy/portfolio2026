@@ -127,10 +127,10 @@
   right: 0;
   bottom: 0;
   height: 1px;
-  /* Source color tuned to land just barely off the cream surface in
-     difference mode — yields a faint divider instead of the harsh dark
-     line that #fff produces. */
-  background: #e0e0e0;
+  /* Source color further from the cream surface so mix-blend-mode:
+     difference produces a softer beige hairline rather than the
+     near-black line the previous #e0e0e0 yielded. */
+  background: #444444;
   mix-blend-mode: difference;
   pointer-events: none;
 }
@@ -207,10 +207,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1;
   color: var(--color-ink);
   background-color: rgba(247, 243, 236, 0.5);  /* surface @ 50% */

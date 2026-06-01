@@ -182,24 +182,29 @@ function MobileRouter() {
             <div className="pp-section-intro">
               <div className="section-heading"><h2>CHALLENGE</h2></div>
               <div className="challenge-grid">
-                <div className="pp-block">
-                  <h3>Tight Schedule</h3>
-                  <p>
-                    The project faced significant time pressure during the
-                    hardware development phase, compressing the software design
-                    and implementation timeline. The team needed to make rapid
-                    design decisions, validate feasibility, and stay aligned
-                    across global teams.
-                  </p>
+                <div className="challenge-option">
+                  <div className="challenge-option-body">
+                    <h4>Tight Schedule</h4>
+                    <p>
+                      The project faced significant time pressure during
+                      the hardware development phase, compressing the
+                      software design and implementation timeline. The
+                      team needed to make rapid design decisions, validate
+                      feasibility, and stay aligned across global teams.
+                    </p>
+                  </div>
                 </div>
-                <div className="pp-block">
-                  <h3>Market Latecomer</h3>
-                  <p>
-                    As a latecomer to the market, UniFi Mobile Router faced the
-                    challenge of achieving feature parity with established
-                    competitors. A key question emerged: How could we
-                    differentiate and grow in an already saturated market?
-                  </p>
+                <div className="challenge-option">
+                  <div className="challenge-option-body">
+                    <h4>Market Latecomer</h4>
+                    <p>
+                      As a latecomer to the market, UniFi Mobile Router
+                      faced the challenge of achieving feature parity with
+                      established competitors. A key question emerged:
+                      How could we differentiate and grow in an already
+                      saturated market?
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -214,6 +219,11 @@ function MobileRouter() {
                 We streamlined the initial setup experience from QR scan and
                 auto-pairing to cloud-based adopt.
               </p>
+              <img
+                className="pp-block-image"
+                src="/mobility/zero-touch-setup-overview.jpg"
+                alt="Zero-touch setup overview: QR scan → auto-pair → cloud adopt"
+              />
             </div>
 
             <div className="pp-block">
@@ -224,7 +234,55 @@ function MobileRouter() {
                 deployment so administrators and staff can stay focused on
                 their core responsibilities.
               </p>
-              <Placeholder name="zero-touch-qr-scan.png" aspect="16/10" />
+              <div className="pp-step-sequence">
+                <video
+                  className="pp-step-media"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Step 1: scan the device's QR code"
+                >
+                  <source src="/mobility/zero-touch-qr-scan-01.mp4" type="video/mp4" />
+                </video>
+                <span className="pp-step-arrow" aria-hidden="true">→</span>
+                <video
+                  className="pp-step-media"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Step 2: device is recognized and paired"
+                >
+                  <source src="/mobility/zero-touch-qr-scan-02.mp4" type="video/mp4" />
+                </video>
+                <span className="pp-step-arrow" aria-hidden="true">→</span>
+                <video
+                  className="pp-step-media"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Step 3: confirm placement and ownership"
+                >
+                  <source src="/mobility/zero-touch-qr-scan-03.mp4" type="video/mp4" />
+                </video>
+                <span className="pp-step-arrow" aria-hidden="true">→</span>
+                <video
+                  className="pp-step-media"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Step 4: device adopted into the cloud"
+                >
+                  <source src="/mobility/zero-touch-qr-scan-04.mp4" type="video/mp4" />
+                </video>
+              </div>
             </div>
 
             <div className="pp-block">
@@ -234,7 +292,17 @@ function MobileRouter() {
                 we'll provide guidance on locating the activation code
                 printed on its model.
               </p>
-              <Placeholder name="activation-code-guidance.png" aspect="16/10" />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Activation page guiding the user to the printed activation code on the device"
+              >
+                <source src="/mobility/activation-code-guidance.mp4" type="video/mp4" />
+              </video>
             </div>
 
             <div className="pp-block">
@@ -244,7 +312,17 @@ function MobileRouter() {
                 installation, administrators can manage the devices entirely
                 through our cloud-based Mobile Routing app.
               </p>
-              <Placeholder name="remote-management.png" aspect="16/10" />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Cloud-based remote management in the Mobile Routing app"
+              >
+                <source src="/mobility/remote-management.mp4" type="video/mp4" />
+              </video>
             </div>
           </section>
 
@@ -269,7 +347,11 @@ function MobileRouter() {
                 setups at scale, simplifying network deployment and reducing
                 manual errors.
               </p>
-              <Placeholder name="scalable-config-overview.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/mobility/scalable-config-overview.jpg"
+                alt="Overview of reusable Config Profiles applied across multiple Mobile Routers"
+              />
             </div>
 
             <div className="pp-block">
@@ -283,7 +365,37 @@ function MobileRouter() {
                 Config Profiles, which can then be deployed across multiple
                 UniFi Mobile Routers (UMRs).
               </p>
-              <Placeholder name="s2s-vpn-profile.png" aspect="16/10" />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Creating a site-to-site VPN profile and applying it to multiple devices"
+              >
+                <source src="/mobility/s2s-vpn-profile.mp4" type="video/mp4" />
+              </video>
+            </div>
+
+            <div className="pp-block">
+              <h3>Profile Overview</h3>
+              <p>
+                After creating a site-to-site VPN profile, users can visit
+                the Overview page to see every existing profile and the
+                devices to which each profile is applied.
+              </p>
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Profile Overview page listing existing profiles and the devices they're applied to"
+              >
+                <source src="/mobility/profile-overview.mp4" type="video/mp4" />
+              </video>
             </div>
 
             <div className="pp-block">
@@ -295,10 +407,17 @@ function MobileRouter() {
                 profile under the VPN or Firewall Rule sections to apply it
                 instantly.
               </p>
-              <Placeholder
-                name="apply-profile-single-device.png"
-                aspect="16/10"
-              />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Applying a stored Config Profile to a single device from the Device List"
+              >
+                <source src="/mobility/apply-profile-single-device.mp4" type="video/mp4" />
+              </video>
             </div>
           </section>
 
@@ -329,7 +448,11 @@ function MobileRouter() {
                 the other side.
               </p>
               <p>It's pretty frustrating. What if we could make it easier?</p>
-              <Placeholder name="regular-s2s-vpn-setup.png" aspect="16/10" />
+              <img
+                className="pp-block-image"
+                src="/mobility/regular-s2s-vpn-setup.png"
+                alt="Regular site-to-site VPN setup requiring manual entry of peer IP, keys, and subnets"
+              />
             </div>
 
             <div className="pp-block">
@@ -343,7 +466,17 @@ function MobileRouter() {
                 Once the console is chosen, they can easily picking the
                 correct associated subnet, minimizing configuration errors.
               </p>
-              <Placeholder name="easy-s2s-vpn-setup.png" aspect="16/10" />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Simplified site-to-site VPN setup picking the UniFi console as the peer device"
+              >
+                <source src="/mobility/easy-s2s-vpn-setup.mp4" type="video/mp4" />
+              </video>
             </div>
           </section>
 
@@ -357,7 +490,28 @@ function MobileRouter() {
                 health, CPU status, and identify anomalies over time — even
                 tracing back to when and why issues occurred.
               </p>
-              <Placeholder name="device-insights-dashboard.png" aspect="16/9" />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Device insights dashboard: network health, CPU and historical data"
+              >
+                <source src="/mobility/device-insights-dashboard-01.mp4" type="video/mp4" />
+              </video>
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Device insights dashboard: drill-down on anomaly events over time"
+              >
+                <source src="/mobility/device-insights-dashboard-02.mp4" type="video/mp4" />
+              </video>
             </div>
 
             <div className="pp-block">
@@ -369,13 +523,34 @@ function MobileRouter() {
                 full trace of its movement path for better operational
                 visibility.
               </p>
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Mobile Router showing its real-time location and historical track on a map"
+              >
+                <source src="/mobility/device-map-location-01.mp4" type="video/mp4" />
+              </video>
               <p>
                 If there isn't enough room to show each device's location,
                 pins will cluster together. This provides a high-level
                 overview, making it more convenient for users or enterprises
                 managing UniFi Mobile Routers globally.
               </p>
-              <Placeholder name="device-map-location.png" aspect="16/10" />
+              <video
+                className="pp-block-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Pin clustering on the device map for global Mobile Router fleets"
+              >
+                <source src="/mobility/device-map-location-02.mp4" type="video/mp4" />
+              </video>
             </div>
           </section>
 
