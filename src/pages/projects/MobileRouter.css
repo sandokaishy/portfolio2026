@@ -113,6 +113,7 @@
   font-size: var(--fs-body-small);
   line-height: var(--lh-loose);
   color: var(--color-ink-secondary);
+  margin-bottom: 1rem;
 }
 
 .section-list {
@@ -514,12 +515,6 @@
 }
 
 /* Navigation */
-.project-nav {
-  padding: 2rem 4rem 4rem;
-  max-width: 960px;
-  margin: 0 auto;
-}
-
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -566,10 +561,6 @@
   .outcome-stats {
     grid-template-columns: 1fr;
   }
-
-  .project-nav {
-    padding: 2rem;
-  }
 }
 
 /* ============================================================================
@@ -592,7 +583,9 @@
   column-gap: 0;
   padding: var(--pp-pad-y) var(--pp-pad-x);
   --pp-pad-y: 60px;
-  --pp-pad-x: 24px;
+  /* Match the home page's edge padding: scales with viewport width
+     (tight on phones, loose on ultra-wide) instead of a fixed 24px. */
+  --pp-pad-x: clamp(32px, 4vw, 80px);
   /* Page-entry: 2D swing-up around the bottom-left corner. Animation
      uses `both` fill so the rotated from-state applies before run AND
      the upright to-state holds during the animation. After the flip
@@ -661,7 +654,7 @@
   width: 48px;
   height: 48px;
   font-family: var(--font-sans);
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1;
   color: var(--color-ink);
   background-color: rgba(247, 243, 236, 0.5);
@@ -692,10 +685,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  /* Top padding = back-button height (32) + 48 gap to the header. .pp-back
+  /* Top padding = back-button height (48) + 48 gap to the header. .pp-back
      is absolutely positioned at top: 0 of the aside (i.e. above the
      padding area), so this padding pushes only the in-flow content down. */
-  padding-top: 80px;
+  padding-top: 96px;
   gap: 48px;
   min-width: 0;
 }
@@ -846,9 +839,11 @@
   color: var(--color-ink);
 }
 
-/* Right column: hero up top, stacked content sections below. */
+/* Right column: hero up top, stacked content sections below. Spans from
+   col 5 to the last grid line (-1), reclaiming what used to be an empty
+   col-12 right gutter so the content gets the full right-side width. */
 .pp-main {
-  grid-column: 5 / span 7;
+  grid-column: 5 / -1;
   display: flex;
   flex-direction: column;
   gap: 96px;
@@ -882,6 +877,9 @@
      us keep section-intro tight to the first content while leaving a
      larger breathing space between consecutive .pp-block items. */
   gap: 0;
+  /* TOC anchor jumps land here; offset the scroll so the section heading
+     sits below the viewport top instead of flush against it. */
+  scroll-margin-top: 60px;
   /* Override the legacy .project-section auto-margin/max-width so sections
      fill the right column. */
   padding: 0;
@@ -915,7 +913,9 @@
 .pp-section-intro {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  /* Spacing flows downward: each child owns its margin-bottom rather than
+     relying on a flex gap. Keeps text→media spacing driven by the
+     preceding element's margin-bottom. */
 }
 
 /* Universal content block for the Mobile Router page (and any project page
@@ -928,19 +928,22 @@
 .pp-block {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  /* Spacing flows downward via each child's margin-bottom (no flex gap),
+     so text→media separation is owned by the preceding element. */
 }
 
 .pp-block h3 {
   font-size: var(--fs-h3);
   font-weight: var(--fw-semibold);
   color: var(--color-ink);
+  margin-bottom: 0.5rem;
 }
 
 .pp-block p {
   font-size: var(--fs-body-small);
   line-height: var(--lh-relaxed);
   color: var(--color-ink-secondary);
+  margin-bottom: 1rem;
 }
 
 /* Real image inside a content block (alternative to the colored Placeholder).
@@ -953,47 +956,35 @@
   border-radius: 8px;
 }
 
-/* Give media items extra breathing room from neighbouring text inside a
-   block. Paragraphs/headings keep the tight 8px flex gap; the text↔media
-   boundaries open up to 28px (on top of the inherited gap, so the
-   effective space becomes ~36px). Applied whether the media sits
-   directly under .pp-block or under .pp-section-intro (the latter is
-   where the diagram + video pairs in Poweramp live). */
+/* Media items push their breathing room downward (margin-bottom only) so
+   spacing flows in one direction. The space ABOVE a media item is owned by
+   the preceding element's margin-bottom (paragraph = 1rem). Applied whether
+   the media sits directly under .pp-block or under .pp-section-intro. */
 .pp-block > .pp-block-image,
 .pp-block > .pp-block-video,
 .pp-block > .pp-block-row,
+.pp-block > .pp-block-stack,
 .pp-block > .pp-step-sequence,
 .pp-block > .annotated-diagram,
 .pp-section-intro > .pp-block-image,
 .pp-section-intro > .pp-block-video,
 .pp-section-intro > .pp-block-row,
+.pp-section-intro > .pp-block-stack,
 .pp-section-intro > .pp-step-sequence,
 .pp-section-intro > .annotated-diagram {
-  margin-top: 28px;
   margin-bottom: 28px;
 }
-.pp-block > .pp-block-image:first-child,
-.pp-block > .pp-block-video:first-child,
-.pp-block > .pp-block-row:first-child,
-.pp-block > .pp-step-sequence:first-child,
-.pp-block > .annotated-diagram:first-child,
-.pp-section-intro > .pp-block-image:first-child,
-.pp-section-intro > .pp-block-video:first-child,
-.pp-section-intro > .pp-block-row:first-child,
-.pp-section-intro > .pp-step-sequence:first-child,
-.pp-section-intro > .annotated-diagram:first-child {
-  margin-top: 0;
-}
-.pp-block > .pp-block-image:last-child,
-.pp-block > .pp-block-video:last-child,
-.pp-block > .pp-block-row:last-child,
-.pp-block > .pp-step-sequence:last-child,
-.pp-block > .annotated-diagram:last-child,
-.pp-section-intro > .pp-block-image:last-child,
-.pp-section-intro > .pp-block-video:last-child,
-.pp-section-intro > .pp-block-row:last-child,
-.pp-section-intro > .pp-step-sequence:last-child,
-.pp-section-intro > .annotated-diagram:last-child {
+
+/* Clear trailing margins so a unit ends flush. Inside .pp-block everything
+   resets — consecutive blocks already get 48px from the section-level rule,
+   so a trailing video must not add to it. Inside .pp-section-intro only the
+   TEXT trailing margin clears (intro stays tight, 16px, to the block it
+   introduces); a trailing media item keeps its 28px so a closing diagram /
+   video still has breathing room before the next block. */
+.pp-block > *:last-child,
+.pp-section-intro > p:last-child,
+.pp-section-intro > .section-body:last-child,
+.pp-section-intro > .section-heading:last-child {
   margin-bottom: 0;
 }
 
@@ -1002,6 +993,16 @@
 .pp-block-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Stacked media: group related videos/images vertically in one block so
+   the spacing between them is a controlled stack gap rather than the
+   larger block-level margins each would otherwise pick up as a direct
+   child of .pp-block / .pp-section-intro. */
+.pp-block-stack {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 

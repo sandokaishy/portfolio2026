@@ -111,6 +111,17 @@
   flex-direction: column;
   gap: 16px;
   align-items: flex-start;
+  /* Frost the floating tag layer (.loader-tags-layer, z-index: 1) that
+     drifts behind the rail so the project labels stay legible instead of
+     colliding with the pill backgrounds passing behind them. The negative
+     margin matches the padding so the labels stay anchored exactly where
+     they were while the blur card bleeds outward behind them. */
+  padding: 10px 14px;
+  margin: -10px -14px;
+  border-radius: 6px;
+  background-color: rgba(247, 243, 236, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .project-nav-item {

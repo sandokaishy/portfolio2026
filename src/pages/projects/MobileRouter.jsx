@@ -490,28 +490,30 @@ function MobileRouter() {
                 health, CPU status, and identify anomalies over time — even
                 tracing back to when and why issues occurred.
               </p>
-              <video
-                className="pp-block-video"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                aria-label="Device insights dashboard: network health, CPU and historical data"
-              >
-                <source src="/mobility/device-insights-dashboard-01.mp4" type="video/mp4" />
-              </video>
-              <video
-                className="pp-block-video"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                aria-label="Device insights dashboard: drill-down on anomaly events over time"
-              >
-                <source src="/mobility/device-insights-dashboard-02.mp4" type="video/mp4" />
-              </video>
+              <div className="pp-block-stack">
+                <video
+                  className="pp-block-video"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Device insights dashboard: network health, CPU and historical data"
+                >
+                  <source src="/mobility/device-insights-dashboard-01.mp4" type="video/mp4" />
+                </video>
+                <video
+                  className="pp-block-video"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Device insights dashboard: drill-down on anomaly events over time"
+                >
+                  <source src="/mobility/device-insights-dashboard-02.mp4" type="video/mp4" />
+                </video>
+              </div>
             </div>
 
             <div className="pp-block">

@@ -234,9 +234,7 @@ const TEAM = [
 ]
 
 const SECTIONS = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'vision', label: 'Vision' },
-  { id: 'setup', label: 'Simple Setup' },
+  { id: 'overview', label: 'Why, What We Built' },
   { id: 'lcd', label: 'LCD Status' },
   { id: 'streaming', label: 'Audio Streaming' },
   { id: 'broadcast', label: 'Wired Broadcast' },
@@ -460,7 +458,7 @@ function Poweramp() {
                 the mobile interface, the device's onboard display updates in
                 real time to show its current status.
               </p>
-              <div className="pp-block-row">
+              <div className="pp-block-stack">
                 <video
                   className="pp-block-video"
                   autoPlay
@@ -618,7 +616,7 @@ function Poweramp() {
                 microphone and broadcast voice messages across the network
                 using UniFi Play.
               </p>
-              <div className="pp-block-row">
+              <div className="pp-block-row pp-block-row--stay">
                 <video
                   className="pp-block-video pp-block-video--lift"
                   autoPlay
