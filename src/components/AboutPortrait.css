@@ -12,10 +12,23 @@
 .about-portrait {
   grid-column: 8 / span 4;
   grid-row: 1 / span 2;
-  align-self: start;
-  position: sticky;
-  top: 60px;
-  width: 100%;
+  /* Pinned to the bottom-right corner of the viewport (bleeds to the page
+     edges), staying put as the user scrolls. Width preserves the original
+     4-of-12-column cell size — (100vw − 2·pad) / 3 — now that it's lifted
+     out of the grid. The ≤1100px media query resets this back to static. */
+  position: fixed;
+  bottom: 0;
+  /* Base 4-of-12-column cell size scaled up by --portrait-scale so the
+     figure reads larger in the corner. Single source of truth so width and
+     the right-edge nudge below stay in sync. */
+  --portrait-scale: 1.25;
+  --portrait-w: calc((100vw - 2 * var(--about-pad-x)) / 3 * var(--portrait-scale));
+  width: var(--portrait-w);
+  /* .portrait-body sits at 92% width centered, so the figure's right edge
+     is inset 4% from the container. Nudge the whole composition right by
+     that 4% (the transparent gap clips off-screen) so the figure itself —
+     not the empty container — touches the viewport's right edge. */
+  right: calc(var(--portrait-w) * -0.04);
 }
 
 /* Stage drives its own height: body sits in flow at the bottom, padding-top
@@ -86,6 +99,7 @@
        50vw so the portrait reads as a compact lead-in to the content,
        not a full-bleed banner; centered horizontally. */
     position: static;
+    width: 100%;
     max-width: 40vw;
     margin: 0 auto;
   }

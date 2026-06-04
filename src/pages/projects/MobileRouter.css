@@ -440,6 +440,12 @@
   color: var(--color-ink);
 }
 
+/* UniFi Play (Poweramp) and Mobility (MobileRouter) outcome stats use a
+   brand-blue number. */
+.pp-shell--blue-stats .stat-card h3 {
+  color: #006FFF;
+}
+
 .stat-card p {
   font-size: var(--fs-body-small);
   color: var(--color-ink-tertiary);
@@ -581,6 +587,10 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 0;
+  /* Symmetric top/bottom. The EXTRA breathing room at the page bottom lives
+     inside .pp-main instead (see its padding-bottom) so it extends the grid
+     row the sticky aside is pinned within — otherwise the aside scrolls away
+     in a shell-level bottom pad. */
   padding: var(--pp-pad-y) var(--pp-pad-x);
   --pp-pad-y: 60px;
   /* Match the home page's edge padding: scales with viewport width
@@ -848,6 +858,12 @@
   flex-direction: column;
   gap: 96px;
   min-width: 0;
+  /* Extra bottom breathing room belongs here (inside the right column), not
+     on .pp-shell: it grows the grid row so the sticky aside stays pinned all
+     the way to the end instead of scrolling off in a shell-level bottom pad.
+     On mobile .pp-main becomes display:contents, so this is naturally dropped
+     and the shell's own bottom padding takes over. */
+  padding-bottom: 60px;
 }
 
 .pp-hero {
@@ -1357,6 +1373,148 @@
   letter-spacing: 0.02em;
   color: var(--color-ink);
   white-space: nowrap;
+}
+
+/* ==================== SCALABLE CONFIG DIAGRAM ====================
+   Mobile Router §scalable. Recreates the Figma "Scalable Config" frame: a
+   profile (terminal-style list) at the top whose settings flow down dashed
+   connectors fanning out to five devices, each rippling on its own cadence.
+   The SVG scales to the container width; an HTML overlay (sized in container
+   query units) holds the terminal text so it scales with the diagram. */
+.config-diagram {
+  position: relative;
+  width: 100%;
+  /* Establish a query container so .config-terminal can size its text in
+     cqw units that track the diagram's rendered width. */
+  container-type: inline-size;
+  overflow: hidden;
+}
+.config-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Device line-art (filled even-odd paths, painted in ink). */
+.config-device {
+  fill: var(--color-ink);
+}
+
+/* Solid bus line under the profile — distinct from the marching dashes. */
+.config-divider {
+  stroke: var(--color-ink);
+  stroke-width: 3;
+}
+
+/* Connectors: dashes march from the profile (path start) toward each device
+   (path end) via a negative stroke-dashoffset, reading as config being
+   pushed out to the fleet. */
+.config-conn {
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16 14;
+  animation: config-flow 0.9s linear infinite;
+}
+@keyframes config-flow {
+  to { stroke-dashoffset: -30; }
+}
+
+/* Ripples expanding from each device. Duration + delay are set inline per
+   device so every device pulses on its own timing. */
+.config-ripple {
+  fill: var(--color-ink);
+  opacity: 0;
+  animation-name: config-ripple;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+@keyframes config-ripple {
+  0%   { r: 150; opacity: 0.12; }
+  100% { r: 430; opacity: 0; }
+}
+
+/* Terminal-style profile list, overlaid where the profile sits in the frame.
+   Lines appear one at a time; once three show, the oldest fades out. */
+.config-terminal {
+  position: absolute;
+  left: 41.8%;
+  /* Anchor the list just above the divider (≈34.8% from the top) and let it
+     grow upward, so the newest line always sits close to the divider line
+     regardless of how many lines are showing. */
+  top: auto;
+  bottom: 66.5%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: clamp(9px, 1.4cqw, 20px);
+  color: var(--color-ink);
+  pointer-events: none;
+}
+/* Each line eases its own height open/closed (max-height in em, so it tracks
+   the clamped font size and never clips) and cross-fades. Animating the
+   height — instead of snapping a full line in/out instantly — keeps the
+   bottom-anchored stack from jumping as lines come and go. */
+.config-line {
+  overflow: hidden;
+  line-height: 1.4;
+  padding-bottom: 0.35em;
+  white-space: nowrap;
+  animation: config-line-enter 0.5s ease both;
+}
+@keyframes config-line-enter {
+  from { opacity: 0; max-height: 0; }
+  to   { opacity: 1; max-height: 2em; }
+}
+.config-line.is-leaving {
+  animation: config-line-leave 0.5s ease forwards;
+}
+@keyframes config-line-leave {
+  from { opacity: 1; max-height: 2em; }
+  to   { opacity: 0; max-height: 0; }
+}
+
+/* Respect reduced-motion: hold the dashes/ripples static (the terminal text
+   still advances, but nothing loops continuously). */
+@media (prefers-reduced-motion: reduce) {
+  .config-conn,
+  .config-ripple {
+    animation: none;
+  }
+  .config-ripple {
+    opacity: 0.08;
+  }
+}
+
+/* ==================== S2S VPN DIAGRAM ====================
+   Integration §. Recreates the Figma "S2S VPN" frame: a UniFi Console and a
+   Mobile Router either side of a "S2S VPN Tunnel" pill, joined by marching
+   dashes (reusing .config-diagram / .config-device / .config-conn). Labels +
+   key lists are SVG text so they scale with the viewBox. */
+.s2s-pill {
+  fill: var(--color-ink);
+}
+.s2s-pill-text {
+  fill: var(--color-surface);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: 64px;
+  dominant-baseline: central;
+}
+.s2s-item {
+  fill: var(--color-ink-tertiary);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: 64px;
+  dominant-baseline: text-before-edge;
+}
+.s2s-divider {
+  stroke: var(--color-border);
+  stroke-width: 2;
 }
 
 /* Smooth scroll on TOC anchor clicks. */

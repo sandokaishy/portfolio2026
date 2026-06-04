@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
+import CountUp from '../../components/CountUp.jsx'
 import './MobileRouter.css'
 
 function Placeholder({ name, aspect = '16/9', color }) {
@@ -310,7 +311,7 @@ function Poweramp() {
         />
       </Helmet>
 
-      <article className={`pp-shell${animDone ? ' pp-shell--ready' : ''}`}>
+      <article className={`pp-shell pp-shell--blue-stats${animDone ? ' pp-shell--ready' : ''}`}>
         <aside className="pp-aside">
           <Link to="/" className="pp-back" aria-label="Back to home">←</Link>
 
@@ -354,10 +355,10 @@ function Poweramp() {
 
         <main className="pp-main">
           <div className="pp-hero">
-            <Placeholder
-              name="hero-unifi-play.png"
-              aspect="5/4"
-              color={project.color}
+            <img
+              className="pp-hero-image"
+              src="/play/hero-unifi-play.jpg"
+              alt="UniFi Play hero — the UniFi PowerAmp amplifier"
             />
           </div>
 
@@ -661,11 +662,11 @@ function Poweramp() {
             </div>
             <div className="outcome-stats">
               <div className="stat-card">
-                <h3>3,000+ Devices</h3>
+                <h3><CountUp end={3000} suffix="+ Devices" /></h3>
                 <p>set up and online in 6 months.</p>
               </div>
               <div className="stat-card">
-                <h3>75% Devices</h3>
+                <h3><CountUp end={75} suffix="% Devices" /></h3>
                 <p>connected via ethernet.</p>
               </div>
             </div>
