@@ -877,12 +877,21 @@
 /* Real hero image (used in place of the colored Placeholder once a project
    has actual art). Fills the .pp-hero box; the parent's max-height cap
    keeps it from blowing past the first viewport. */
-.pp-hero-image {
+.pp-hero-image,
+.pp-hero-video {
   display: block;
   width: 100%;
   height: auto;
   max-height: calc(100vh - var(--pp-pad-y) * 2);
   object-fit: cover;
+}
+
+/* Crop off the outermost 2px the hero recording carries as a dark edge.
+   clip-path actually removes those pixels (an inset box-shadow can't — on a
+   replaced element the video paints on top of the shadow). See note on
+   .pp-block-video. */
+.pp-hero-video {
+  clip-path: inset(2px);
 }
 
 .pp-section {
@@ -1226,9 +1235,14 @@
      in case a focus ring leaks through. */
   -webkit-appearance: none;
   appearance: none;
-  box-shadow: none;
   background: transparent;
   border-radius: 8px;
+  /* Some screen recordings carry a thin dark edge on their outermost
+     pixels (reads as a black border against the cream page). clip-path
+     actually crops those 2px away — an inset box-shadow can't, because on a
+     replaced element the video content paints on top of the shadow. The
+     clipped margin reveals the cream page behind, so it's invisible. */
+  clip-path: inset(2px round 8px);
 }
 
 .pp-block-video:focus,
@@ -1239,8 +1253,10 @@
 /* Optional drop shadow — used on phone screen recordings that sit on
    the cream surface without a diagram backdrop, so they feel lifted
    off the page. */
+/* Uses filter (not box-shadow) so the lift shadow follows the clip-path'd
+   shape instead of being clipped away with the cropped edge. */
 .pp-block-video--lift {
-  box-shadow: 0 16px 36px rgba(34, 34, 34, 0.14);
+  filter: drop-shadow(0 16px 36px rgba(34, 34, 34, 0.14));
 }
 
 /* Inline call-to-action link sitting at the foot of a content block —
@@ -1555,7 +1571,8 @@ html {
     margin: -40px -32px 48px;
     max-height: none;
   }
-  .pp-hero-image {
+  .pp-hero-image,
+  .pp-hero-video {
     max-height: none;
   }
   .pp-aside-header{ order: 2; margin: 0; }

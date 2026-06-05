@@ -5,13 +5,6 @@ import { getProjectByPath } from '../../data/projects.js'
 import CountUp from '../../components/CountUp.jsx'
 import './MobileRouter.css'
 
-function Placeholder({ name, aspect = '16/9', color }) {
-  return (
-    <div className="placeholder" style={{ aspectRatio: aspect, backgroundColor: color }}>
-      <span>{name}</span>
-    </div>
-  )
-}
 
 const project = getProjectByPath('/projects/mobile-router')
 
@@ -370,11 +363,18 @@ function MobileRouter() {
         <main className="pp-main">
 
           <div className="pp-hero">
-            <Placeholder
-              name="hero-mobile-router.jpg"
-              aspect="5/4"
-              color={project.color}
-            />
+            <video
+              className="pp-hero-video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              poster="/mobility/hero-mobile-router.jpg"
+              aria-label="UniFi Mobile Router hero"
+            >
+              <source src="/mobility/hero-mobile-router.mp4" type="video/mp4" />
+            </video>
           </div>
 
           <section id="overview" className="pp-section">
