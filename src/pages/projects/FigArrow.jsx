@@ -116,69 +116,70 @@ function ProcessArrow({ direction }) {
   )
 }
 
-// Tag annotations for the V1 plugin UI, ported from the Figma frame
-// "Design Less V1". Container is sized 5:4 (viewBox 1200×960) with the
-// plugin image scaled to 40% width centered + top:12%. Each tag's
-// top-left is given in % of the canvas; the V1_LINES below are straight
-// line segments in viewBox coords from a landmark on the plugin image
-// to the tag's near edge.
-// Edge-anchored alignment columns:
-//   - LEFT tags:  CSS `right: 72%` → tag right-edge sits at 28% from the
-//     container's left, which is x=336 in the 1200-wide viewBox.
-//   - RIGHT tags: CSS `left: 72%`  → tag left-edge sits at 72% from the
-//     container's left, which is x=864 in the viewBox.
-// 28% / 72% leaves a 4%-wide breathing gap on either side of the 36%
-// image (which spans 32%..68%) — clearer separation between annotation
-// and subject — while still letting the widest pill (~145 CSS px) fit
-// at the narrowest desktop container (~526 CSS px).
-// top% values shifted down 7% from the original layout to track the
-// image's new vertical center (top: 19%). Tags track UI elements on
-// the plugin image, so they move together when the image moves.
-const V1_TAGS = [
-  { id: 'label-color',       label: 'Label Color',       side: 'left',  top: '26.00%' },
-  { id: 'connector-label',   label: 'Connector Label',   side: 'right', top: '21.00%' },
-  { id: 'label-background',  label: 'Label Background',  side: 'right', top: '37.00%' },
-  { id: 'stroke',            label: 'Stroke',            side: 'right', top: '48.00%' },
-  { id: 'connector-color',   label: 'Connector Color',   side: 'left',  top: '48.00%' },
-  { id: 'connector-type',    label: 'Connector Type',    side: 'left',  top: '60.00%' },
-  { id: 'start-point',       label: 'Start Point',       side: 'left',  top: '77.00%' },
-  { id: 'end-point',         label: 'End Point',         side: 'right', top: '63.00%' },
-  { id: 'connector-preview', label: 'Connector Preview', side: 'right', top: '81.00%' },
+// Tag annotations for the V1 plugin UI, ported 1:1 from the Figma frame
+// "Design Less V1" (node 179:923, a 1200×800 canvas). The SVG below uses
+// that exact 1200×800 viewBox so every coordinate is the Figma coordinate.
+// The plugin image occupies the same rect as Figma's "image 22"
+// (x381 y103, 437×600 → left 31.75%, top 12.875%, width 36.417%); the
+// figarrow-v1.jpg screenshot shares that aspect (1748×2402 ≈ 0.728), so
+// the connector dots land precisely on the UI elements they point to.
+//
+// Each connector is an orthogonal (elbow) polyline matching the Figma
+// VECTOR nodes. `dot` is the UI-side anchor — a pulsing ring sits there
+// permanently to invite hover. `points` run UI-side → tag-side; corners are
+// rounded by roundedPath() and the dashes march from the dot toward the tag
+// on hover. Tag-side X is snapped to the shared edge column (left tags
+// right-edge x=284, right tags left-edge x=923) so the line meets the tag
+// border; `cy` is the tag's vertical center, used to position it so the
+// line connects mid-edge.
+const V1_CONNECTORS = [
+  { id: 'label-color',       label: 'Label Color',       side: 'left',  cy: 170.5, dot: [407, 271],     points: [[407, 271], [340.5, 271], [340.5, 170.5], [284, 170.5]] },
+  { id: 'connector-color',   label: 'Connector Color',   side: 'left',  cy: 318.5, dot: [416, 361],     points: [[416, 361], [337, 361], [337, 318.5], [284, 318.5]] },
+  { id: 'connector-type',    label: 'Connector Type',    side: 'left',  cy: 464.5, dot: [406, 434],     points: [[406, 434], [335.5, 434], [335.5, 464.5], [284, 464.5]] },
+  { id: 'start-point',       label: 'Start Point',       side: 'left',  cy: 610,   dot: [406, 511],     points: [[406, 511], [345.5, 511], [345.5, 610], [284, 610]] },
+  { id: 'connector-label',   label: 'Connector Label',   side: 'right', cy: 173,   dot: [512.5, 202.5], points: [[512.5, 202.5], [859.5, 202.5], [859.5, 173], [923, 173]] },
+  { id: 'label-background',  label: 'Label Background',  side: 'right', cy: 274,   dot: [787, 274],     points: [[787, 274], [923, 274]] },
+  { id: 'stroke',            label: 'Stroke',            side: 'right', cy: 360,   dot: [787, 360],     points: [[787, 360], [923, 360]] },
+  { id: 'end-point',         label: 'End Point',         side: 'right', cy: 474.5, dot: [761.5, 503],   points: [[761.5, 503], [869.5, 503], [869.5, 474.5], [923, 474.5]] },
+  { id: 'connector-preview', label: 'Connector Preview', side: 'right', cy: 586,   dot: [787, 586],     points: [[787, 586], [923, 586]] },
 ]
 
-// Straight line segments. Each line ends at the corresponding tag's
-// alignment column AND at the tag's vertical center. Left-side tags
-// terminate at x=350 (10 units past the x=360 right-edge column, into
-// the pill's interior). Right-side tags terminate at x=850 (10 units
-// past the x=840 left-edge column). The opaque tag background hides the
-// small overlap so the line visually meets the tag's border at its
-// mid-point. Image-side coordinates target the corresponding UI element
-// inside the 36%-wide image (viewBox x=384..816, y=115..708).
-// Image-side Y values shifted down by 67 viewBox units (≈7% of 960) to
-// track the image's new vertical center (top: 19% → image landmarks
-// move with it). Tag-side Y values follow each tag's updated top%:
-// tag center y = top% × 9.6 + 14.
-// Each line: `from` is the landmark on the plugin image (drawn with a
-// small filled circle so the connection visibly anchors to the UI
-// element); `to` is the corresponding tag's alignment column with a
-// 10-unit overshoot into the tag's interior (masked by the tag's
-// opaque background so the line reads as terminating at the tag edge).
-// Left column x=336 (28% × 1200). Right column x=874 (72% × 1200 + 10).
-const V1_LINES = [
-  { from: [405, 313], to: [326, 264] },   // Label Color
-  { from: [600, 259], to: [874, 216] },   // Connector Label
-  { from: [751, 348], to: [874, 369] },   // Label Background
-  { from: [708, 461], to: [874, 475] },   // Stroke
-  { from: [405, 437], to: [326, 475] },   // Connector Color
-  { from: [427, 520], to: [326, 590] },   // Connector Type
-  { from: [449, 597], to: [326, 753] },   // Start Point
-  { from: [686, 597], to: [874, 619] },   // End Point
-  { from: [600, 674], to: [874, 792] },   // Connector Preview
-]
+// Build an SVG path from a polyline, rounding each interior corner. The
+// corner radius is `frac` (20%) of the shorter of the two segments meeting
+// at that corner, so bends stay proportional regardless of leg length.
+function roundedPath(points, frac = 0.2) {
+  if (points.length < 3) {
+    return `M ${points[0][0]} ${points[0][1]} L ${points[1][0]} ${points[1][1]}`
+  }
+  let d = `M ${points[0][0]} ${points[0][1]}`
+  for (let i = 1; i < points.length - 1; i++) {
+    const [px, py] = points[i - 1]
+    const [cx, cy] = points[i]
+    const [nx, ny] = points[i + 1]
+    const l1 = Math.hypot(px - cx, py - cy)
+    const l2 = Math.hypot(nx - cx, ny - cy)
+    const r = Math.min(l1, l2) * frac
+    const a = [cx + ((px - cx) / l1) * r, cy + ((py - cy) / l1) * r]
+    const b = [cx + ((nx - cx) / l2) * r, cy + ((ny - cy) / l2) * r]
+    d += ` L ${a[0]} ${a[1]} Q ${cx} ${cy} ${b[0]} ${b[1]}`
+  }
+  const last = points[points.length - 1]
+  d += ` L ${last[0]} ${last[1]}`
+  return d
+}
+
+// Shared edge columns (% of the 1200-wide canvas) the tags anchor to.
+const LEFT_TAG_RIGHT = `${((1200 - 284) / 1200) * 100}%`  // left tags: right edge
+const RIGHT_TAG_LEFT = `${(923 / 1200) * 100}%`           // right tags: left edge
 
 function DesignLessAnnotated() {
+  // Which annotation is revealed. Connectors are hidden by default and
+  // draw in only while their tag is hovered (or keyboard-focused).
+  const [active, setActive] = useState(null)
+
   return (
     <div className="annotated-diagram">
+      <h4 className="annotated-hint">Hover to see details</h4>
       <img
         className="annotated-diagram-img"
         src="/figarrow/figarrow-v1.jpg"
@@ -186,30 +187,57 @@ function DesignLessAnnotated() {
       />
       <svg
         className="annotated-diagram-lines"
-        viewBox="0 0 1200 960"
-        preserveAspectRatio="none"
+        viewBox="0 0 1200 800"
+        preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
       >
-        {V1_LINES.map((l, i) => (
-          <Fragment key={i}>
-            <path d={`M ${l.from[0]} ${l.from[1]} L ${l.to[0]} ${l.to[1]}`} />
-            <circle cx={l.from[0]} cy={l.from[1]} r="4" />
-          </Fragment>
+        {V1_CONNECTORS.map((c, i) => (
+          <g
+            key={c.id}
+            className={`annot-conn${active === c.id ? ' is-active' : ''}`}
+            onMouseEnter={() => setActive(c.id)}
+            onMouseLeave={() => setActive((cur) => (cur === c.id ? null : cur))}
+          >
+            {/* Permanent pulsing ring at the UI anchor — the hover hint.
+                Staggered so the nine dots don't pulse in unison. */}
+            <circle
+              className="annot-ripple"
+              cx={c.dot[0]}
+              cy={c.dot[1]}
+              r="7"
+              style={{ animationDelay: `${i * 0.18}s` }}
+            />
+            {/* Rounded-corner elbow; dashes march dot→tag while active. */}
+            <path className="annot-line" d={roundedPath(c.points)} />
+            <circle className="annot-dot" cx={c.dot[0]} cy={c.dot[1]} r="7" />
+            {/* Invisible, larger hit target so the dot is easy to hover. */}
+            <circle
+              className="annot-hit"
+              cx={c.dot[0]}
+              cy={c.dot[1]}
+              r="18"
+            />
+          </g>
         ))}
       </svg>
-      {V1_TAGS.map((t) => {
-        // Left-side tags anchor via `right: 72%` so their right edges share
-        // the same column (x=336 in viewBox); right-side tags anchor via
-        // `left: 72%` so their left edges share the column (x=864).
+      {V1_CONNECTORS.map((c) => {
         const horizontal =
-          t.side === 'left' ? { right: '72%' } : { left: '72%' }
+          c.side === 'left'
+            ? { right: LEFT_TAG_RIGHT }
+            : { left: RIGHT_TAG_LEFT }
+        const clear = () => setActive((cur) => (cur === c.id ? null : cur))
         return (
           <span
-            key={t.id}
-            className="annotated-tag"
-            style={{ ...horizontal, top: t.top }}
+            key={c.id}
+            className={`annotated-tag${active === c.id ? ' is-active' : ''}`}
+            style={{ ...horizontal, top: `${(c.cy / 800) * 100}%` }}
+            tabIndex={0}
+            onMouseEnter={() => setActive(c.id)}
+            onMouseLeave={clear}
+            onFocus={() => setActive(c.id)}
+            onBlur={clear}
           >
-            {t.label}
+            {c.label}
           </span>
         )
       })}

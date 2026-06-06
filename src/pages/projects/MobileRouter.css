@@ -1305,43 +1305,47 @@
 .annotated-diagram {
   position: relative;
   width: 100%;
-  /* 5:4 aspect gives a larger canvas than the original Figma 3:2 frame —
-     more vertical room for the tags to spread above/below the plugin
-     mockup. The viewBox on the SVG below stretches to match. */
-  aspect-ratio: 5 / 4;
-  /* Faint design-canvas grid: very low-opacity ink lines on white at
-     5% × 6.25% intervals (= ~60×60 viewBox-unit cells given the 1200×960
-     viewBox). Two linear gradients compose into a square grid; the cells
-     scale with the container so the density reads consistently across
-     responsive widths. */
+  /* 3:2 — matches the Figma "Design Less V1" frame (1200×800) exactly, so
+     the SVG viewBox below maps 1:1 onto the canvas. */
+  aspect-ratio: 3 / 2;
+  /* Faint design-canvas grid: very low-opacity ink lines on white, ~30
+     viewBox-unit cells (2.5% × 3.75% given the 1200×800 viewBox). */
   background-color: #ffffff;
   background-image:
     linear-gradient(to right, rgba(34, 34, 34, 0.06) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(34, 34, 34, 0.06) 1px, transparent 1px);
-  background-size: 2.5% 3.125%;
+  background-size: 2.5% 3.75%;
   border-radius: 8px;
   /* Tags stay inside the container — overflow: hidden keeps any
-     rendering edge cases from leaking past the white card boundary.
-     Tag positions below are tuned so the widest pills still fit at the
-     narrowest column width the desktop layout produces (~500 CSS px). */
+     rendering edge cases from leaking past the white card boundary. */
   overflow: hidden;
 }
 
 .annotated-diagram-img {
   position: absolute;
-  /* Vertical center: image height ≈ 62% of the container (36% width
-     × 437:600 aspect / 5:4 container = 61.8%); top = (100% - 61.8%) / 2
-     ≈ 19% gives symmetric padding above and below. */
-  top: 19%;
-  left: 50%;
-  /* 36% keeps the plugin large but leaves enough horizontal room for
-     the alignment columns (30% / 70%) — at the narrowest desktop column
-     (~526 CSS px) the widest tag (~145 px) still fits cleanly. */
-  width: 36%;
+  /* Same rect as Figma's "image 22": x381 y103, 437×600 on the 1200×800
+     canvas. The screenshot shares that aspect, so the dots stay aligned. */
+  top: 12.875%;
+  left: 31.75%;
+  width: 36.4167%;
   height: auto;
-  transform: translateX(-50%);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Desktop-only affordance label in the canvas's top-left corner, telling
+   the user the dots are hover-interactive. Hidden on the mobile layout
+   (≤1100px), where the connectors are shown statically anyway. */
+.annotated-hint {
+  position: absolute;
+  top: 4%;
+  left: 3%;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.01em;
+  color: var(--color-ink-tertiary);
 }
 
 .annotated-diagram-lines {
@@ -1349,46 +1353,122 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  /* Lines/dots don't take pointer events; only the invisible hit circles
+     below opt back in, so hovering a dot reveals its connector. */
   pointer-events: none;
-  /* White paint + difference blend = auto-inverting ink: black against
-     the white canvas, white against any darker UI pixel below. The
-     annotation always reads against whatever it crosses without needing
-     per-element contrast tuning. */
-  color: #ffffff;
-  mix-blend-mode: difference;
 }
 
-.annotated-diagram-lines path {
-  stroke: currentColor;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
+/* Orthogonal, rounded-corner connector. Hidden by default; on hover it
+   fades in as a dashed line whose dashes march from the dot toward the tag.
+   non-scaling-stroke keeps both the width and the dash pattern in screen px
+   regardless of how the viewBox is scaled. */
+.annot-line {
   fill: none;
+  stroke: #0061a9;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
   stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 3 3;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.annot-conn.is-active .annot-line {
+  opacity: 1;
+  /* One dash+gap (6px) per cycle; negative offset flows dot → tag. */
+  animation: annot-march 0.45s linear infinite;
+}
+@keyframes annot-march {
+  to { stroke-dashoffset: -6; }
 }
 
-.annotated-diagram-lines circle {
-  fill: currentColor;
+/* UI-side anchor dot — always visible (it's the thing the user hovers),
+   but kept faint so it sits quietly on the UI until engaged. Brightens to
+   full strength once its connector is active. */
+.annot-dot {
+  fill: #0061a9;
+  opacity: 0.35;
+  transition: opacity 0.2s ease;
+}
+/* Goes fully solid only on hover/active. */
+.annot-conn.is-active .annot-dot {
+  opacity: 1;
+}
+
+/* Pulsing ring around each dot: a faint, permanent affordance signalling
+   the dot is interactive. Pauses once its connector is active. */
+.annot-ripple {
+  fill: #0061a9;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: annot-ripple 1.9s ease-out infinite;
+}
+@keyframes annot-ripple {
+  0%   { transform: scale(1);   opacity: 0.28; }
+  70%  { opacity: 0; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+.annot-conn.is-active .annot-ripple {
+  animation: none;
+  opacity: 0;
+}
+
+/* Transparent, enlarged hover target over each dot. */
+.annot-hit {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
 }
 
 .annotated-tag {
   position: absolute;
+  /* cy-anchored: top is the connector's mid-edge Y; pull up by half the
+     tag's own height so the line meets the tag's vertical center. */
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 2px 8px;
   border: 1px solid var(--color-ink);
   border-radius: 1px;
-  /* Opaque fill so connector lines that extend a few px into the pill's
-     interior (for tolerance across container sizes) are masked — the
-     line appears to terminate exactly at the tag's border instead of
-     bleeding underneath the tag. */
-  background-color: #ffffff;
+  background: transparent;
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: var(--fw-regular);
   letter-spacing: 0.02em;
   color: var(--color-ink);
   white-space: nowrap;
+  cursor: pointer;
+  /* Hidden until its dot is hovered — then the tag fades in alongside the
+     drawn line. pointer-events off while hidden so it never blocks. */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, color 0.2s ease, border-color 0.2s ease;
+}
+/* Revealed + tinted navy to match its connector when active. */
+.annotated-tag.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  color: #0061a9;
+  border-color: #0061a9;
+}
+.annotated-tag:focus-visible {
+  outline: 2px solid #0061a9;
+  outline-offset: 2px;
+}
+
+/* Touch / no-hover devices have no hover — show every connector, dot, and
+   tag statically (no draw-in, no ripple) so the annotations are legible. */
+@media (hover: none) {
+  .annot-line { opacity: 1; animation: none; transition: none; }
+  .annot-ripple { animation: none; opacity: 0; }
+  .annot-dot { opacity: 1; }
+  .annotated-tag { opacity: 1; pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .annot-line { transition: none; animation: none; }
+  .annot-ripple { animation: none; opacity: 0; }
 }
 
 /* ==================== SCALABLE CONFIG DIAGRAM ====================
@@ -1659,6 +1739,18 @@ html {
      narrow widths. */
   .annotated-tag {
     font-size: 12px;
+  }
+  /* The mobile layout has no hover affordance, so reveal every tag, dot,
+     and connector statically (no ripple / no marching) — this is tied to
+     the layout breakpoint, not (hover: none), so it also covers narrow
+     hover-capable windows. */
+  .annot-line { opacity: 1; animation: none; transition: none; }
+  .annot-ripple { animation: none; opacity: 0; }
+  .annot-dot { opacity: 1; }
+  .annotated-tag { opacity: 1; pointer-events: auto; }
+  /* No hover on mobile, so the "Hover to see details" prompt doesn't apply. */
+  .annotated-hint {
+    display: none;
   }
   /* Two-up image rows collapse to a single column on mobile. Add the
      `--stay` modifier when a pair must remain side-by-side on small
