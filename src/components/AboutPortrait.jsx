@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { asset } from '../utils/asset.js'
 import OrganicLoader from './OrganicLoader.jsx'
 import './AboutPortrait.css'
 
@@ -43,8 +44,8 @@ function AboutPortrait() {
   return (
     <aside className="about-portrait" aria-hidden="true">
       <div className="portrait-stage" ref={stageRef}>
-        <img className="portrait-body" src="/about/body.png" alt="" />
-        <img ref={headRef} className="portrait-head" src="/about/head.png" alt="" />
+        <img className="portrait-body" src={asset('/about/body.png')} alt="" />
+        <img ref={headRef} className="portrait-head" src={asset('/about/head.png')} alt="" />
         {loaderMounted && (
           <OrganicLoader
             className="portrait-blobs"

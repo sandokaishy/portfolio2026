@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { asset } from '../../utils/asset.js'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -141,7 +142,7 @@ function TreePoint() {
           <div className="pp-hero">
             <img
               className="pp-hero-image"
-              src="/treepoint/hero-treepoint.jpg"
+              src={asset('/treepoint/hero-treepoint.jpg')}
               alt="Tree Point hero"
             />
           </div>
@@ -211,7 +212,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/current-redemption-flow.png"
+                src={asset('/treepoint/current-redemption-flow.png')}
                 alt="Current redemption flow in MyRewards: RedPoint balance to voucher redemption tab"
               />
             </div>
@@ -229,7 +230,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/wallet_ideation.png"
+                src={asset('/treepoint/wallet_ideation.png')}
                 alt="Point Wallet concept: bank reward points consolidated into a single TreePoint balance"
               />
             </div>
@@ -243,7 +244,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation1-start-wallet.png"
+                src={asset('/treepoint/ideation1-start-wallet.png')}
                 alt="Wallet activation screen: user opts in before using the Point Wallet service"
               />
             </div>
@@ -258,7 +259,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation1-authorize-import.png"
+                src={asset('/treepoint/ideation1-authorize-import.png')}
                 alt="Authorization flow: user signs in to MyRewards to import RedPoint into the wallet"
               />
             </div>
@@ -273,7 +274,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation1-wallet-page.png"
+                src={asset('/treepoint/ideation1-wallet-page.png')}
                 alt="Wallet page: TreePoint balance, point cards, and transaction history"
               />
             </div>
@@ -288,7 +289,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation1-redemption-flow.png"
+                src={asset('/treepoint/ideation1-redemption-flow.png')}
                 alt="Updated redemption flow expressed in TreePoint instead of mixed point types"
               />
             </div>
@@ -304,7 +305,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation1-redemption-details.png"
+                src={asset('/treepoint/ideation1-redemption-details.png')}
                 alt="Redemption details showing total wallet value, post-redemption balance, and per-point consumption"
               />
             </div>
@@ -326,12 +327,12 @@ function TreePoint() {
               <div className="pp-block-row">
                 <img
                   className="pp-block-image"
-                  src="/treepoint/validateIdeation1_01.jpg"
+                  src={asset('/treepoint/validateIdeation1_01.jpg')}
                   alt="Usability testing session for the Point Wallet prototype"
                 />
                 <img
                   className="pp-block-image"
-                  src="/treepoint/validateIdeation1_02.jpg"
+                  src={asset('/treepoint/validateIdeation1_02.jpg')}
                   alt="Participant interacting with the Point Wallet prototype during testing"
                 />
               </div>
@@ -348,12 +349,12 @@ function TreePoint() {
               <div className="pp-block-row">
                 <img
                   className="pp-block-image"
-                  src="/treepoint/validate1-prototypes_1.gif"
+                  src={asset('/treepoint/validate1-prototypes_1.gif')}
                   alt="First high-fidelity prototype used in the wallet usability test"
                 />
                 <img
                   className="pp-block-image"
-                  src="/treepoint/validate1-prototypes_2.gif"
+                  src={asset('/treepoint/validate1-prototypes_2.gif')}
                   alt="Second high-fidelity prototype used in the wallet usability test"
                 />
               </div>
@@ -448,7 +449,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation2-onboarding.gif"
+                src={asset('/treepoint/ideation2-onboarding.gif')}
                 alt="Onboarding flow introducing TreePoint as the new redemption unit"
               />
             </div>
@@ -461,7 +462,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation2-new-redemption.png"
+                src={asset('/treepoint/ideation2-new-redemption.png')}
                 alt="Updated redemption flow with a confirmation step before voucher exchange"
               />
             </div>
@@ -483,7 +484,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/ideation2-confirm-cost.gif"
+                src={asset('/treepoint/ideation2-confirm-cost.gif')}
                 alt="Confirmation drawer detailing how RedPoint and TreePoint will be consumed in a redemption"
               />
             </div>
@@ -511,12 +512,12 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/validate2-prototype-01.gif"
+                src={asset('/treepoint/validate2-prototype-01.gif')}
                 alt="Second-round prototype: onboarding pages introducing TreePoint"
               />
               <img
                 className="pp-block-image"
-                src="/treepoint/validate2-prototype-02.gif"
+                src={asset('/treepoint/validate2-prototype-02.gif')}
                 alt="Second-round prototype: redemption flow with confirmation tips"
               />
             </div>
@@ -583,7 +584,7 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/validate2-deeper-problem.png"
+                src={asset('/treepoint/validate2-deeper-problem.png')}
                 alt="Annotated balance area showing redundant TreePoint and RedPoint values in the confirmation drawer"
               />
             </div>
@@ -599,12 +600,12 @@ function TreePoint() {
               </p>
               <img
                 className="pp-block-image"
-                src="/treepoint/official-release-01.gif"
+                src={asset('/treepoint/official-release-01.gif')}
                 alt="Released confirmation drawer with revised point-consumption information"
               />
               <img
                 className="pp-block-image"
-                src="/treepoint/official-release-02.gif"
+                src={asset('/treepoint/official-release-02.gif')}
                 alt="Released redemption page with consumption-rule tips"
               />
             </div>

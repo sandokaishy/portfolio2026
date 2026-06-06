@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
+import { asset } from '../../utils/asset.js'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -182,7 +183,7 @@ function DesignLessAnnotated() {
       <h4 className="annotated-hint">Hover to see details</h4>
       <img
         className="annotated-diagram-img"
-        src="/figarrow/figarrow-v1.jpg"
+        src={asset('/figarrow/figarrow-v1.jpg')}
         alt="FigArrow V1 plugin UI"
       />
       <svg
@@ -346,7 +347,7 @@ function FigArrow() {
           <div className="pp-hero">
             <img
               className="pp-hero-image"
-              src="/figarrow/hero-figarrow.jpg"
+              src={asset('/figarrow/hero-figarrow.jpg')}
               alt="FigArrow hero"
             />
           </div>
@@ -529,7 +530,7 @@ function FigArrow() {
               </p>
               <img
                 className="pp-block-image"
-                src="/figarrow/template-capture.jpg"
+                src={asset('/figarrow/template-capture.jpg')}
                 alt="Template Capture — inspector showing the FigJam connector's clipboard data structure"
               />
             </div>
@@ -547,7 +548,7 @@ function FigArrow() {
               </p>
               <img
                 className="pp-block-image"
-                src="/figarrow/clipboard-write.jpg"
+                src={asset('/figarrow/clipboard-write.jpg')}
                 alt="Clipboard Write — re-written connector matches the original FigJam structure"
               />
             </div>
@@ -588,7 +589,7 @@ function FigArrow() {
               </p>
               <img
                 className="pp-block-image"
-                src="/figarrow/figarrow-iteration-1.jpg"
+                src={asset('/figarrow/figarrow-iteration-1.jpg')}
                 alt="Iterating on the FigArrow plugin UI via Figma Console MCP"
               />
             </div>
@@ -606,7 +607,7 @@ function FigArrow() {
               </p>
               <img
                 className="pp-block-image"
-                src="/figarrow/figarrow-iteration-2.jpg"
+                src={asset('/figarrow/figarrow-iteration-2.jpg')}
                 alt="Dynamic plugin-window resize accommodating custom dropdown/picker overlays"
               />
             </div>
@@ -627,8 +628,8 @@ function FigArrow() {
                 preload="metadata"
                 aria-label="Extended dropdown state in the final FigArrow plugin UI"
               >
-                <source src="/figarrow/extended.webm" type="video/webm" />
-                <source src="/figarrow/extended.mp4" type="video/mp4" />
+                <source src={asset('/figarrow/extended.webm')} type="video/webm" />
+                <source src={asset('/figarrow/extended.mp4')} type="video/mp4" />
               </video>
             </div>
 
@@ -647,8 +648,8 @@ function FigArrow() {
                 preload="metadata"
                 aria-label="Overlaid picker state in the final FigArrow plugin UI"
               >
-                <source src="/figarrow/overlaid.webm" type="video/webm" />
-                <source src="/figarrow/overlaid.mp4" type="video/mp4" />
+                <source src={asset('/figarrow/overlaid.webm')} type="video/webm" />
+                <source src={asset('/figarrow/overlaid.mp4')} type="video/mp4" />
               </video>
             </div>
           </section>
@@ -674,7 +675,7 @@ function FigArrow() {
               </p>
               <img
                 className="pp-block-image"
-                src="/figarrow/figarrow-final.jpg"
+                src={asset('/figarrow/figarrow-final.jpg')}
                 alt="FigArrow plugin showing the full feature set"
               />
               <video
@@ -686,8 +687,8 @@ function FigArrow() {
                 preload="metadata"
                 aria-label="FigArrow plugin demo: inserting connectors, shapes, and cursors"
               >
-                <source src="/figarrow/figarrow-demo.webm" type="video/webm" />
-                <source src="/figarrow/figarrow-demo.mp4" type="video/mp4" />
+                <source src={asset('/figarrow/figarrow-demo.webm')} type="video/webm" />
+                <source src={asset('/figarrow/figarrow-demo.mp4')} type="video/mp4" />
               </video>
               <a
                 className="pp-cta"

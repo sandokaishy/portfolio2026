@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { asset } from '../../utils/asset.js'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -113,7 +114,7 @@ function InteractionLab() {
           <div className="pp-hero">
             <img
               className="pp-hero-image"
-              src="/interaction_lab/hero-interaction-lab.jpg"
+              src={asset('/interaction_lab/hero-interaction-lab.jpg')}
               alt="Interaction Lab hero"
             />
           </div>
@@ -160,7 +161,7 @@ function InteractionLab() {
               </p>
               <img
                 className="pp-block-image"
-                src="/interaction_lab/cafe-drag-swipe.gif"
+                src={asset('/interaction_lab/cafe-drag-swipe.gif')}
                 alt="Drag/swipe interaction prototype for the café feed cards"
               />
             </div>
@@ -175,7 +176,7 @@ function InteractionLab() {
               </p>
               <img
                 className="pp-block-image"
-                src="/interaction_lab/cafe-reveal-details.gif"
+                src={asset('/interaction_lab/cafe-reveal-details.gif')}
                 alt="Card scale-up animation revealing café details"
               />
             </div>
@@ -189,7 +190,7 @@ function InteractionLab() {
               </p>
               <img
                 className="pp-block-image"
-                src="/interaction_lab/cafe-final-prototype.gif"
+                src={asset('/interaction_lab/cafe-final-prototype.gif')}
                 alt="Final café feed prototype combining the drag, swipe, and reveal interactions"
               />
             </div>
@@ -211,12 +212,12 @@ function InteractionLab() {
               <div className="pp-block-row">
                 <img
                   className="pp-block-image"
-                  src="/interaction_lab/skeleton-loading.gif"
+                  src={asset('/interaction_lab/skeleton-loading.gif')}
                   alt="Reusable skeleton-loading component animating in ProtoPie"
                 />
                 <img
                   className="pp-block-image"
-                  src="/interaction_lab/skeleton-loading_2.gif"
+                  src={asset('/interaction_lab/skeleton-loading_2.gif')}
                   alt="Skeleton-loading component reused at a different size"
                 />
               </div>
@@ -238,7 +239,7 @@ function InteractionLab() {
               </p>
               <img
                 className="pp-block-image"
-                src="/interaction_lab/nav-countdown-clock.gif"
+                src={asset('/interaction_lab/nav-countdown-clock.gif')}
                 alt="Vertical e-commerce prototype with hide-on-scroll nav and countdown timer"
               />
             </div>
@@ -257,12 +258,12 @@ function InteractionLab() {
               <div className="pp-block-row">
                 <img
                   className="pp-block-image"
-                  src="/interaction_lab/sticky-header.gif"
+                  src={asset('/interaction_lab/sticky-header.gif')}
                   alt="Sticky section header that pins to the top while scrolling through grouped lists"
                 />
                 <img
                   className="pp-block-image"
-                  src="/interaction_lab/sticky-header_2.gif"
+                  src={asset('/interaction_lab/sticky-header_2.gif')}
                   alt="Second sticky-header variant illustrating the pinned-title behavior"
                 />
               </div>
@@ -281,7 +282,7 @@ function InteractionLab() {
               </p>
               <img
                 className="pp-block-image"
-                src="/interaction_lab/birthday-lottery.gif"
+                src={asset('/interaction_lab/birthday-lottery.gif')}
                 alt="Birthday lottery prototype animating through the list and revealing four winners"
               />
             </div>

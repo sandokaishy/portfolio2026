@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { asset } from '../../utils/asset.js'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -357,7 +358,7 @@ function Poweramp() {
           <div className="pp-hero">
             <img
               className="pp-hero-image"
-              src="/play/hero-unifi-play.jpg"
+              src={asset('/play/hero-unifi-play.jpg')}
               alt="UniFi Play hero — the UniFi PowerAmp amplifier"
             />
           </div>
@@ -425,7 +426,7 @@ function Poweramp() {
               </p>
               <img
                 className="pp-block-image"
-                src="/play/setup-permissions.png"
+                src={asset('/play/setup-permissions.png')}
                 alt="Setup flow proactively explaining why each app permission is needed"
               />
             </div>
@@ -442,7 +443,7 @@ function Poweramp() {
               </p>
               <img
                 className="pp-block-image"
-                src="/play/setup-location-permission.png"
+                src={asset('/play/setup-location-permission.png')}
                 alt="Optional location permission handling — auto-detected Wi-Fi vs manual selection fallback"
               />
             </div>
@@ -469,7 +470,7 @@ function Poweramp() {
                   preload="metadata"
                   aria-label="UniFi Play app updating settings reflected on the PowerAmp LCD"
                 >
-                  <source src="/play/poweramp-lcd-status-01.mp4" type="video/mp4" />
+                  <source src={asset('/play/poweramp-lcd-status-01.mp4')} type="video/mp4" />
                 </video>
                 <video
                   className="pp-block-video"
@@ -480,7 +481,7 @@ function Poweramp() {
                   preload="metadata"
                   aria-label="PowerAmp LCD reflecting another set of settings changes from the app"
                 >
-                  <source src="/play/poweramp-lcd-status-02.mp4" type="video/mp4" />
+                  <source src={asset('/play/poweramp-lcd-status-02.mp4')} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -515,7 +516,7 @@ function Poweramp() {
                   preload="metadata"
                   aria-label="Creating a streaming zone in the UniFi Play app"
                 >
-                  <source src="/play/createZone.mp4" type="video/mp4" />
+                  <source src={asset('/play/createZone.mp4')} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -548,7 +549,7 @@ function Poweramp() {
                   preload="metadata"
                   aria-label="Selecting a host device and wired source to start broadcasting across the zone"
                 >
-                  <source src="/play/wired-broadcasting.mp4" type="video/mp4" />
+                  <source src={asset('/play/wired-broadcasting.mp4')} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -567,7 +568,7 @@ function Poweramp() {
               </p>
               <img
                 className="pp-block-image"
-                src="/play/switch-networks.png"
+                src={asset('/play/switch-networks.png')}
                 alt="Play device showing a Reconnect prompt when relocated to a new Wi-Fi network"
               />
               <div
@@ -593,7 +594,7 @@ function Poweramp() {
                   preload="metadata"
                   aria-label="Recovering connection on a Play device via the Reconnect flow after relocating it"
                 >
-                  <source src="/play/SwitchNetwork.mp4" type="video/mp4" />
+                  <source src={asset('/play/SwitchNetwork.mp4')} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -627,7 +628,7 @@ function Poweramp() {
                   preload="metadata"
                   aria-label="Recording a public announcement in the UniFi Play app"
                 >
-                  <source src="/play/public-announcing-01.mp4" type="video/mp4" />
+                  <source src={asset('/play/public-announcing-01.mp4')} type="video/mp4" />
                 </video>
                 <video
                   className="pp-block-video pp-block-video--lift"
@@ -638,7 +639,7 @@ function Poweramp() {
                   preload="metadata"
                   aria-label="Broadcasting the announcement across selected zones"
                 >
-                  <source src="/play/public-announcing-02.mp4" type="video/mp4" />
+                  <source src={asset('/play/public-announcing-02.mp4')} type="video/mp4" />
                 </video>
               </div>
             </div>

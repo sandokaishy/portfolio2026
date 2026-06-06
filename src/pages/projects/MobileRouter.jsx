@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { asset } from '../../utils/asset.js'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -370,10 +371,10 @@ function MobileRouter() {
               muted
               playsInline
               preload="metadata"
-              poster="/mobility/hero-mobile-router.jpg"
+              poster={asset('/mobility/hero-mobile-router.jpg')}
               aria-label="UniFi Mobile Router hero"
             >
-              <source src="/mobility/hero-mobile-router.mp4" type="video/mp4" />
+              <source src={asset('/mobility/hero-mobile-router.mp4')} type="video/mp4" />
             </video>
           </div>
 
@@ -434,7 +435,7 @@ function MobileRouter() {
               </p>
               <img
                 className="pp-block-image"
-                src="/mobility/zero-touch-setup-overview.jpg"
+                src={asset('/mobility/zero-touch-setup-overview.jpg')}
                 alt="Zero-touch setup overview: QR scan → auto-pair → cloud adopt"
               />
             </div>
@@ -457,7 +458,7 @@ function MobileRouter() {
                   preload="metadata"
                   aria-label="Step 1: scan the device's QR code"
                 >
-                  <source src="/mobility/zero-touch-qr-scan-01.mp4" type="video/mp4" />
+                  <source src={asset('/mobility/zero-touch-qr-scan-01.mp4')} type="video/mp4" />
                 </video>
                 <span className="pp-step-arrow" aria-hidden="true">→</span>
                 <video
@@ -469,7 +470,7 @@ function MobileRouter() {
                   preload="metadata"
                   aria-label="Step 2: device is recognized and paired"
                 >
-                  <source src="/mobility/zero-touch-qr-scan-02.mp4" type="video/mp4" />
+                  <source src={asset('/mobility/zero-touch-qr-scan-02.mp4')} type="video/mp4" />
                 </video>
                 <span className="pp-step-arrow" aria-hidden="true">→</span>
                 <video
@@ -481,7 +482,7 @@ function MobileRouter() {
                   preload="metadata"
                   aria-label="Step 3: confirm placement and ownership"
                 >
-                  <source src="/mobility/zero-touch-qr-scan-03.mp4" type="video/mp4" />
+                  <source src={asset('/mobility/zero-touch-qr-scan-03.mp4')} type="video/mp4" />
                 </video>
                 <span className="pp-step-arrow" aria-hidden="true">→</span>
                 <video
@@ -493,7 +494,7 @@ function MobileRouter() {
                   preload="metadata"
                   aria-label="Step 4: device adopted into the cloud"
                 >
-                  <source src="/mobility/zero-touch-qr-scan-04.mp4" type="video/mp4" />
+                  <source src={asset('/mobility/zero-touch-qr-scan-04.mp4')} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -514,7 +515,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Activation page guiding the user to the printed activation code on the device"
               >
-                <source src="/mobility/activation-code-guidance.mp4" type="video/mp4" />
+                <source src={asset('/mobility/activation-code-guidance.mp4')} type="video/mp4" />
               </video>
             </div>
 
@@ -534,7 +535,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Cloud-based remote management in the Mobile Routing app"
               >
-                <source src="/mobility/remote-management.mp4" type="video/mp4" />
+                <source src={asset('/mobility/remote-management.mp4')} type="video/mp4" />
               </video>
             </div>
           </section>
@@ -583,7 +584,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Creating a site-to-site VPN profile and applying it to multiple devices"
               >
-                <source src="/mobility/s2s-vpn-profile.mp4" type="video/mp4" />
+                <source src={asset('/mobility/s2s-vpn-profile.mp4')} type="video/mp4" />
               </video>
             </div>
 
@@ -603,7 +604,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Profile Overview page listing existing profiles and the devices they're applied to"
               >
-                <source src="/mobility/profile-overview.mp4" type="video/mp4" />
+                <source src={asset('/mobility/profile-overview.mp4')} type="video/mp4" />
               </video>
             </div>
 
@@ -625,7 +626,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Applying a stored Config Profile to a single device from the Device List"
               >
-                <source src="/mobility/apply-profile-single-device.mp4" type="video/mp4" />
+                <source src={asset('/mobility/apply-profile-single-device.mp4')} type="video/mp4" />
               </video>
             </div>
           </section>
@@ -680,7 +681,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Simplified site-to-site VPN setup picking the UniFi console as the peer device"
               >
-                <source src="/mobility/easy-s2s-vpn-setup.mp4" type="video/mp4" />
+                <source src={asset('/mobility/easy-s2s-vpn-setup.mp4')} type="video/mp4" />
               </video>
             </div>
           </section>
@@ -705,7 +706,7 @@ function MobileRouter() {
                   preload="metadata"
                   aria-label="Device insights dashboard: network health, CPU and historical data"
                 >
-                  <source src="/mobility/device-insights-dashboard-01.mp4" type="video/mp4" />
+                  <source src={asset('/mobility/device-insights-dashboard-01.mp4')} type="video/mp4" />
                 </video>
                 <video
                   className="pp-block-video"
@@ -716,7 +717,7 @@ function MobileRouter() {
                   preload="metadata"
                   aria-label="Device insights dashboard: drill-down on anomaly events over time"
                 >
-                  <source src="/mobility/device-insights-dashboard-02.mp4" type="video/mp4" />
+                  <source src={asset('/mobility/device-insights-dashboard-02.mp4')} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -739,7 +740,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Mobile Router showing its real-time location and historical track on a map"
               >
-                <source src="/mobility/device-map-location-01.mp4" type="video/mp4" />
+                <source src={asset('/mobility/device-map-location-01.mp4')} type="video/mp4" />
               </video>
               <p>
                 If there isn't enough room to show each device's location,
@@ -756,7 +757,7 @@ function MobileRouter() {
                 preload="metadata"
                 aria-label="Pin clustering on the device map for global Mobile Router fleets"
               >
-                <source src="/mobility/device-map-location-02.mp4" type="video/mp4" />
+                <source src={asset('/mobility/device-map-location-02.mp4')} type="video/mp4" />
               </video>
             </div>
           </section>
