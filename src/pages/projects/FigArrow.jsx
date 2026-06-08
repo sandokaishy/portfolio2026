@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { asset } from '../../utils/asset.js'
+import HeroImage from '../../components/HeroImage.jsx'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -344,13 +345,12 @@ function FigArrow() {
         </aside>
 
         <main className="pp-main">
-          <div className="pp-hero">
-            <img
-              className="pp-hero-image"
-              src={asset('/figarrow/hero-figarrow.jpg')}
-              alt="FigArrow hero"
-            />
-          </div>
+          <HeroImage
+            src="/figarrow/hero-figarrow.jpg"
+            alt="FigArrow hero"
+            width={1920}
+            height={1020}
+          />
 
           <section id="background" className="pp-section">
             <div className="pp-section-intro">

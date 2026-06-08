@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { asset } from '../../utils/asset.js'
+import HeroImage from '../../components/HeroImage.jsx'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -111,13 +112,12 @@ function InteractionLab() {
         </aside>
 
         <main className="pp-main">
-          <div className="pp-hero">
-            <img
-              className="pp-hero-image"
-              src={asset('/interaction_lab/hero-interaction-lab.jpg')}
-              alt="Interaction Lab hero"
-            />
-          </div>
+          <HeroImage
+            src="/interaction_lab/hero-interaction-lab.jpg"
+            alt="Interaction Lab hero"
+            width={1440}
+            height={550}
+          />
 
           <section id="why-prototypes" className="pp-section">
             <div className="pp-section-intro">

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { asset } from '../../utils/asset.js'
+import HeroImage from '../../components/HeroImage.jsx'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -355,13 +356,12 @@ function Poweramp() {
         </aside>
 
         <main className="pp-main">
-          <div className="pp-hero">
-            <img
-              className="pp-hero-image"
-              src={asset('/play/hero-unifi-play.jpg')}
-              alt="UniFi Play hero — the UniFi PowerAmp amplifier"
-            />
-          </div>
+          <HeroImage
+            src="/play/hero-unifi-play.jpg"
+            alt="UniFi Play hero — the UniFi PowerAmp amplifier"
+            width={1920}
+            height={960}
+          />
 
           <section id="overview" className="pp-section">
             <div className="pp-section-intro">

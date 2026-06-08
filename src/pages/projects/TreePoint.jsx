@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { asset } from '../../utils/asset.js'
+import HeroImage from '../../components/HeroImage.jsx'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { getProjectByPath } from '../../data/projects.js'
@@ -139,13 +140,12 @@ function TreePoint() {
         </aside>
 
         <main className="pp-main">
-          <div className="pp-hero">
-            <img
-              className="pp-hero-image"
-              src={asset('/treepoint/hero-treepoint.jpg')}
-              alt="Tree Point hero"
-            />
-          </div>
+          <HeroImage
+            src="/treepoint/hero-treepoint.jpg"
+            alt="Tree Point hero"
+            width={1440}
+            height={810}
+          />
 
           <section id="background" className="pp-section">
             <div className="pp-section-intro">

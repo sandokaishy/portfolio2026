@@ -894,6 +894,46 @@
   clip-path: inset(2px);
 }
 
+/* Loading placeholder for hero images (HeroImage component). While the image
+   decodes, this shimmer sits in its place — correctly sized because the
+   <img> carries width/height attributes, so there's no layout shift. The
+   image fades in on load and the shimmer is switched off. */
+.pp-hero--skeleton {
+  background-color: var(--color-surface-muted);
+  background-image: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 65%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: pp-hero-shimmer 1.5s ease-in-out infinite;
+}
+.pp-hero--skeleton.is-loaded {
+  animation: none;
+  background-image: none;
+  background-color: transparent;
+}
+@keyframes pp-hero-shimmer {
+  from { background-position: 150% 0; }
+  to   { background-position: -50% 0; }
+}
+
+/* Only the <img> fades — the hero <video> stays driven by its poster. */
+.pp-hero-image {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.pp-hero-image.is-loaded {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-hero--skeleton { animation: none; }
+  .pp-hero-image { transition: none; }
+}
+
 .pp-section {
   display: flex;
   flex-direction: column;
