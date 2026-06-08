@@ -24,8 +24,26 @@ const PP_SHELL_PATHS = new Set([
   '/projects/figarrow',
 ])
 
+// Router basename (e.g. "/portfolio2026/" on GitHub Pages, "/" in dev).
+// React Router strips it from location.pathname, but native APIs
+// (window.location.pathname) and <a href> attributes keep it — so anywhere
+// we compare those against router paths we must strip it first, or the
+// whole loading/flip choreography silently no-ops under a base path.
+const BASE = import.meta.env.BASE_URL
+// Normalise any pathname/href into a comparable router path:
+//   1. strip the basename ("/portfolio2026/projects/x" → "/projects/x")
+//   2. drop a trailing slash (GitHub Pages serves directory URLs with one,
+//      e.g. "/projects/poweramp/", which otherwise fails Set membership /
+//      "=== '/'" checks). Root "/" is preserved.
+function toRoutePath(fullPath) {
+  let p = fullPath
+  if (BASE !== '/' && p.startsWith(BASE)) p = '/' + p.slice(BASE.length)
+  if (p.length > 1) p = p.replace(/\/+$/, '')
+  return p || '/'
+}
+
 // Deep-link redirect happens at module load — BEFORE React Router mounts.
-// We swap the URL to "/" via the native History API so that when Router
+// We swap the URL to home via the native History API so that when Router
 // initializes, it reads "/" as the starting location and the home-loading
 // flow runs without any awkward navigate-inside-useLayoutEffect dance
 // (which can race with React Router v7's render scheduling and leave the
@@ -35,12 +53,15 @@ const PP_SHELL_PATHS = new Set([
 // pp-shell-enter animationend. Module-scope state survives React 18
 // StrictMode dev double-mounts, which useRef / useState do not reliably.
 let INITIAL_DEEP_LINK = null
-if (
-  typeof window !== 'undefined' &&
-  PP_SHELL_PATHS.has(window.location.pathname)
-) {
-  INITIAL_DEEP_LINK = window.location.pathname
-  window.history.replaceState(window.history.state, '', '/')
+if (typeof window !== 'undefined') {
+  const routePath = toRoutePath(window.location.pathname)
+  if (PP_SHELL_PATHS.has(routePath)) {
+    // Store the router path (basename-stripped) so navigate() can consume it.
+    INITIAL_DEEP_LINK = routePath
+    // Reset the URL to the base ("/portfolio2026/"), not the domain root,
+    // so the browser URL stays inside the app's basename.
+    window.history.replaceState(window.history.state, '', BASE)
+  }
 }
 let deepLinkConsumed = false
 
@@ -79,7 +100,7 @@ function App() {
   // tear them down before pp-shell-enter ever fires.
   useEffect(() => {
     if (deepLinkConsumed || !INITIAL_DEEP_LINK) return
-    if (loading || location.pathname !== '/') return
+    if (loading || toRoutePath(location.pathname) !== '/') return
     deepLinkConsumed = true
     const target = INITIAL_DEEP_LINK
     let fallback
@@ -120,7 +141,9 @@ function App() {
       if (a.target === '_blank' || a.hasAttribute('download')) return
       if (/^(https?:|mailto:|tel:|#)/.test(href)) return
 
-      const path = href.split(/[?#]/)[0]
+      // <a href> keeps the basename ("/portfolio2026/about"); normalise it to
+      // a router path ("/about") for the comparisons and navigate() below.
+      const path = toRoutePath(href.split(/[?#]/)[0])
 
       // Project page → home: reverse-flip out, then navigate. Home is
       // already mounted behind so the rotating shell reveals it directly.
@@ -165,7 +188,9 @@ function App() {
         setProgress(0)
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            navigate(href)
+            // navigate() expects a router path (no basename) — use the
+            // stripped `path`, not the raw href.
+            navigate(path)
           })
         })
       }
@@ -184,7 +209,7 @@ function App() {
   // is later wins, so the bar never finishes before fonts are actually loaded.
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
-    const path = location.pathname
+    const path = toRoutePath(location.pathname)
     // One-shot skip set by the reverse-flip back-to-home flow: Home was
     // already revealed behind the rotating shell during the exit animation,
     // so showing a loading overlay on top of it would be a regression.
@@ -286,8 +311,9 @@ function App() {
     }
   }, [location.pathname])
 
-  const isOnHome = location.pathname === '/'
-  const isOnFlipPage = PP_SHELL_PATHS.has(location.pathname)
+  const routePath = toRoutePath(location.pathname)
+  const isOnHome = routePath === '/'
+  const isOnFlipPage = PP_SHELL_PATHS.has(routePath)
   // Keep Home mounted on '/' AND on pp-shell project pages so the flip
   // animations have something to reveal/cover. Older .project-page pages
   // (solid background) and /about don't need it — Home stays torn down to
