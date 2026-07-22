@@ -309,7 +309,7 @@ function FigArrow() {
   return (
     <>
       <Helmet>
-        <title>FigArrow: Figma Plugin | Sheng Pan</title>
+        <title>FigArrow: Figma Plugin | Peter Pan</title>
         <meta
           name="description"
           content="Building a Figma plugin from 0 to 1 with AI — inserting FigJam connectors, shapes, and cursors into Figma."

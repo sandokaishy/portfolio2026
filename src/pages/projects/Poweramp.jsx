@@ -306,7 +306,7 @@ function Poweramp() {
   return (
     <>
       <Helmet>
-        <title>UniFi Play | Sheng Pan</title>
+        <title>UniFi Play | Peter Pan</title>
         <meta
           name="description"
           content="Ubiquiti's debut in audio appliances, seamlessly integrating with the UniFi ecosystem."

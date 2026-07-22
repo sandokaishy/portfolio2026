@@ -90,7 +90,7 @@ function TreePoint() {
   return (
     <>
       <Helmet>
-        <title>TreePoint | Sheng Pan</title>
+        <title>TreePoint | Peter Pan</title>
         <meta
           name="description"
           content="Designing the redemption experience for new reward points and legacy points."

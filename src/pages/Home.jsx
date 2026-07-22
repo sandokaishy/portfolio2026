@@ -62,7 +62,7 @@ function Home() {
   return (
     <>
       <Helmet>
-        <title>Sheng Pan | Portfolio</title>
+        <title>Peter Pan | Portfolio</title>
         <meta
           name="description"
           content="Adapting to diverse domain, designing product across IoT, Fintech and Recruiting."
@@ -82,7 +82,7 @@ function Home() {
 
         <header className="hero">
           <h1 className="hero-title">
-            Hello<br />I&rsquo;m Sheng.
+            Hello<br />I&rsquo;m Peter.
           </h1>
           <p className="hero-subtitle">Product designer</p>
         </header>

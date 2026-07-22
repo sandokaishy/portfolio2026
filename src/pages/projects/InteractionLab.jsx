@@ -77,7 +77,7 @@ function InteractionLab() {
   return (
     <>
       <Helmet>
-        <title>Interaction Lab | Sheng Pan</title>
+        <title>Interaction Lab | Peter Pan</title>
         <meta
           name="description"
           content="Some experimental prototypes with ProtoPie."

@@ -44,7 +44,7 @@ function About() {
   return (
     <>
       <Helmet>
-        <title>About | Sheng Pan</title>
+        <title>About | Peter Pan</title>
         <meta
           name="description"
           content="A Senior Product designer with 10+ years experience. Currently works on mobile product and IoT platform at Ubiquiti."
@@ -55,7 +55,7 @@ function About() {
 
         <section className="about-intro">
           <header className="about-hero">
-            <h1 className="about-name">Sheng Pan</h1>
+            <h1 className="about-name">Peter</h1>
             <p className="about-subtitle">
               A Senior Product designer with 10+ years experience. Currently works on
               mobile product and IoT platform at Ubiquiti.
@@ -64,7 +64,7 @@ function About() {
           <div className="about-bio">
             <div className="about-bio-block">
               <p>
-                Hello, I&rsquo;m Sheng. A Sr. Product Designer at Ubiquiti, previously
+                Hello, I&rsquo;m Peter. A Sr. Product Designer at Ubiquiti, previously
                 UX Designer at Cathay Financial Holdings.
               </p>
               <p>
@@ -84,6 +84,16 @@ function About() {
               Group as a UX Designer. I was the design owner for TreePoint&rsquo;s
               redemption experience and a core member of the team that built Cathay
               Insurance&rsquo;s &lsquo;Insurance Composer&rsquo;.
+            </p>
+            <p>
+              <a
+                className="about-cv-link"
+                href="https://www.dropbox.com/scl/fi/khtsiy4a3c0bg2xrjcmhe/Peter-Pan_Senior-Product-Designer.pdf?rlkey=jts9v856zw0wwf6rqdgq8jecy&e=1&dl=1"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Download my CV
+              </a>
             </p>
           </div>
         </section>

@@ -87,6 +87,21 @@
   margin-top: 0;
 }
 
+/* CV download link — same underline treatment as .hero-body-link on Home. */
+.about-cv-link {
+  font-weight: var(--fw-medium);
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-ink);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.about-cv-link:hover {
+  color: var(--color-ink-muted);
+  border-color: var(--color-ink-muted);
+}
+
 /* `.about-portrait` styles live in AboutPortrait.css alongside the component. */
 
 /* ---------------------------------------------------------------------------
