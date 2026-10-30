@@ -1,3 +1,4 @@
+import useProjectNavigation from '../../hooks/useProjectNavigation.js'
 import { useEffect, useRef, useState } from 'react'
 import { asset } from '../../utils/asset.js'
 import { Helmet } from 'react-helmet-async'
@@ -240,70 +241,7 @@ function S2SVpnDiagram() {
 }
 
 function MobileRouter() {
-  // Past-first-screen swap: team-info → TOC. Threshold = half viewport.
-  const [scrolled, setScrolled] = useState(false)
-  const [activeId, setActiveId] = useState(SECTIONS[0].id)
-  // Once the page-flip-in animation finishes, drop the transform from
-  // .pp-shell so the sticky aside + TOC observer behave normally. We
-  // also defer the IntersectionObserver registration until then so it
-  // measures section positions in their final (un-rotated) layout.
-  const [animDone, setAnimDone] = useState(false)
-
-  // Match the duration in MobileRouter.css `.pp-shell` animation.
-  useEffect(() => {
-    const id = setTimeout(() => setAnimDone(true), 720)
-    return () => clearTimeout(id)
-  }, [])
-
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight * 0.5)
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  // Highlight the section currently in the middle of the viewport. Wait
-  // until the flip animation has settled — observing while the page is
-  // still rotating gives nonsense bounding boxes.
-  useEffect(() => {
-    if (!animDone) return
-    const observers = []
-    for (const s of SECTIONS) {
-      const el = document.getElementById(s.id)
-      if (!el) continue
-      const obs = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) setActiveId(s.id)
-          }
-        },
-        { rootMargin: '-30% 0px -60% 0px' }
-      )
-      obs.observe(el)
-      observers.push(obs)
-    }
-    return () => observers.forEach((o) => o.disconnect())
-  }, [animDone])
-
-  // Keep the active TOC item centered inside the horizontally-scrollable
-  // .pp-toc bar (relevant on mobile where the TOC is fixed bottom and may
-  // overflow). Scrolls only the bar, never the page.
-  useEffect(() => {
-    const toc = document.querySelector('.pp-toc')
-    const active = toc?.querySelector('.pp-toc-item.is-active')
-    if (!toc || !active) return
-    const tocRect = toc.getBoundingClientRect()
-    const itemRect = active.getBoundingClientRect()
-    const offset =
-      (itemRect.left + itemRect.width / 2) -
-      (tocRect.left + tocRect.width / 2)
-    if (Math.abs(offset) > 1) {
-      toc.scrollBy({ left: offset, behavior: 'smooth' })
-    }
-  }, [activeId])
-
+  const { scrolled, activeId, animDone, tocRef } = useProjectNavigation(SECTIONS, { hasTeam: true })
 
   return (
     <>
@@ -345,6 +283,7 @@ function MobileRouter() {
               ))}
             </dl>
             <ul
+              ref={tocRef}
               className={`pp-toc${scrolled ? '' : ' is-hidden'}`}
               aria-hidden={!scrolled || undefined}
             >

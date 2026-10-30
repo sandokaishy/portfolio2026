@@ -2,7 +2,6 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
-import Projects from './pages/Projects.jsx'
 import MobileRouter from './pages/projects/MobileRouter.jsx'
 import Poweramp from './pages/projects/Poweramp.jsx'
 import TreePoint from './pages/projects/TreePoint.jsx'
@@ -332,7 +331,6 @@ function App() {
       <Routes>
         <Route path="/" element={null} />
         <Route path="/about" element={<About />} />
-        <Route path="/projects" element={<Projects />} />
         <Route path="/projects/mobile-router" element={<MobileRouter />} />
         <Route path="/projects/poweramp" element={<Poweramp />} />
         <Route path="/projects/tree-point" element={<TreePoint />} />

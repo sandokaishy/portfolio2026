@@ -13,7 +13,6 @@ const distDir = resolve(__dirname, '../dist')
 const routes = [
   '/',
   '/about',
-  '/projects',
   '/projects/mobile-router',
   '/projects/poweramp',
   '/projects/figarrow',

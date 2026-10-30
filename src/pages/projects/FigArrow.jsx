@@ -1,3 +1,4 @@
+import useProjectNavigation from '../../hooks/useProjectNavigation.js'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { asset } from '../../utils/asset.js'
 import HeroImage from '../../components/HeroImage.jsx'
@@ -260,51 +261,7 @@ const SECTIONS = [
 ]
 
 function FigArrow() {
-  const [activeId, setActiveId] = useState(SECTIONS[0].id)
-  const [animDone, setAnimDone] = useState(false)
-
-  useEffect(() => {
-    const id = setTimeout(() => setAnimDone(true), 720)
-    return () => clearTimeout(id)
-  }, [])
-
-  useEffect(() => {
-    if (!animDone) return
-    const observers = []
-    for (const s of SECTIONS) {
-      const el = document.getElementById(s.id)
-      if (!el) continue
-      const obs = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) setActiveId(s.id)
-          }
-        },
-        { rootMargin: '-30% 0px -60% 0px' }
-      )
-      obs.observe(el)
-      observers.push(obs)
-    }
-    return () => observers.forEach((o) => o.disconnect())
-  }, [animDone])
-
-  // Keep the active TOC item centered inside the horizontally-scrollable
-  // .pp-toc bar (relevant on mobile where the TOC is fixed bottom and may
-  // overflow). Scrolls only the bar, never the page.
-  useEffect(() => {
-    const toc = document.querySelector('.pp-toc')
-    const active = toc?.querySelector('.pp-toc-item.is-active')
-    if (!toc || !active) return
-    const tocRect = toc.getBoundingClientRect()
-    const itemRect = active.getBoundingClientRect()
-    const offset =
-      (itemRect.left + itemRect.width / 2) -
-      (tocRect.left + tocRect.width / 2)
-    if (Math.abs(offset) > 1) {
-      toc.scrollBy({ left: offset, behavior: 'smooth' })
-    }
-  }, [activeId])
-
+  const { activeId, animDone, tocRef } = useProjectNavigation(SECTIONS)
 
   return (
     <>
@@ -330,7 +287,7 @@ function FigArrow() {
           </header>
 
           <div className="pp-aside-meta">
-            <ul className="pp-toc">
+            <ul ref={tocRef} className="pp-toc">
               {SECTIONS.map((s, i) => (
                 <li
                   key={s.id}
